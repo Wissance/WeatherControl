@@ -5,13 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Factory\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Managers\" />
+    <PackageReference Include="Wissance.WebApiToolkit" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wissance.WebApiToolkit" Version="1.0.0" />
+    <ProjectReference Include="..\Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj" />
+    <ProjectReference Include="..\Wissance.WeatherControl.Dto\Wissance.WeatherControl.Dto.csproj" />
   </ItemGroup>
 
 </Project>
