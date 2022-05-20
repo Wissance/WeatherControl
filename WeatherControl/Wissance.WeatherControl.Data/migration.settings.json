@@ -1,0 +1,5 @@
+{
+    "Db": {
+        "ConnStr": "Server=localhost;Database=Wissance.WeatherControl.Migrations;Trusted_Connection=True;"
+    } 
+}
