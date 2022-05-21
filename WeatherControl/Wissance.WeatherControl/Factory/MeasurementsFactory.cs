@@ -14,5 +14,10 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return new MeasurementsDto(entity.Id, entity.Timestamp, entity.Temperature, entity.Pressure, entity.Humidity,
                                        entity.WindSpeed, entity.StationId);
         }
+
+        public static MeasurementsEntity Create(MeasurementsDto dto)
+        {
+            return new MeasurementsEntity(dto.Timestamp, dto.Temperature, dto.Pressure, dto.Humidity, dto.WindSpeed, dto.StationId);
+        }
     }
 }
