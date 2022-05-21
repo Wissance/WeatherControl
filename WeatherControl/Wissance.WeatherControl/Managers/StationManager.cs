@@ -2,38 +2,56 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
+using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class StationManager : IModelManager<StationDto, StationEntity, int>
+    public class StationManager : ModelManager<StationEntity, StationDto, int>
     {
-        public Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
+        public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
-            throw new NotImplementedException();
+            _modelContext = modelContext;
         }
 
-        public Task<OperationResultDto<StationDto>> UpdateAsync(int id, StationDto data)
+        public override async Task<OperationResultDto<IList<StationDto>>> GetAsync(int page, int size)
         {
-            throw new NotImplementedException();
+            return await GetAsync<int>(_modelContext.Stations, page, size, null, null, StationFactory.Create);
         }
 
-        public Task<OperationResultDto<bool>> DeleteAsync(int id)
+        public override async Task<OperationResultDto<StationDto>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await GetAsync(_modelContext.Stations, id, StationFactory.Create);
         }
 
-        public Task<OperationResultDto<IList<StationDto>>> GetAsync(int page, int size)
+        public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        public Task<OperationResultDto<StationDto>> GetByIdAsync(int id)
+        public override async Task<OperationResultDto<StationDto>> UpdateAsync(int id, StationDto data)
         {
-            throw new NotImplementedException();
+            return base.UpdateAsync(id, data);
         }
+
+        public override async Task<OperationResultDto<bool>> DeleteAsync(int id)
+        {
+            return await DeleteAsync(_modelContext, _modelContext.Stations, id);
+        }
+
+        private readonly ModelContext _modelContext;
     }
 }
