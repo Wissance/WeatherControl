@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -13,14 +14,26 @@ namespace Wissance.WeatherControl.WebApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IWebHostBuilder webHostBuilder = CreateWebHostBuilder(args);
+            IWebHost webHost = webHostBuilder.Build();
+            webHost.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            IWebHostBuilder webHostBuilder = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder();
+            _environment = webHostBuilder.GetSetting("environment");
+            // todo: umv: read configuration here
+            IConfiguration configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{_environment}.json")
+                .Build();
+            webHostBuilder.UseStartup<Startup>()
+                .UseConfiguration(configuration)
+                .UseKestrel();
+            return webHostBuilder;
+        }
+
+        private static string _environment;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
@@ -54,12 +55,32 @@ namespace Wissance.WeatherControl.WebApi.Managers
         {
             try
             {
-                return await base.UpdateAsync(id, data);
+                MeasurementsEntity entity = MeasurementsFactory.Create(data);
+                MeasurementsEntity existingEntity =
+                    await _modelContext.Measurements.FirstOrDefaultAsync(m => m.Id == id);
+                if (existingEntity == null)
+                {
+                    return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.NotFound, $"Measurements with id: {id} does not exists", null);
+                }
+
+                existingEntity.Temperature = entity.Temperature;
+                existingEntity.Pressure = entity.Pressure;
+                existingEntity.Humidity = entity.Humidity;
+                existingEntity.WindSpeed = entity.WindSpeed;
+                existingEntity.Timestamp = entity.Timestamp;
+                int result = await _modelContext.SaveChangesAsync();
+                if (result >= 0)
+                {
+                    return new OperationResultDto<MeasurementsDto>(true, (int)HttpStatusCode.OK, null, MeasurementsFactory.Create(entity));
+                }
+                return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError, $"An unknown error occurred during measurements update", null);
             }
             catch (Exception e)
             {
-                return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during measurements update: {e.Message}", null);
+                return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during measurements update: {e.Message}", null);
             }
+        }
 
         public override async Task<OperationResultDto<bool>> DeleteAsync(int id)
         {
