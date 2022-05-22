@@ -57,6 +57,11 @@ namespace Wissance.WeatherControl.WebApi.Managers
             {
                 StationEntity entity = StationFactory.Create(data);
                 StationEntity existingEntity = await _modelContext.Stations.FirstOrDefaultAsync(s => s.Id == id);
+                if (existingEntity == null)
+                {
+                    return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.NotFound, $"Station with id: {id} does not exists", null);
+                }
+
                 // Copy only name, description and positions, create measurements if necessary from MeasurementsManager
                 existingEntity.Name = entity.Name;
                 existingEntity.Description = existingEntity.Description;
