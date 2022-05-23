@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,23 +15,27 @@ namespace Wissance.WeatherControl.WebApi
     {
         public static void Main(string[] args)
         {
-            IWebHostBuilder webHostBuilder = CreateWebHostBuilder(args);
-            IWebHost webHost = webHostBuilder.Build();
-            webHost.Run();
+            IHostBuilder hostBuilder = CreateWebHostBuilder(args);
+            hostBuilder.Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IHostBuilder CreateWebHostBuilder(string[] args)
         {
-            IWebHostBuilder webHostBuilder = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder();
-            _environment = webHostBuilder.GetSetting("environment");
-            // todo: umv: read configuration here
+            //todo: umv: temporarily stub
+            _environment = "Development";
+                //webHostBuilder.GetSetting("environment");
+
             IConfiguration configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{_environment}.json")
                 .Build();
-            webHostBuilder.UseStartup<Startup>()
-                .UseConfiguration(configuration);
-            return webHostBuilder;
+            IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(builder =>
+            {
+                builder.UseConfiguration(configuration);
+                builder.UseStartup<Startup>();
+                builder.UseKestrel();
+            });
+            return hostBuilder;
         }
 
         private static string _environment;
