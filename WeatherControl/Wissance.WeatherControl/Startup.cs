@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Wissance.WeatherControl.WebApi.Config;
 using Wissance.WeatherControl.WebApi.Managers;
 
 namespace Wissance.WeatherControl.WebApi
@@ -54,7 +55,11 @@ namespace Wissance.WeatherControl.WebApi
 
         private void ConfigureDatabase(IServiceCollection services)
         {
-
+            /*IList<IConfigurationSection> databases = Configuration.GetSection(DatabaseSectionKey).GetChildren().ToList();
+            IConfigurationSection mainDatabase = databases[0];
+            string connStr = mainDatabase.GetSection(ConnectionStringKey).Value;
+            services.ConfigureSqlServerDbContext<ModelContext>(connStr);
+            PrepareDatabase(services);*/
         }
 
         private void ConfigureWebApi(IServiceCollection services)
@@ -70,7 +75,8 @@ namespace Wissance.WeatherControl.WebApi
             services.AddScoped<MeasurementsManager>();
         }
 
-        public IConfiguration Configuration { get; }
+        public ApplicationSettings Settings { get; set; }
+        private IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
     }
 }
