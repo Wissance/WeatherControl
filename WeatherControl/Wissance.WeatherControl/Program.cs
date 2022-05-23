@@ -29,8 +29,7 @@ namespace Wissance.WeatherControl.WebApi
                 .AddJsonFile($"appsettings.{_environment}.json")
                 .Build();
             webHostBuilder.UseStartup<Startup>()
-                .UseConfiguration(configuration)
-                .UseKestrel();
+                .UseConfiguration(configuration);
             return webHostBuilder;
         }
 
