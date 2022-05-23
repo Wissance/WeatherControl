@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Wissance.WeatherControl.Data;
+using Wissance.WeatherControl.Data.Extensions;
 using Wissance.WeatherControl.WebApi.Config;
 using Wissance.WeatherControl.WebApi.Managers;
 
@@ -21,6 +24,7 @@ namespace Wissance.WeatherControl.WebApi
         {
             Configuration = configuration;
             Environment = env;
+            Settings = configuration.GetSection("Application").Get<ApplicationSettings>();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -55,11 +59,10 @@ namespace Wissance.WeatherControl.WebApi
 
         private void ConfigureDatabase(IServiceCollection services)
         {
-            /*IList<IConfigurationSection> databases = Configuration.GetSection(DatabaseSectionKey).GetChildren().ToList();
-            IConfigurationSection mainDatabase = databases[0];
-            string connStr = mainDatabase.GetSection(ConnectionStringKey).Value;
-            services.ConfigureSqlServerDbContext<ModelContext>(connStr);
-            PrepareDatabase(services);*/
+            services.ConfigureSqlServerDbContext<ModelContext>(Settings.Database.ConnStr);
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            ModelContext modelContext = serviceProvider.GetRequiredService<ModelContext>();
+            modelContext.Database.Migrate();
         }
 
         private void ConfigureWebApi(IServiceCollection services)
