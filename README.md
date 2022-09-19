@@ -1,5 +1,9 @@
 ## WeatherControl
 
+### General description
+
+This project is a tutorial for begginners how to organize your code, build flexible and re-usable code and how to build asp net core web api (rest).
+
 ### Glossary / Domain object
 
 * Station - weather station that has name, description, coordinates and it **can measure one or multiple weather
