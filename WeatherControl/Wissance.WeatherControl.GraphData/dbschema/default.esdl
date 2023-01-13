@@ -9,14 +9,19 @@ module default {
     type Measurement {
         required link Unit -> MeasureUnit;
         required property SampleDate -> datetime;
-        required property Value -> Double;
+        required property Value -> decimal;
     }
 
     type Sensor {
-    
+        required Name -> str;
+        multi link Measurements -> Measurement;
+        required property Longitude -> str;
+        required property Lattitude -> str;
     }
 
-    typ MeteoStation {
-
+    type MeteoStation {
+        required property Longitude -> str;
+        required property Lattitude -> str;
+        multi link Sensors -> Sensor;
     }
 }
