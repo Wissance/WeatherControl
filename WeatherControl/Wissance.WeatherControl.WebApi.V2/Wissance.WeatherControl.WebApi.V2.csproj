@@ -15,7 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Wissance.WeatherControl.Dto.V2\Wissance.WeatherControl.Dto.V2.csproj" />
     <ProjectReference Include="..\Wissance.WeatherControl.GraphData\Wissance.WeatherControl.GraphData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Managers\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
