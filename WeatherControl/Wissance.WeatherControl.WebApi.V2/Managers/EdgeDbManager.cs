@@ -3,6 +3,7 @@ using Wissance.WebApiToolkit.Data.Entity;
 using Wissance.WebApiToolkit.Managers;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
+using EdgeDB;
 using System.Threading.Tasks;
 using Wissance.WebApiToolkit.Dto;
 
@@ -13,29 +14,32 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                                                 where TRes : class
                                                 where TId : IComparable
     {
-        public Task<OperationResultDto<TRes>> CreateAsync(TRes data)
+        public async Task<OperationResultDto<TRes>> CreateAsync(TRes data)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResultDto<bool>> DeleteAsync(TId id)
+        public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResultDto<System.Collections.Generic.IList<TRes>>> GetAsync(int page, int size)
+        public async Task<OperationResultDto<System.Collections.Generic.IList<TRes>>> GetAsync(int page, int size)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
+        public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
+        {
+            TObj item = await _edgeDbClient.QuerySingleAsync<TObj>("");
+            return new OperationResultDto<TRes>();
+        }
+
+        public async Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
         {
             throw new NotImplementedException();
         }
 
-        public Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
-        {
-            throw new NotImplementedException();
-        }
+        private EdgeDBClient _edgeDbClient;
     }
 }
