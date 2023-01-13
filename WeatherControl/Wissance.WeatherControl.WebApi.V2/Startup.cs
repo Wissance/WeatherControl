@@ -7,22 +7,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using EdgeDB;
+using Wissance.WeatherControl.WebApi.V2.Config;
+
 
 namespace Wissance.WeatherControl.WebApi.V2
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
+            Settings = configuration.GetSection("Application").Get<ApplicationSettings>();
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            ConfigureLogging(services);
+            ConfigureDatabase(services);
+            ConfigureWebApi(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,21 +40,44 @@ namespace Wissance.WeatherControl.WebApi.V2
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
-
-            app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
+
+        private void ConfigureLogging(IServiceCollection services)
+        {
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
+            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddConsole());
+            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddDebug());
+            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddSerilog(dispose: true));
+        }
+
+        private void ConfigureDatabase(IServiceCollection services)
+        {
+            services.AddEdgeDB();
+            //services.ConfigureSqlServerDbContext<ModelContext>(Settings.Database.ConnStr);
+            //IServiceProvider serviceProvider = services.BuildServiceProvider();
+            //ModelContext modelContext = serviceProvider.GetRequiredService<ModelContext>();
+            //modelContext.Database.Migrate();
+        }
+
+        private void ConfigureWebApi(IServiceCollection services)
+        {
+            services.AddControllers();
+
+            ConfigureManagers(services);
+        }
+
+        private void ConfigureManagers(IServiceCollection services)
+        {
+            //services.AddScoped<StationManager>();
+            //services.AddScoped<MeasurementsManager>();
+        }
+
+        public ApplicationSettings Settings { get; set; }
+        private IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
     }
 }
