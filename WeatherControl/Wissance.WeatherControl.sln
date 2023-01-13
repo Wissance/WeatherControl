@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Dto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Data", "Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj", "{5BC46229-54AE-4317-BDEA-F569D2DF4C42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.WeatherControl.GraphData", "Wissance.WeatherControl.GraphData\Wissance.WeatherControl.GraphData.csproj", "{0F624E41-AA68-41B1-A3C9-43778EB699A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.GraphData", "Wissance.WeatherControl.GraphData\Wissance.WeatherControl.GraphData.csproj", "{0F624E41-AA68-41B1-A3C9-43778EB699A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.WeatherControl.WebApi.V2", "Wissance.WeatherControl.WebApi.V2\Wissance.WeatherControl.WebApi.V2.csproj", "{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0F624E41-AA68-41B1-A3C9-43778EB699A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F624E41-AA68-41B1-A3C9-43778EB699A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F624E41-AA68-41B1-A3C9-43778EB699A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
