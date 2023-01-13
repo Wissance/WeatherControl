@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 
 namespace Wissance.WeatherControl.WebApi.V2.Config
 {
-    public class ApplicationSettings
+    public class DatabaseSettings
     {
-        public DatabaseSettings Database { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Wissance.WeatherControl.WebApi.V2;
 using Wissance.WeatherControl.WebApi.V2.Config;
 
 //using Wissance.WeatherControl.Data;
@@ -17,70 +19,35 @@ using Wissance.WeatherControl.WebApi.V2.Config;
 //using Wissance.WeatherControl.WebApi.Config;
 //using Wissance.WeatherControl.WebApi.Managers;
 
-namespace Wissance.WeatherControl.WebApi
+namespace Wissance.WeatherControl.WebApi.V2
 {
-    public class Startup
+    public class Program
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public static void Main(string[] args)
         {
-            Configuration = configuration;
-            Environment = env;
-            Settings = configuration.GetSection("Application").Get<ApplicationSettings>();
+            IHostBuilder hostBuilder = CreateWebHostBuilder(args);
+            hostBuilder.Build().Run();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public static IHostBuilder CreateWebHostBuilder(string[] args)
         {
-            ConfigureLogging(services);
-            ConfigureDatabase(services);
-            ConfigureWebApi(services);
-        }
+            //todo: umv: temporarily stub
+            _environment = "Development";
+            //webHostBuilder.GetSetting("environment");
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
+            IConfiguration configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{_environment}.json")
+                .Build();
+            IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(builder =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                builder.UseConfiguration(configuration);
+                builder.UseStartup<Startup>();
+                builder.UseKestrel();
+            });
+            return hostBuilder;
         }
 
-        private void ConfigureLogging(IServiceCollection services)
-        {
-            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
-            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddConsole());
-            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddDebug());
-            services.AddLogging(loggingBuilder => loggingBuilder.AddConfiguration(Configuration).AddSerilog(dispose: true));
-        }
-
-        private void ConfigureDatabase(IServiceCollection services)
-        {
-            //services.ConfigureSqlServerDbContext<ModelContext>(Settings.Database.ConnStr);
-            //IServiceProvider serviceProvider = services.BuildServiceProvider();
-            //ModelContext modelContext = serviceProvider.GetRequiredService<ModelContext>();
-            //modelContext.Database.Migrate();
-        }
-
-        private void ConfigureWebApi(IServiceCollection services)
-        {
-            services.AddControllers();
-
-            ConfigureManagers(services);
-        }
-
-        private void ConfigureManagers(IServiceCollection services)
-        {
-            //services.AddScoped<StationManager>();
-            //services.AddScoped<MeasurementsManager>();
-        }
-
-        public ApplicationSettings Settings { get; set; }
-        private IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
+        private static string _environment;
     }
 }
