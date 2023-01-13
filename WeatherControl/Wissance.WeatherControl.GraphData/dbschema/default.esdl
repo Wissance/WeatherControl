@@ -13,7 +13,7 @@ module default {
     }
 
     type Sensor {
-        required Name -> str;
+        required property Name -> str;
         multi link Measurements -> Measurement;
         required property Longitude -> str;
         required property Lattitude -> str;
