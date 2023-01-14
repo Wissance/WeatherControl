@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using EdgeDB;
+using Microsoft.AspNetCore.Routing.Internal;
 using Wissance.WeatherControl.WebApi.V2.Config;
 
 
@@ -56,25 +57,30 @@ namespace Wissance.WeatherControl.WebApi.V2
 
         private void ConfigureDatabase(IServiceCollection services)
         {
-            services.AddEdgeDB();
-            //services.ConfigureSqlServerDbContext<ModelContext>(Settings.Database.ConnStr);
-            //IServiceProvider serviceProvider = services.BuildServiceProvider();
-            //ModelContext modelContext = serviceProvider.GetRequiredService<ModelContext>();
-            //modelContext.Database.Migrate();
+            EdgeDBConnection conn = EdgeDBConnection.FromDSN(Settings.Database.ConnStr);
+            conn.TLSSecurity = TLSSecurityMode.Insecure;
+
+            services.AddEdgeDB(conn, cfg =>
+            {
+                cfg.ClientType = EdgeDBClientType.Tcp;
+                cfg.DefaultPoolSize = 256;
+                cfg.ConnectionTimeout = 3000;
+                cfg.MessageTimeout = 5000;
+            });
         }
 
         private void ConfigureWebApi(IServiceCollection services)
         {
             services.AddControllers();
 
-            ConfigureManagers(services);
+            // ConfigureManagers(services);
         }
 
-        private void ConfigureManagers(IServiceCollection services)
+        /*private void ConfigureManagers(IServiceCollection services)
         {
-            //services.AddScoped<StationManager>();
-            //services.AddScoped<MeasurementsManager>();
-        }
+            // services.AddScoped<StationManager>();
+            // services.AddScoped<MeasurementsManager>();
+        }*/
 
         public ApplicationSettings Settings { get; set; }
         private IConfiguration Configuration { get; }
