@@ -13,6 +13,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 return null;
             return String.Format(_selectManyWithLimitsQueries[model], offset, limit);
         }
+        
+        public string GetQueryToGetOneItem(ModelType model)
+        {
+            if (!_selectOneByIdQuery.ContainsKey(model))
+                return null;
+            return String.Format(_selectOneByIdQuery[model]);
+        }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {
@@ -21,7 +28,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         
         private readonly IDictionary<ModelType, string> _selectOneByIdQuery = new Dictionary<ModelType, string>()
         {
-            {ModelType.MeasureUnit, "SELECT MeasureUnit"}
+            // example: select MeasureUnit filter .id = <uuid>"91bedeac-9405-11ed-b635-2f706f53263b"
+            {ModelType.MeasureUnit, @"SELECT MeasureUnit filter .id = <uuid>$id"}
         };
     }
 }

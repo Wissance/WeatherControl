@@ -42,6 +42,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         {
             try
             {
+                // todo: mode to query ...
                 string query = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size);
                 if (query == null)
                     throw new NotSupportedException($"EQL queries for model {_model} are not ready");
@@ -60,8 +61,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
 
         public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
         {
-            //todo 
-            TObj item = await _edgeDbClient.QuerySingleAsync<TObj>("");
+            string query = _resolver.GetQueryToGetOneItem(_model);
+            if (query == null)
+                throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+            TObj item = await _edgeDbClient.QuerySingleAsync<TObj>(query, new Dictionary<string, object?>()
+            {
+                {"id", id}
+            });
             if (item != null)
             {
                 return new OperationResultDto<TRes>(true, (int)HttpStatusCode.OK, String.Empty, _factory(item));
