@@ -8,6 +8,8 @@ namespace Wissance.WeatherControl.GraphData.Entity
     {
         [EdgeDBProperty("id")]
         public Guid Id { get; set; }
+        [EdgeDBProperty("SampleDate")]
+        public DateTimeOffset SampleDate { get; set; }
         [EdgeDBProperty("Unit")]
         public MeasureUnitEntity Unit { get; set; }
         [EdgeDBProperty("Value")]
