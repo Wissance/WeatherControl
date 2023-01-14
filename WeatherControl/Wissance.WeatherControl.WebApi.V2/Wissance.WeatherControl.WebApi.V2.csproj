@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Wissance.WeatherControl.GraphData\Wissance.WeatherControl.GraphData.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Managers\" />
-  </ItemGroup>
-
 </Project>
