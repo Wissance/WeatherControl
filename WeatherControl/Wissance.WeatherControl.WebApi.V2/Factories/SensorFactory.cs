@@ -18,7 +18,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
 
             if (entity.Measurements.Any())
             {
-                dto.Measurement = entity.Measurements.Select(m => MeasurementFactory.Create((m))).ToList();
+                dto.Measurements = entity.Measurements.Select(m => MeasurementFactory.Create((m))).ToList();
             }
 
             return dto;
