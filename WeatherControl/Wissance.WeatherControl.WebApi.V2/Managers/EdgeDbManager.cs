@@ -61,18 +61,27 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
 
         public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
         {
-            string query = _resolver.GetQueryToGetOneItem(_model);
-            if (query == null)
-                throw new NotSupportedException($"EQL queries for model {_model} are not ready");
-            TObj item = await _edgeDbClient.QuerySingleAsync<TObj>(query, new Dictionary<string, object?>()
-            {
-                {"id", id}
-            });
-            if (item != null)
-            {
-                return new OperationResultDto<TRes>(true, (int)HttpStatusCode.OK, String.Empty, _factory(item));
+            try
+            { 
+                string query = _resolver.GetQueryToGetOneItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                TObj item = await _edgeDbClient.QuerySingleAsync<TObj>(query, new Dictionary<string, object?>()
+                {
+                    {"id", id}
+                });
+                if (item != null)
+                {
+                    return new OperationResultDto<TRes>(true, (int)HttpStatusCode.OK, String.Empty, _factory(item));
+                }
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.NotFound, $"Object with id: {id} was not found", null);
             }
-            return new OperationResultDto<TRes>(false, (int)HttpStatusCode.OK, $"Object with id: {id} was not found", null);
+            catch (Exception e)
+            {
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.InternalServerError, 
+                    $"An error occurred during getting object of model type {_model} by id: {id}, error: {e.Message}", null);
+            }
+            
         }
 
         public async Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
