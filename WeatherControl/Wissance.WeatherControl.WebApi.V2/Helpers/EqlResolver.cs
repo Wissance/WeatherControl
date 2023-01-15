@@ -37,5 +37,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} FILTER .id = <uuid>$id"},
             {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} FILTER .id = <uuid>$id" }
         };
+
+        private readonly IDictionary<ModelType, string> _insertQuery = new Dictionary<ModelType, string>()
+        {
+            {ModelType.Measurement, @"INSERT Measurement {{SampleData:=<datetime>$SampleData, Value:=<decimal>$Value, Unit:=<MeasureUnit>(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId)"+ 
+                                     "Sensors:=<Sensor>(SELECT Sensor {{id, Name, Latitude, Longitude FILTER .id = <uuid>$SensorId }} ) }}"}
+        };
     }
 }

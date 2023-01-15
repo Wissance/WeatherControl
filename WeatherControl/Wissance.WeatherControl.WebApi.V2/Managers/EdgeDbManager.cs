@@ -30,6 +30,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
 
         public async Task<OperationResultDto<TRes>> CreateAsync(TRes data)
         {
+            //_edgeDbClient.
             throw new NotImplementedException();
         }
 

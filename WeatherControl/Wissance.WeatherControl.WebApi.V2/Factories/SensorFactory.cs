@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
