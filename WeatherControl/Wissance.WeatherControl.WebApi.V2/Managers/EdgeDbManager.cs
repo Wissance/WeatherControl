@@ -57,6 +57,31 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     $"An error occurred during new item creation, error: {e.Message}", null);
             }
         }
+        
+        // todo(UMV): Create and Update looking similar: create internal function that will combine it work
+        public async Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
+        {
+            try
+            {
+                if (_createParamsExtract == null)
+                {
+                    return new OperationResultDto<TRes>(false, (int)HttpStatusCode.NotImplemented,
+                        "This controller is read only", null);
+                }
+                string query = _resolver.GetQueryToUpdateItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                IDictionary<string, object?> parameters = _createParamsExtract(data, true);
+                await _edgeDbClient.ExecuteAsync(query, parameters);
+                OperationResultDto<TRes> result = await GetByIdAsync(id);
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during update item with id: {id} , error: {e.Message}", null);
+            }
+        }
 
         public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
         {
@@ -106,11 +131,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     $"An error occurred during getting object of model type {_model} by id: {id}, error: {e.Message}", null);
             }
             
-        }
-
-        public async Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
-        {
-            throw new NotImplementedException();
         }
 
         private readonly ModelType _model;
