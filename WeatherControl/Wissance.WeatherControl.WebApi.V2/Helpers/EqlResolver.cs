@@ -63,12 +63,16 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             //TODO(UMV): convert to decimal implemented with a HACK!!!
             {ModelType.Measurement, @"INSERT Measurement {{id:=<uuid>$id, SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
-                                     "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"}
+                                     "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"},
+            {ModelType.Sensor, "INSERT Sensor {{id:=<uuid>$id, Name:=<str>$Name, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"},
+            {ModelType.MeteoStation, "INSERT MeteoStation {{id:=<uuid>$id, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
         };
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
         {
-            {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"}
+            {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"},
+            {ModelType.Sensor, "UPDATE"},
+            {ModelType.MeteoStation, "UPDATE"},
         };
 
         private readonly IDictionary<ModelType, string> _deleteQuery = new Dictionary<ModelType, string>()

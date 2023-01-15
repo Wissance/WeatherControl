@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
@@ -26,10 +27,16 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
 
         public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId)
         {
-            return new Dictionary<string, object?>()
+            IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                
+                {"Latitude", dto.Latitude},
+                {"Longitude", dto.Longitude}
             };
+            
+            // TODO(this if for further getting created object)
+            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+
+            return dict;
         }
     }
 }
