@@ -9,6 +9,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         {
             return new MeasureUnitDto()
             {
+                Id = entity.Id,
                 Name = entity.Name,
                 Abbreviation = entity.Abbreviation
             };

@@ -6,6 +6,12 @@ namespace Wissance.WeatherControl.GraphData.Entity
 {
     public class MeasurementEntity : IModelIdentifiable<Guid>
     {
+        //todo(UMV): add constructor with parameters
+        public MeasurementEntity()
+        {
+            
+        }
+
         [EdgeDBProperty("id")]
         public Guid Id { get; set; }
         [EdgeDBProperty("SampleDate")]

@@ -7,6 +7,12 @@ namespace Wissance.WeatherControl.GraphData.Entity
 {
     public class MeteoStationEntity : IModelIdentifiable<Guid>
     {
+        //todo(UMV): add constructor with parameters
+        public MeteoStationEntity()
+        {
+            Sensors = new List<SensorEntity>();
+        }
+
         [EdgeDBProperty("id")]
         public Guid Id { get; set; }
         [EdgeDBProperty("Longitude")]
