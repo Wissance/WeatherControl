@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
@@ -23,6 +24,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         {
             return new Dictionary<string, object?>()
             {
+                {"id", Guid.NewGuid()},  // TODO(this if for further getting created object)
                 {"SampleDate", dto.SampleDate},
                 {"Value", dto.Value.ToString()},
                 {"MeasureUnitId", dto.MeasureUnitId},

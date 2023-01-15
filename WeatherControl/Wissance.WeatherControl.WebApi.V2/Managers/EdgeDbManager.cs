@@ -45,7 +45,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 IDictionary<string, object?> parameters = _createParamsExtract(data);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 // ??? how to get result ?
-                return new OperationResultDto<TRes>(true, (int)HttpStatusCode.Created, String.Empty, null);
+                // https://www.edgedb.com/docs/stdlib/cfg
+                // from CLI : edgedb configure set allow_user_specified_id true 
+                TId id = (TId)parameters["id"]; // THIS IS A HACK TOO!!!!
+                OperationResultDto<TRes> result = await GetByIdAsync(id);
+                return new OperationResultDto<TRes>(true, (int)HttpStatusCode.Created, String.Empty, result.Data);
             }
             catch (Exception e)
             {
@@ -63,12 +67,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         {
             try
             {
-                // todo: mode to query ...
+                // todo: mode to dictionary ...
                 string query = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size);
                 if (query == null)
                     throw new NotSupportedException($"EQL queries for model {_model} are not ready");
                 IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(query);
-                // todo: limit
                 IList<TRes> dtoItems = items.Select(i => _factory(i)).ToList();
                 return new OperationResultDto<IList<TRes>>(true, (int)HttpStatusCode.OK, String.Empty, dtoItems);
             }

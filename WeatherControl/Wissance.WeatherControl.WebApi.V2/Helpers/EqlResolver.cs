@@ -48,7 +48,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         private readonly IDictionary<ModelType, string> _insertQuery = new Dictionary<ModelType, string>()
         {
             //TODO(UMV): convert to decimal implemented with a HACK!!!
-            {ModelType.Measurement, @"INSERT Measurement {{SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
+            {ModelType.Measurement, @"INSERT Measurement {{id:=<uuid>$id, SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
                                      "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"}
         };
     }
