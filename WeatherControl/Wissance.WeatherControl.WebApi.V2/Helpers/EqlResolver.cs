@@ -18,7 +18,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             if (!_selectOneByIdQuery.ContainsKey(model))
                 return null;
-            return String.Format(_selectOneByIdQuery[model]);
+            return _selectOneByIdQuery[model];
+        }
+        
+        public string GetQueryToInsertItem(ModelType model)
+        {
+            if (!_insertQuery.ContainsKey(model))
+                return null;
+            return _insertQuery[model];
         }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()

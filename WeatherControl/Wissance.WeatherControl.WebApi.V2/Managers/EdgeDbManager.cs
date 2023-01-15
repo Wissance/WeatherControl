@@ -32,8 +32,26 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
 
         public async Task<OperationResultDto<TRes>> CreateAsync(TRes data)
         {
-            //if (_)
-            throw new NotImplementedException();
+            try
+            {
+                if (_createParamsExtract == null)
+                {
+                    return new OperationResultDto<TRes>(false, (int)HttpStatusCode.NotImplemented,
+                        "This controller is read only", null);
+                }
+                string query = _resolver.GetQueryToInsertItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                IDictionary<string, object?> parameters = _createParamsExtract(data);
+                await _edgeDbClient.ExecuteAsync(query, parameters);
+                // ??? how to get result ?
+                return new OperationResultDto<TRes>(true, (int)HttpStatusCode.Created, String.Empty, null);
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during new item creation, error: {e.Message}", null);
+            }
         }
 
         public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
