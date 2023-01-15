@@ -20,17 +20,19 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                                                 where TRes : class
                                                 where TId : IComparable
     {
-        public EdgeDbManager(ModelType model, EdgeDBClient edgeDbClient, Func<TObj, TRes> factory)
+        public EdgeDbManager(ModelType model, EdgeDBClient edgeDbClient, Func<TObj, TRes> factory, 
+            Func<TRes, IDictionary<string, object?>> createParamsExtract)
         {
             _model = model;
             _resolver = new EqlResolver();
             _edgeDbClient = edgeDbClient;
             _factory = factory;
+            _createParamsExtract = createParamsExtract;
         }
 
         public async Task<OperationResultDto<TRes>> CreateAsync(TRes data)
         {
-            //_edgeDbClient.
+            //if (_)
             throw new NotImplementedException();
         }
 
@@ -94,6 +96,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         private readonly EqlResolver _resolver;
         private readonly EdgeDBClient _edgeDbClient;
         private readonly Func<TObj, TRes> _factory;
-
+        private readonly Func<TRes, IDictionary<string, object?>> _createParamsExtract;
     }
 }

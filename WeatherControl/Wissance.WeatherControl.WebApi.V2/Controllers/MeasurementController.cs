@@ -14,7 +14,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Controllers
         public MeasurementController(EdgeDBClient edgeDbClient)
         {
             Manager = new EdgeDbManager<MeasurementDto, MeasurementEntity, Guid>(ModelType.Measurement, edgeDbClient,
-                MeasurementFactory.Create);
+                MeasurementFactory.Create, MeasurementFactory.Create);
         }
     }
 }

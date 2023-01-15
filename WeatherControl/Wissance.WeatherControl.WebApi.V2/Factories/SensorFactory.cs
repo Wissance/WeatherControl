@@ -24,5 +24,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
 
             return dto;
         }
+        
+        public static IDictionary<string, object?> Create(SensorDto dto)
+        {
+            return new Dictionary<string, object?>()
+            {
+                
+            };
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Controllers
         public SensorController(EdgeDBClient edgeDbClient)
         {
             Manager = new EdgeDbManager<SensorDto, SensorEntity, Guid>(ModelType.Sensor, edgeDbClient,
-                SensorFactory.Create);
+                SensorFactory.Create, SensorFactory.Create);
         }
     }
 }

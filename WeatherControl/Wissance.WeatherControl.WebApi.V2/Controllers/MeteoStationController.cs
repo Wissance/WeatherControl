@@ -15,7 +15,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Controllers
         public MeteoStationController(EdgeDBClient edgeDbClient)
         {
             Manager = new EdgeDbManager<MeteoStationDto, MeteoStationEntity, Guid>(ModelType.MeteoStation, edgeDbClient,
-                MeteoStationFactory.Create);
+                MeteoStationFactory.Create, MeteoStationFactory.Create);
         }
     }
 }

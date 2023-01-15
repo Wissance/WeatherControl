@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
@@ -21,6 +22,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             }
 
             return dto;
+        }
+
+        public static IDictionary<string, object?> Create(MeteoStationDto dto)
+        {
+            return new Dictionary<string, object?>()
+            {
+                
+            };
         }
     }
 }
