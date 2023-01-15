@@ -71,7 +71,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 string query = _resolver.GetQueryToUpdateItem(_model);
                 if (query == null)
                     throw new NotSupportedException($"EQL queries for model {_model} are not ready");
-                IDictionary<string, object?> parameters = _createParamsExtract(data, true);
+                IDictionary<string, object?> parameters = _createParamsExtract(data, false);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 OperationResultDto<TRes> result = await GetByIdAsync(id);
                 return result;

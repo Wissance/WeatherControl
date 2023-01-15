@@ -32,7 +32,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             if (!_insertQuery.ContainsKey(model))
                 return null;
-            return String.Format(_insertQuery[model]);
+            return String.Format(_updateQuery[model]);
         }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
@@ -61,7 +61,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
         {
-            {ModelType.Measurement, @"UPDATE Measurement"}
+            {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"}
         };
     }
 }
