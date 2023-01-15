@@ -27,6 +27,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 return null;
             return String.Format(_insertQuery[model]);
         }
+        
+        public string GetQueryToUpdateItem(ModelType model)
+        {
+            if (!_insertQuery.ContainsKey(model))
+                return null;
+            return String.Format(_insertQuery[model]);
+        }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {
@@ -50,6 +57,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             //TODO(UMV): convert to decimal implemented with a HACK!!!
             {ModelType.Measurement, @"INSERT Measurement {{id:=<uuid>$id, SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
                                      "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"}
+        };
+
+        private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
+        {
+            {ModelType.Measurement, @"UPDATE Measurement"}
         };
     }
 }

@@ -20,16 +20,20 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         }
         
         
-        public static IDictionary<string, object?> Create(MeasurementDto dto)
+        public static IDictionary<string, object?> Create(MeasurementDto dto, bool generateId)
         {
-            return new Dictionary<string, object?>()
+            IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {"id", Guid.NewGuid()},  // TODO(this if for further getting created object)
                 {"SampleDate", dto.SampleDate},
                 {"Value", dto.Value.ToString()},
                 {"MeasureUnitId", dto.MeasureUnitId},
                 {"SensorId", dto.SensorId}
             };
+            
+            // TODO(this if for further getting created object)
+            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+
+            return dict;
         }
     }
 }

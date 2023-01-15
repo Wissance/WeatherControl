@@ -21,7 +21,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                                                 where TId : IComparable
     {
         public EdgeDbManager(ModelType model, EdgeDBClient edgeDbClient, Func<TObj, TRes> factory, 
-            Func<TRes, IDictionary<string, object?>> createParamsExtract)
+            Func<TRes, bool, IDictionary<string, object?>> createParamsExtract)
         {
             _model = model;
             _resolver = new EqlResolver();
@@ -42,12 +42,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 string query = _resolver.GetQueryToInsertItem(_model);
                 if (query == null)
                     throw new NotSupportedException($"EQL queries for model {_model} are not ready");
-                IDictionary<string, object?> parameters = _createParamsExtract(data);
+                IDictionary<string, object?> parameters = _createParamsExtract(data, true);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 // ??? how to get result ?
                 // https://www.edgedb.com/docs/stdlib/cfg
                 // from CLI : edgedb configure set allow_user_specified_id true 
-                TId id = (TId)parameters["id"]; // THIS IS A HACK TOO!!!!
+                TId id = (TId)parameters["id"]; // THIS IS A HACK TO GET CREATED OBJECT BACK
                 OperationResultDto<TRes> result = await GetByIdAsync(id);
                 return new OperationResultDto<TRes>(true, (int)HttpStatusCode.Created, String.Empty, result.Data);
             }
@@ -117,6 +117,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         private readonly EqlResolver _resolver;
         private readonly EdgeDBClient _edgeDbClient;
         private readonly Func<TObj, TRes> _factory;
-        private readonly Func<TRes, IDictionary<string, object?>> _createParamsExtract;
+        private readonly Func<TRes, bool, IDictionary<string, object?>> _createParamsExtract;
     }
 }

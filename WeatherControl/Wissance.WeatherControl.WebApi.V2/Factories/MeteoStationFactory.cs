@@ -24,7 +24,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return dto;
         }
 
-        public static IDictionary<string, object?> Create(MeteoStationDto dto)
+        public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId)
         {
             return new Dictionary<string, object?>()
             {
