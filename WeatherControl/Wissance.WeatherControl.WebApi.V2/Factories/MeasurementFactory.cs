@@ -24,7 +24,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return new Dictionary<string, object?>()
             {
                 {"SampleDate", dto.SampleDate},
-                {"Value", dto.Value},
+                {"Value", dto.Value.ToString()},
                 {"MeasureUnitId", dto.MeasureUnitId},
                 {"SensorId", dto.SensorId}
             };
