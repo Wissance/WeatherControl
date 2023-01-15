@@ -32,7 +32,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             {
                 {"Name", dto.Name},
                 {"Latitude", dto.Latitude},
-                {"Longitude", dto.Longitude}
+                {"Longitude", dto.Longitude},
+                {"Measurements", dto.Measurements.Select(m => m.Id).ToArray()}
             };
             
             // TODO(this if for further getting created object)
