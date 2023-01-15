@@ -41,7 +41,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 }
                 string query = _resolver.GetQueryToInsertItem(_model);
                 if (query == null)
-                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                    throw new NotSupportedException($"EQL query for create model {_model} item is not ready");
                 IDictionary<string, object?> parameters = _createParamsExtract(data, true);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 // ??? how to get result ?
@@ -70,7 +70,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 }
                 string query = _resolver.GetQueryToUpdateItem(_model);
                 if (query == null)
-                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                    throw new NotSupportedException($"EQL query for update model {_model} item is not ready");
                 IDictionary<string, object?> parameters = _createParamsExtract(data, false);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 OperationResultDto<TRes> result = await GetByIdAsync(id);
@@ -85,7 +85,22 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
 
         public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = _resolver.GetQueryToDeleteItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL query for delete model {_model} item is not ready");
+                await _edgeDbClient.ExecuteAsync(query, new Dictionary<string, object?>()
+                {
+                    {"id", id}
+                });
+                return new OperationResultDto<bool>(true, (int)HttpStatusCode.NoContent, string.Empty, true);
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<bool>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during delete item with id: {id} , error: {e.Message}", false);
+            }
         }
 
         public async Task<OperationResultDto<IList<TRes>>> GetAsync(int page, int size)

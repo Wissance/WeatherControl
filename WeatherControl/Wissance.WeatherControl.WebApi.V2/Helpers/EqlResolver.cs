@@ -30,9 +30,16 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         
         public string GetQueryToUpdateItem(ModelType model)
         {
-            if (!_insertQuery.ContainsKey(model))
+            if (!_updateQuery.ContainsKey(model))
                 return null;
             return String.Format(_updateQuery[model]);
+        }
+        
+        public string GetQueryToDeleteItem(ModelType model)
+        {
+            if (!_deleteQuery.ContainsKey(model))
+                return null;
+            return String.Format(_deleteQuery[model]);
         }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
@@ -62,6 +69,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
         {
             {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"}
+        };
+
+        private readonly IDictionary<ModelType, string> _deleteQuery = new Dictionary<ModelType, string>()
+        {
+            {ModelType.Measurement, @"DELETE Measurement FILTER .id = <uuid>$id"},
+            {ModelType.Sensor, @"DELETE Sensor FILTER .id = <uuid>$id"},
+            {ModelType.MeteoStation, @"DELETE MeteoStation FILTER .id = <uuid>$id"}
         };
     }
 }
