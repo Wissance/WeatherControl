@@ -9,7 +9,7 @@ namespace Wissance.WeatherControl.Dto.V2
         }
 
         public Guid? Id { get; set; }
-        public DateTimeOffset SampleData { get; set; }
+        public DateTimeOffset SampleDate { get; set; }
         public Guid MeasureUnitId { get; set; }
         public Guid SensorId { get; set; }
         public decimal Value { get; set; }

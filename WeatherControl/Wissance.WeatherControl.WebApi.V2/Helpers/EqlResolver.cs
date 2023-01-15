@@ -18,14 +18,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             if (!_selectOneByIdQuery.ContainsKey(model))
                 return null;
-            return _selectOneByIdQuery[model];
+            return String.Format(_selectOneByIdQuery[model]);
         }
         
         public string GetQueryToInsertItem(ModelType model)
         {
             if (!_insertQuery.ContainsKey(model))
                 return null;
-            return _insertQuery[model];
+            return String.Format(_insertQuery[model]);
         }
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
@@ -47,8 +47,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 
         private readonly IDictionary<ModelType, string> _insertQuery = new Dictionary<ModelType, string>()
         {
-            {ModelType.Measurement, @"INSERT Measurement {{SampleData:=<datetime>$SampleData, Value:=<decimal>$Value, Unit:=<MeasureUnit>(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId)"+ 
-                                     "Sensors:=<Sensor>(SELECT Sensor {{id, Name, Latitude, Longitude FILTER .id = <uuid>$SensorId }} ) }}"}
+            {ModelType.Measurement, @"INSERT Measurement {{SampleDate:=<datetime>$SampleDate, Value:=<decimal>$Value, Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
+                                     "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"}
         };
     }
 }

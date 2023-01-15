@@ -11,7 +11,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return new MeasurementDto()
             {
                 Id = entity.Id,
-                SampleData = entity.SampleDate,
+                SampleDate = entity.SampleDate,
                 MeasureUnitId = entity.Unit.Id,
                 SensorId = entity.Sensor.Id,
                 Value = entity.Value
@@ -23,7 +23,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         {
             return new Dictionary<string, object?>()
             {
-                {"SampleData", dto.SampleData},
+                {"SampleDate", dto.SampleDate},
                 {"Value", dto.Value},
                 {"MeasureUnitId", dto.MeasureUnitId},
                 {"SensorId", dto.SensorId}
