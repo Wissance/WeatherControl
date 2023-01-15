@@ -30,7 +30,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
                 {"Latitude", dto.Latitude},
-                {"Longitude", dto.Longitude}
+                {"Longitude", dto.Longitude},
+                {"Sensors", dto.Sensors.Select(s => s.Id).ToArray()}
             };
             
             // TODO(this if for further getting created object)
