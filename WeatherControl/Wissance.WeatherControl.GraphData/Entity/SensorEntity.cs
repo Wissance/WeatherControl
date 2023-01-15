@@ -11,10 +11,10 @@ namespace Wissance.WeatherControl.GraphData.Entity
         public Guid Id { get; set; }
         [EdgeDBProperty("Name")]
         public string Name { get; set; }
-        [EdgeDBProperty("Longitude")]
-        public string Longitude { get; set; }
         [EdgeDBProperty("Latitude")]
         public string Latitude { get; set; }
+        [EdgeDBProperty("Longitude")]
+        public string Longitude { get; set; }
         [EdgeDBProperty("Measurements")]
         public IList<MeasurementEntity> Measurements { get; set; }
     }
