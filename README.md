@@ -158,3 +158,25 @@ We got following result in ouptup:
 4. To delete measurements with id 1 use endpoint `DELETE http://localhost:8058/api/measurements/1`
 
 ### 3. REST API With EdgeDB
+
+Here we've got a `net6.0` `REST` Service that have a slightly different data model:
+
+* `MeasureUnit`
+* `Measurement`
+* `Sensor`
+* `Station`
+
+Data project is `Wissance.WeatherControl.GraphData`
+
+![Relation between Models]()
+
+
+#### 3.1 Configure Edge DB (Prerequisites)
+
+1. Link `Edgedb` project
+
+```ps1
+edgedb instance link
+```
+
+* `Edgedb` should be configured to allow generate identifiers
