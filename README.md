@@ -1,43 +1,56 @@
 ## WeatherControl
 
-### General description
+This project use [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiToolkit) so please give us a star!
 
-This project is a tutorial for begginners how to organize your code, build flexible and re-usable code and how to build asp net core web api (rest).
+### 1. General description
 
-### Glossary / Domain object
+This project is a tutorial about how to design `REST API`, we are have here 2 simultaneously existing Web projects:
 
-* Station - weather station that has name, description, coordinates and it **can measure one or multiple weather
-parameters**;
-* Measurements - one weather sample measured by station itself.
+1. `REST API` with `EntityFramework` `ORM` - `Wissance.WeatherControl.WebApi` project
+2. `REST API` with `EdgeDb` `Graph DB` - `Wissance.WeatherControl.WebApi.V2` project
 
-### Application Overview
+These 2 Project Have different data Model
 
-Web API REST service (.Net Core) that could store weather data from multiple weather station:
-* temperature
-* atmosphere pressure
-* humidity
-* wind speed
+### 2. REST API With Net Framework
 
-Application has 2 resources = Domain objects
+This project target platform is a `netcore 3.1`
+
+#### 2.1 Glossary / Domain object
+
+* `Station` - weather station that has name, description, coordinates and it **can measure one or 
+  multiple weather parameters**;
+* `Measurement` - one weather sample measured by station itself.
+
+#### 2.2 Application Overview
+
+Web API REST service (.Net Core) that could store weather data from multiple weather station. We 
+assume that we are going to store/manage following physical value measurements getting from
+appropriate sensors:
+* `temperature`;
+* `atmosphere pressure`;
+* `humidity`;
+* `wind speed`;
+
+Application has 2 `resources` = Domain objects
 
 Application uses MsSql as Database Server (this could be easily changed, but this required to re-generate migration).
 
-1. Station
-2. Measurements
+1. `Station`
+2. `Measurement`
 
-### Overall scenario
+#### 2.3 Overall usage scenario
 
-This is a very simple application (demo), if any feature is needed open new issue.
+This is a **very simple application (demo)**, if any feature is needed open new issue.
 
 1. Application client create one or multiple station using Station (`/api/station`) resource (CRUD)
 2. Client interacts with station, gets it measured data and store it using Measurements (`/api/measurements`) 
    resource (CRUD)
 
-#### Example of usage
+##### 2.3.1 Example of usage
 
 It should be noted that Postman Requests stored in docs folder
 
-##### Operations with Station resource
+##### 2.3.2 Operations with Station resource
 
 1. Create Station:
 
@@ -95,7 +108,7 @@ Body and response are the same as at Create operation:
 
 4. To delete station with id 1 use endpoint `DELETE http://localhost:8058/api/station/1`
 
-##### Operations with measurements resource
+##### 2.3.3 Operations with measurements resource
 
 1. Create measurements
 
@@ -143,3 +156,5 @@ We got following result in ouptup:
 * 3.2 to get collection with paging `GET http://localhost:8058/api/measurements/?page=1&size=10`
 
 4. To delete measurements with id 1 use endpoint `DELETE http://localhost:8058/api/measurements/1`
+
+### 3. REST API With EdgeDB
