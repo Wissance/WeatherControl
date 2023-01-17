@@ -1,5 +1,7 @@
 ## WeatherControl
 
+![Manage you WeatherData with Wissance](https://github.com/Wissance/WeatherControl/blob/master/docs/cover.png)
+
 This project uses [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiToolkit) so please give us a star! And for this project too!
 
 ### 1. General description
