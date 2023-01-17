@@ -1,6 +1,6 @@
 ## WeatherControl
 
-This project use [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiToolkit) so please give us a star!
+This project uses [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiToolkit) so please give us a star! And for this project too!
 
 ### 1. General description
 
@@ -99,10 +99,10 @@ Body and response are the same as at Create operation:
 ```
 ![Result of running update station](https://github.com/Wissance/WeatherControl/blob/master/docs/update_station_example.png)
 
-3. There are two get operations:
+3. There are two get endpoints:
 
-* 3.1 to get one by id `GET http://localhost:8058/api/station/1`
-* 3.2 to get collection with paging `GET http://localhost:8058/api/station/?page=1&size=10`
+* 3.1 to get `one by id` - `GET http://localhost:8058/api/station/1`
+* 3.2 to get `collection with paging` - `GET http://localhost:8058/api/station/?page=1&size=10`
 
   ![Result of running get stations](https://github.com/Wissance/WeatherControl/blob/master/docs/get_stations_with_paging.png)
 
@@ -126,7 +126,7 @@ Body and response are the same as at Create operation:
 }
 ```
 
-We got following result in ouptup:
+We got following result in the output:
 ```json
 {
     "success": true,
@@ -199,7 +199,7 @@ edgedb ui
 
 Once you loaded project you could use it in current application:
 
-1. Add proper connection string in Database section in `appsettings.Development.json` file:
+1. Add proper connection string in the database section in `appsettings.Development.json`config file:
 ```json
 "Application": {
     "Database": {
@@ -208,17 +208,106 @@ Once you loaded project you could use it in current application:
   }
 ```
 
-configuration string must have following scheme: `edgedb://user:password@host:port/database`
-you could see your project credential on `Windows` machine could be found in directory:
+configuration string must have the following scheme: `edgedb://user:password@host:port/database`
+you could see your project credential on `Windows` machine in a directory:
 `%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
 
 #### 3.2 REST API With Edge DB
 
 We are having following Key Items:
 
-1. `Controllers`
-2. `Managers`
-3. `EqlResolver`
-4. `Factories`
+1. `Controllers` - we are using base classes from a `Wissance.WebApiToollit`, in this lib we have
+   eithther controllers for read-only and for full `CRUD` resources.
+2. `Managers` - classes that are responsible for manage all business logic, in this project we have
+   only one manager class - `EdgeDbManager` that is common for `CRUD` operation over all resources 
+3. `EqlResolver` - class that is responsible for association `model` (`resource`) with operation
+   (`read` , `create`, `update` or `delete`)
+4. `Factories` - static classes that constructs `DTO` from `Models` and params (dictionary for 
+   `create` and `update` perform) from `DTO`.
+   
+   
+##### 3.2.1 REST API Controllers
+
+All controllers are located in a folder `Controllers`, just look how simply look full `CRUD` Controller:
+
+```csharp
+namespace Wissance.WeatherControl.WebApi.V2.Controllers
+{
+    public class MeasurementController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid>
+    {
+        public MeasurementController(EdgeDBClient edgeDbClient)
+        {
+            Manager = new EdgeDbManager<MeasurementDto, MeasurementEntity, Guid>(ModelType.Measurement, edgeDbClient,
+                MeasurementFactory.Create, MeasurementFactory.Create);
+        }
+    }
+}
+```
+
+
+###### 3.2.2 Manager
+
+We have only one manager for all controllers due to the power of C# generics we just have to pass
+to `EdgeDbManager`:
+* `modelType` that is using to find approptiate eql statements from `EqlResolver`
+* `EdgeDbClient` client to edgedb database
+* and 2 delegates that describes how to create representation (`DTO`) from model and how to convert
+  `DTO` to parameters list for `insert` and `update` operations
+  
+##### 3.2.3 EqlResolver
+
+Just a set of dictionaries every dictionary for one operation:
+* get collection
+* get one
+* create
+* update
+* delete
+
+##### 3.2.4 Factories for objects convertion
+
+They are static classes in a `Factories` dicrectory, the looking quite simple:
+
+```csharp
+namespace Wissance.WeatherControl.WebApi.V2.Factories
+{
+    public static class SensorFactory
+    {
+        public static SensorDto Create(SensorEntity entity)
+        {
+            SensorDto dto = new SensorDto()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Latitude = entity.Latitude,
+                Longitude = entity.Longitude
+            };
+
+            if (entity.Measurements.Any())
+            {
+                dto.Measurements = entity.Measurements.Select(m => MeasurementFactory.Create((m))).ToList();
+            }
+
+            return dto;
+        }
+        
+        public static IDictionary<string, object?> Create(SensorDto dto, bool generateId)
+        {
+            IDictionary<string, object?> dict = new Dictionary<string, object?>()
+            {
+                {"Name", dto.Name},
+                {"Latitude", dto.Latitude},
+                {"Longitude", dto.Longitude},
+                {"Measurements", dto.Measurements.Where(m => m.Id.HasValue)
+                    .Select(m => m.Id.Value).ToArray()}
+            };
+            
+            // TODO(this if for further getting created object)
+            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+
+            return dict;
+        }
+    }
+}
+```
 
 
