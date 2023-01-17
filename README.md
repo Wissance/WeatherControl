@@ -173,10 +173,43 @@ Data project is `Wissance.WeatherControl.GraphData`
 
 #### 3.1 Configure Edge DB (Prerequisites)
 
-1. Link `Edgedb` project
+1. Start `Edgedb` instance from `Wissance.WeatherControl.GraphData` directory
 
 ```ps1
-edgedb instance link
+edgedb instance start -I Wissance_WeatherControl_Data --foreground
 ```
 
-* `Edgedb` should be configured to allow generate identifiers
+apply migration via
+
+```ps1
+edgedb migrate
+```
+
+2. Configure Edgedb to allow pass own identifiers (necessary for object return after create)
+
+```ps1
+edgedb configure set allow_user_specified_id true
+```
+
+2. Start edgedb ui:
+
+```ps1
+edgedb ui
+```
+
+Once you loaded project you could use it in current application:
+
+1. Add proper connection string in Database section in `appsettings.Development.json` file:
+```json
+"Application": {
+    "Database": {
+      "ConnStr": "edgedb://edgedb:VcJjK6blkKAV2MUTdJXzLPvS@localhost:10702/edgedb"
+    }
+  }
+```
+
+configuration string must have following scheme: `edgedb://user:password@host:port/database`
+you could see your project credential on `Windows` machine could be found in directory:
+`%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
+
+
