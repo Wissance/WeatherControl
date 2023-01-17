@@ -212,4 +212,13 @@ configuration string must have following scheme: `edgedb://user:password@host:po
 you could see your project credential on `Windows` machine could be found in directory:
 `%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
 
+#### 3.2 REST API With Edge DB
+
+We are having following Key Items:
+
+1. `Controllers`
+2. `Managers`
+3. `EqlResolver`
+4. `Factories`
+
 
