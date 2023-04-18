@@ -24,3 +24,11 @@ WeatherControl/Wissance.WeatherControl.WebApi.V2/bin/
 WeatherControl/Wissance.WeatherControl.Dto.V2/obj/
 
 WeatherControl/Wissance.WeatherControl.Dto.V2/bin/
+
+WeatherControl/Wissance.WeatherControl.EdgeDb.Data/bin/
+
+WeatherControl/Wissance.WeatherControl.EdgeDb.Data/obj/
+
+WeatherControl/Wissance.WeatherControl.Ef.Data/bin/
+
+WeatherControl/Wissance.WeatherControl.Ef.Data/obj/

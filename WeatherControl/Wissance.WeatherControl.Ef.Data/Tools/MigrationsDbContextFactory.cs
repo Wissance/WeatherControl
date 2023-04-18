@@ -19,7 +19,7 @@ namespace Wissance.WeatherControl.Data.Tools
             return context;
         }
 
-        private const string DataProject = "Wissance.WeatherControl.Data";
+        private const string DataProject = "Wissance.WeatherControl.Ef.Data";
         private const string JsonConfigFile = "migration.settings.json";
         private const string ConnStrPath = "Db.ConnStr";
         private readonly DbContextHelper _dbContextHelper = new DbContextHelper();

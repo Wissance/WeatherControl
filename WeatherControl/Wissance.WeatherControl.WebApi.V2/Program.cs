@@ -14,8 +14,8 @@ using Serilog;
 using Wissance.WeatherControl.WebApi.V2;
 using Wissance.WeatherControl.WebApi.V2.Config;
 
-//using Wissance.WeatherControl.Data;
-//using Wissance.WeatherControl.Data.Extensions;
+//using Wissance.WeatherControl.Ef.Data;
+//using Wissance.WeatherControl.Ef.Data.Extensions;
 //using Wissance.WeatherControl.WebApi.Config;
 //using Wissance.WeatherControl.WebApi.Managers;
 

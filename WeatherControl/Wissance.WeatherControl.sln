@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Dto", "Wissance.WeatherControl.Dto\Wissance.WeatherControl.Dto.csproj", "{5E464F0C-450F-4D1E-8B56-7D65C56C9AF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Data", "Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj", "{5BC46229-54AE-4317-BDEA-F569D2DF4C42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Ef.Data", "Wissance.WeatherControl.Ef.Data\Wissance.WeatherControl.Ef.Data.csproj", "{5BC46229-54AE-4317-BDEA-F569D2DF4C42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.GraphData", "Wissance.WeatherControl.GraphData\Wissance.WeatherControl.GraphData.csproj", "{0F624E41-AA68-41B1-A3C9-43778EB699A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.EdgeDb.Data", "Wissance.WeatherControl.EdgeDb.Data\Wissance.WeatherControl.EdgeDb.Data.csproj", "{0F624E41-AA68-41B1-A3C9-43778EB699A0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.WebApi.V2", "Wissance.WeatherControl.WebApi.V2\Wissance.WeatherControl.WebApi.V2.csproj", "{B6D9BAA6-4587-4700-A7E6-E2A67C14EB9A}"
 EndProject

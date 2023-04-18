@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wissance.WeatherControl.Data;
 
 namespace Wissance.WeatherControl.Data.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20220520173401_Migration_1_Initial")]
+    partial class Migration_1_Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace Wissance.WeatherControl.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.2");
 
-            modelBuilder.Entity("Wissance.WeatherControl.Data.Entity.MeasurementsEntity", b =>
+            modelBuilder.Entity("Wissance.WeatherControl.Ef.Data.Entity.MeasurementsEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +53,7 @@ namespace Wissance.WeatherControl.Data.Migrations
                     b.ToTable("Measurement", "dbo");
                 });
 
-            modelBuilder.Entity("Wissance.WeatherControl.Data.Entity.StationEntity", b =>
+            modelBuilder.Entity("Wissance.WeatherControl.Ef.Data.Entity.StationEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,9 +80,9 @@ namespace Wissance.WeatherControl.Data.Migrations
                     b.ToTable("Station", "dbo");
                 });
 
-            modelBuilder.Entity("Wissance.WeatherControl.Data.Entity.MeasurementsEntity", b =>
+            modelBuilder.Entity("Wissance.WeatherControl.Ef.Data.Entity.MeasurementsEntity", b =>
                 {
-                    b.HasOne("Wissance.WeatherControl.Data.Entity.StationEntity", "Station")
+                    b.HasOne("Wissance.WeatherControl.Ef.Data.Entity.StationEntity", "Station")
                         .WithMany("Measurements")
                         .HasForeignKey("StationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -89,7 +91,7 @@ namespace Wissance.WeatherControl.Data.Migrations
                     b.Navigation("Station");
                 });
 
-            modelBuilder.Entity("Wissance.WeatherControl.Data.Entity.StationEntity", b =>
+            modelBuilder.Entity("Wissance.WeatherControl.Ef.Data.Entity.StationEntity", b =>
                 {
                     b.Navigation("Measurements");
                 });
