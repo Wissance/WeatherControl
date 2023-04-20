@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Data.Mapping;
+using Wissance.WebApiToolkit.Data.Entity;
 
 namespace Wissance.WeatherControl.Data
 {

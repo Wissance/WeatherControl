@@ -7,7 +7,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="EdgeDB.Net.Driver" Version="1.0.4" />
-		<PackageReference Include="Wissance.WebApiToolkit" Version="1.0.2" />
 	</ItemGroup>
+    <ItemGroup>
+        <Reference Include="Wissance.WebApiToolkit.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Release\netcoreapp3.1\Wissance.WebApiToolkit.Data.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
 </Project>

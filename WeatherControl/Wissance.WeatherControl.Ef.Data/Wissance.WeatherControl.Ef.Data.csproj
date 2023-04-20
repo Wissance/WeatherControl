@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,12 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wissance.WebApiToolkit" Version="1.0.1" />
+    <!--<PackageReference Include="Wissance.WebApiToolkit" Version="1.1.0" />-->
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Wissance.WebApiToolkit.Data">
+      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit.Data\bin\Release\netcoreapp3.1\Wissance.WebApiToolkit.Data.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

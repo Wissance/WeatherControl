@@ -14,14 +14,14 @@ using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class StationManager : ModelManager<StationEntity, StationDto, int>
+    public class StationManager : EfModelManager<StationEntity, StationDto, int>
     {
-        public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) : base(modelContext, StationFactory.Create, loggerFactory)
         {
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<IList<StationDto>>> GetAsync(int page, int size)
+        /*public override async Task<OperationResultDto<IList<StationDto>>> GetAsync(int page, int size)
         {
             return await GetAsync<int>(_modelContext.Stations, page, size, null, null, StationFactory.Create);
         }
@@ -29,7 +29,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
         public override async Task<OperationResultDto<StationDto>> GetByIdAsync(int id)
         {
             return await GetAsync(_modelContext.Stations, id, StationFactory.Create);
-        }
+        }*/
 
         public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
         {
@@ -82,10 +82,10 @@ namespace Wissance.WeatherControl.WebApi.Managers
             
         }
 
-        public override async Task<OperationResultDto<bool>> DeleteAsync(int id)
+        /*public override async Task<OperationResultDto<bool>> DeleteAsync(int id)
         {
             return await DeleteAsync(_modelContext, _modelContext.Stations, id);
-        }
+        }*/
 
         private readonly ModelContext _modelContext;
     }
