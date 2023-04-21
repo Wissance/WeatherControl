@@ -7,6 +7,10 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 {
     public class EqlResolver
     {
+        public string GetQueryToCountItems(ModelType model)
+        {
+            return String.Format(_selectCountQueries[model]);
+        }
         public string GetQueryToFetchManyItems(ModelType model, int offset, int limit)
         {
             if (!_selectManyWithLimitsQueries.ContainsKey(model))
@@ -41,6 +45,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 return null;
             return String.Format(_deleteQuery[model]);
         }
+
+        private readonly IDictionary<ModelType, string> _selectCountQueries = new Dictionary<ModelType, string>()
+        {
+            {ModelType.MeasureUnit, "SELECT COUNT (SELECT MeasureUnit {{id}})"},
+            {ModelType.Measurement, "SELECT COUNT (SELECT Measurement {{id}})"},
+            {ModelType.Sensor , "SELECT COUNT (SELECT Sensor {{id}})"},
+            {ModelType.MeteoStation, "SELECT COUNT (SELECT MeteoStation {{id}})" }
+        };
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {

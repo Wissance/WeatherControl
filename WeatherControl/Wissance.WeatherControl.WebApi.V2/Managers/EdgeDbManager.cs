@@ -107,14 +107,18 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         {
             try
             {
-                // todo: mode to dictionary ...
-                string query = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size);
-                if (query == null)
-                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
-                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(query);
+                string countQuery = _resolver.GetQueryToCountItems(_model);
+                if (countQuery == null)
+                    throw new NotSupportedException($"EQL count query for model {_model} is not ready");
+                long totalItems = await _edgeDbClient.QuerySingleAsync<long>(countQuery);
+                // todo: modve to dictionary ...
+                string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size);
+                if (getQuery == null)
+                    throw new NotSupportedException($"EQL get query for model {_model} is not ready");
+                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
                 IList<TRes> dtoItems = items.Select(i => _factory(i)).ToList();
                 return new OperationResultDto<Tuple<IList<TRes>, long>>(true, (int)HttpStatusCode.OK, String.Empty, 
-                    new Tuple<IList<TRes>, long>(dtoItems, 0));
+                    new Tuple<IList<TRes>, long>(dtoItems, totalItems));
             }
             catch (Exception e)
             {
