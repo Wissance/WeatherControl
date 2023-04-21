@@ -21,16 +21,6 @@ namespace Wissance.WeatherControl.WebApi.Managers
             _modelContext = modelContext;
         }
 
-        /*public override async Task<OperationResultDto<IList<MeasurementsDto>>> GetAsync(int page, int size)
-        {
-            return await GetAsync<int>(_modelContext.Measurements, page, size, null, null, MeasurementsFactory.Create);
-        }
-
-        public override async Task<OperationResultDto<MeasurementsDto>> GetByIdAsync(int id)
-        {
-            return await GetAsync(_modelContext.Measurements, id, MeasurementsFactory.Create);
-        }*/
-
         public override async Task<OperationResultDto<MeasurementsDto>> CreateAsync(MeasurementsDto data)
         {
             try
@@ -81,11 +71,6 @@ namespace Wissance.WeatherControl.WebApi.Managers
                     $"An error occurred during measurements update: {e.Message}", null);
             }
         }
-
-        /*public override async Task<OperationResultDto<bool>> DeleteAsync(int id)
-        {
-            return await DeleteAsync(_modelContext, _modelContext.Measurements, id);
-        }*/
 
         private readonly ModelContext _modelContext;
     }
