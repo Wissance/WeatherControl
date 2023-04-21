@@ -103,7 +103,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             }
         }
 
-        public async Task<OperationResultDto<IList<TRes>>> GetAsync(int page, int size)
+        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size)
         {
             try
             {
@@ -113,13 +113,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     throw new NotSupportedException($"EQL queries for model {_model} are not ready");
                 IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(query);
                 IList<TRes> dtoItems = items.Select(i => _factory(i)).ToList();
-                return new OperationResultDto<IList<TRes>>(true, (int)HttpStatusCode.OK, String.Empty, dtoItems);
+                return new OperationResultDto<Tuple<IList<TRes>, long>>(true, (int)HttpStatusCode.OK, String.Empty, 
+                    new Tuple<IList<TRes>, long>(dtoItems, 0));
             }
             catch (Exception e)
             {
                 // todo(UMV): log here ..
-                return new OperationResultDto<IList<TRes>>(false, (int)HttpStatusCode.InternalServerError, 
-                    $"An error occurred during data fetch: {e.Message}", null);;
+                return new OperationResultDto<Tuple<IList<TRes>, long>>(false, (int)HttpStatusCode.InternalServerError, 
+                    $"An error occurred during data fetch: {e.Message}", new Tuple<IList<TRes>, long>(null, 0));;
             }
         }
 
