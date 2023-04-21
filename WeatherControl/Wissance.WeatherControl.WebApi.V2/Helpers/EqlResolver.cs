@@ -48,10 +48,10 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 
         private readonly IDictionary<ModelType, string> _selectCountQueries = new Dictionary<ModelType, string>()
         {
-            {ModelType.MeasureUnit, "SELECT COUNT (SELECT MeasureUnit {{id}})"},
-            {ModelType.Measurement, "SELECT COUNT (SELECT Measurement {{id}})"},
-            {ModelType.Sensor , "SELECT COUNT (SELECT Sensor {{id}})"},
-            {ModelType.MeteoStation, "SELECT COUNT (SELECT MeteoStation {{id}})" }
+            {ModelType.MeasureUnit, "SELECT count ((SELECT MeasureUnit {{id}}))"},
+            {ModelType.Measurement, "SELECT count ((SELECT Measurement {{id}})"},
+            {ModelType.Sensor , "SELECT count ((SELECT Sensor {{id}}))"},
+            {ModelType.MeteoStation, "SELECT count ((SELECT MeteoStation {{id}}))" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
