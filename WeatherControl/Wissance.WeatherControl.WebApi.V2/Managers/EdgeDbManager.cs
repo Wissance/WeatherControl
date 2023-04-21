@@ -111,7 +111,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 if (countQuery == null)
                     throw new NotSupportedException($"EQL count query for model {_model} is not ready");
                 long totalItems = await _edgeDbClient.QuerySingleAsync<long>(countQuery);
-                // todo: modve to dictionary ...
+                // todo: move to dictionary ...
                 string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size);
                 if (getQuery == null)
                     throw new NotSupportedException($"EQL get query for model {_model} is not ready");

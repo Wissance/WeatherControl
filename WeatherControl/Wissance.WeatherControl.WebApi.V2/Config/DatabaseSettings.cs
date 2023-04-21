@@ -7,6 +7,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Config
 {
     public class DatabaseSettings
     {
-        public string ConnStr { get; set; }
+        public string ProjectName { get; set; }
     }
 }
