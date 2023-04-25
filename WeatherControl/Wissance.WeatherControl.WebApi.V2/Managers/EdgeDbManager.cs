@@ -103,7 +103,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             }
         }
 
-        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size)
+        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, IDictionary<string, string> parameters)
         {
             try
             {
