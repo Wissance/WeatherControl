@@ -9,6 +9,7 @@ using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
+using Wissance.WeatherControl.WebApi.Helpers.Filtering;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Managers;
 
@@ -16,7 +17,8 @@ namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class MeasurementsManager : EfModelManager<MeasurementsEntity, MeasurementsDto, int>
     {
-        public MeasurementsManager(ModelContext modelContext, ILoggerFactory loggerFactory) : base(modelContext, MeasurementsFactory.Create, loggerFactory)
+        public MeasurementsManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
+            : base(modelContext, MeasurementsFilter.Filter, MeasurementsFactory.Create, loggerFactory)
         {
             _modelContext = modelContext;
         }
