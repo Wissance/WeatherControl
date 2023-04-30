@@ -7,6 +7,7 @@ namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
     {
         public static bool Filter(StationEntity entity, IDictionary<string, string> parameters)
         {
+            
             return true;
         }
     }
