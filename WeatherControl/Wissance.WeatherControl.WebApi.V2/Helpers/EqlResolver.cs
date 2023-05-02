@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Wissance.WeatherControl.GraphData;
 
 
@@ -11,10 +12,15 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             return String.Format(_selectCountQueries[model]);
         }
-        public string GetQueryToFetchManyItems(ModelType model, int offset, int limit)
+        public string GetQueryToFetchManyItems(ModelType model, int offset, int limit, IDictionary<string, string> parameters)
         {
             if (!_selectManyWithLimitsQueries.ContainsKey(model))
                 return null;
+            if (parameters != null && parameters.Any())
+            {
+                //IDictionary<string, string> = _filterParamsTemplate.Where(fp => parameters.ContainsKey(fp.Key)).ToDictionary(p => p.Key, p=> p.Value);
+            }
+
             return String.Format(_selectManyWithLimitsQueries[model], offset, limit);
         }
         
@@ -93,5 +99,17 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Sensor, @"DELETE Sensor FILTER .id = <uuid>$id"},
             {ModelType.MeteoStation, @"DELETE MeteoStation FILTER .id = <uuid>$id"}
         };
+
+        private IDictionary<string, string> _filterParamsTemplate = new Dictionary<string, string>()
+        {
+            {SensorParam, $".Sensor.Id=<uuid>${SensorParam}"},
+            {MeasureFromParam, $".SampleDate>=<datetime>{MeasureFromParam}"},
+            {MeasureToParam, $".SampleDate<=<datetime>{MeasureToParam}"}
+        };
+
+        private const string StationParam = "station";
+        private const string SensorParam = "sensor";
+        private const string MeasureFromParam = "from";
+        private const string MeasureToParam = "to";
     }
 }
