@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Wissance.WeatherControl.GraphData;
 
 
@@ -16,12 +17,25 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             if (!_selectManyWithLimitsQueries.ContainsKey(model))
                 return null;
+            StringBuilder filterStr = new StringBuilder("");
             if (parameters != null && parameters.Any())
             {
-                //IDictionary<string, string> = _filterParamsTemplate.Where(fp => parameters.ContainsKey(fp.Key)).ToDictionary(p => p.Key, p=> p.Value);
+                bool isFirst = true;
+                filterStr.Append(" FILTER ");
+                IDictionary<string, string> usingParams = _filterParamsTemplate.Where(fp => parameters.ContainsKey(fp.Key)).ToDictionary(p => p.Key, p=> p.Value);
+                foreach (KeyValuePair<string,string> param in usingParams)
+                {
+                    string filterParamVal = string.Format(_filterParamsTemplate[param.Key], parameters[param.Key]);
+                    if (!isFirst)
+                        filterStr.Append(" AND ");
+                    filterStr.Append(filterParamVal);
+                    isFirst = false;
+                }
             }
 
-            return String.Format(_selectManyWithLimitsQueries[model], offset, limit);
+            string query = String.Format(_selectManyWithLimitsQueries[model], filterStr, offset, limit);
+
+            return query;
         }
         
         public string GetQueryToGetOneItem(ModelType model)
@@ -55,17 +69,17 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         private readonly IDictionary<ModelType, string> _selectCountQueries = new Dictionary<ModelType, string>()
         {
             {ModelType.MeasureUnit, "SELECT count ((SELECT MeasureUnit {{id}}))"},
-            {ModelType.Measurement, "SELECT count ((SELECT Measurement {{id}})"},
+            {ModelType.Measurement, "SELECT count ((SELECT Measurement {{id}}))"},
             {ModelType.Sensor , "SELECT count ((SELECT Sensor {{id}}))"},
             {ModelType.MeteoStation, "SELECT count ((SELECT MeteoStation {{id}}))" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {
-            {ModelType.MeasureUnit, "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} OFFSET {0} LIMIT {1}"},
-            {ModelType.Measurement, "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} OFFSET {0} LIMIT {1}"},
-            {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} OFFSET {0} LIMIT {1}"},
-            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} OFFSET {0} LIMIT {1}" }
+            {ModelType.MeasureUnit, "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} OFFSET {1} LIMIT {2}"},
+            {ModelType.Measurement, "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} {0} OFFSET {1} LIMIT {2}"},
+            {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} OFFSET {1} LIMIT {2}"},
+            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} OFFSET {1} LIMIT {2}" }
         };
         
         private readonly IDictionary<ModelType, string> _selectOneByIdQuery = new Dictionary<ModelType, string>()
@@ -102,9 +116,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 
         private IDictionary<string, string> _filterParamsTemplate = new Dictionary<string, string>()
         {
-            {SensorParam, $".Sensor.Id=<uuid>${SensorParam}"},
-            {MeasureFromParam, $".SampleDate>=<datetime>{MeasureFromParam}"},
-            {MeasureToParam, $".SampleDate<=<datetime>{MeasureToParam}"}
+            {SensorParam, " .Sensor.id=<uuid>\"{0}\" "},
+            {MeasureFromParam, " .SampleDate>=to_datetime(\'{0}\') "},
+            {MeasureToParam, " .SampleDate<=to_datetime(\'{0}\') "}
         };
 
         private const string StationParam = "station";
