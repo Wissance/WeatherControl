@@ -25,6 +25,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 IDictionary<string, string> usingParams = _filterParamsTemplate.Where(fp => parameters.ContainsKey(fp.Key)).ToDictionary(p => p.Key, p=> p.Value);
                 foreach (KeyValuePair<string,string> param in usingParams)
                 {
+                    // to pass + for timezone should be used %2B, i.e. - http://localhost:8058/api/Measurement?sensor=30ac8366-ea4b-11ed-ab17-e38db76a95f0&to=2023-05-01T12:01:00%2B05:00
                     string filterParamVal = string.Format(_filterParamsTemplate[param.Key], parameters[param.Key]);
                     if (!isFirst)
                         filterStr.Append(" AND ");
