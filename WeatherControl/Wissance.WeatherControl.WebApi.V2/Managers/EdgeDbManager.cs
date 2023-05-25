@@ -57,7 +57,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     $"An error occurred during new item creation, error: {e.Message}", null);
             }
         }
-        
+
+        public Task<OperationResultDto<TRes[]>> BulkCreateAsync(TRes[] data)
+        {
+            throw new NotImplementedException();
+        }
+
         // todo(UMV): Create and Update looking similar: create internal function that will combine it work
         public async Task<OperationResultDto<TRes>> UpdateAsync(TId id, TRes data)
         {
@@ -83,6 +88,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             }
         }
 
+        public Task<OperationResultDto<TRes[]>> BulkUpdateAsync(TRes[] data)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
         {
             try
@@ -101,6 +111,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 return new OperationResultDto<bool>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during delete item with id: {id} , error: {e.Message}", false);
             }
+        }
+
+        public Task<OperationResultDto<bool>> BulkDeleteAsync(TId[] objectsIds)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, IDictionary<string, string> parameters)
