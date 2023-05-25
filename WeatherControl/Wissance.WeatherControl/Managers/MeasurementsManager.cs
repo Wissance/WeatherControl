@@ -43,6 +43,18 @@ namespace Wissance.WeatherControl.WebApi.Managers
             
         }
 
+        public override async Task<OperationResultDto<MeasurementsDto[]>> BulkCreateAsync(MeasurementsDto[] data)
+        {
+            try
+            {
+                return null;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public override async Task<OperationResultDto<MeasurementsDto>> UpdateAsync(int id, MeasurementsDto data)
         {
             try
@@ -71,6 +83,18 @@ namespace Wissance.WeatherControl.WebApi.Managers
             {
                 return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during measurements update: {e.Message}", null);
+            }
+        }
+        
+        public override async Task<OperationResultDto<MeasurementsDto[]>> BulkUpdateAsync(MeasurementsDto[] data)
+        {
+            try
+            {
+                return null;
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
