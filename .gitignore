@@ -36,3 +36,5 @@ WeatherControl/Wissance.WeatherControl.Ef.Data/obj/
 WeatherControl/.idea/
 
 *.user
+
+perfTests/bulk_api_tests/tools/venv/
