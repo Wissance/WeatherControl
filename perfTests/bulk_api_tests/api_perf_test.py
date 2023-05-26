@@ -47,7 +47,7 @@ async def run_non_bulk_api(num_of_objs: int):
                     created_mes = await resp.json()
     end = time.time()
     dt = (end - start)
-    print(f"Elapsed time in Non-Bulk API is {dt} secs.")
+    print(f"Elapsed time in Non-Bulk REST API with EF is {dt} secs.")
 
 
 async def run_bulk_api(num_of_objs: int):
@@ -82,7 +82,7 @@ async def run_bulk_api(num_of_objs: int):
                 created_mes = await resp.json()
     end = time.time()
     dt = (end - start)
-    print(f"Elapsed time in Bulk API is {dt} secs.")
+    print(f"Elapsed time in Bulk API with EF is {dt} secs.")
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
