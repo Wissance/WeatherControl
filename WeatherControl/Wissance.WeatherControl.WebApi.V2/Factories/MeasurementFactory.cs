@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.WebApi.V2.Helpers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {
@@ -20,20 +22,21 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         }
         
         
-        public static IDictionary<string, object?> Create(MeasurementDto dto, bool generateId)
+        public static IDictionary<string, object?> Create(MeasurementDto dto, bool generateId, string suffix = null)
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {"SampleDate", dto.SampleDate},
-                {"Value", dto.Value.ToString()},
-                {"MeasureUnitId", dto.MeasureUnitId},
-                {"SensorId", dto.SensorId}
+                {ParamsSuffixAppender.Append("SampleDate", suffix), dto.SampleDate},
+                {ParamsSuffixAppender.Append("Value", suffix), dto.Value.ToString()},
+                {ParamsSuffixAppender.Append("MeasureUnitId", suffix), dto.MeasureUnitId},
+                {ParamsSuffixAppender.Append("SensorId", suffix), dto.SensorId}
             };
             
             // TODO(this if for further getting created object)
-            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+            dict[ParamsSuffixAppender.Append("id", suffix)] = generateId ? Guid.NewGuid() : dto.Id;
 
             return dict;
         }
+        
     }
 }

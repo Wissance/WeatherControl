@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.WebApi.V2.Helpers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {
@@ -25,17 +26,17 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return dto;
         }
 
-        public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId)
+        public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId, string suffix = null)
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {"Latitude", dto.Latitude},
-                {"Longitude", dto.Longitude},
-                {"Sensors", dto.Sensors.Select(s => s.Id).ToArray()}
+                {ParamsSuffixAppender.Append("Latitude", suffix), dto.Latitude},
+                {ParamsSuffixAppender.Append("Longitude", suffix), dto.Longitude},
+                {ParamsSuffixAppender.Append("Sensors", suffix), dto.Sensors.Select(s => s.Id).ToArray()}
             };
             
             // TODO(this if for further getting created object)
-            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+            dict[ParamsSuffixAppender.Append("id", suffix)] = generateId ? Guid.NewGuid() : dto.Id;
 
             return dict;
         }

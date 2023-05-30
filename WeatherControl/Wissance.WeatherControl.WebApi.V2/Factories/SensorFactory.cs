@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
 using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.WebApi.V2.Helpers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {
@@ -26,19 +27,19 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return dto;
         }
         
-        public static IDictionary<string, object?> Create(SensorDto dto, bool generateId)
+        public static IDictionary<string, object?> Create(SensorDto dto, bool generateId, string suffix = null)
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {"Name", dto.Name},
-                {"Latitude", dto.Latitude},
-                {"Longitude", dto.Longitude},
-                {"Measurements", dto.Measurements.Where(m => m.Id.HasValue)
+                {ParamsSuffixAppender.Append("Name", suffix), dto.Name},
+                {ParamsSuffixAppender.Append("Latitude", suffix), dto.Latitude},
+                {ParamsSuffixAppender.Append("Longitude", suffix), dto.Longitude},
+                {ParamsSuffixAppender.Append("Measurements", suffix), dto.Measurements.Where(m => m.Id.HasValue)
                     .Select(m => m.Id.Value).ToArray()}
             };
             
             // TODO(this if for further getting created object)
-            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
+            dict[ParamsSuffixAppender.Append("id", suffix)] = generateId ? Guid.NewGuid() : dto.Id;
 
             return dict;
         }
