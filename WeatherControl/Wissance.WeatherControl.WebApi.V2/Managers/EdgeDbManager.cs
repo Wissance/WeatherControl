@@ -69,8 +69,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                         "This controller is not support bulk create operation", null);
                 }
                 
-                string query = _resolver.GetQueryToInsertItem(_model);
-                if (query == null)
+                string createQuery = _resolver.GetQueryToInsertMultipleItems(_model, data.Length);
+                if (createQuery == null)
                     throw new NotSupportedException($"EQL query for create model {_model} item is not ready");
                 TId[] createdObjects = new TId[data.Length];
                 Dictionary<string, object?> parameters = new Dictionary<string, object?>();
@@ -81,17 +81,21 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     string itemId = $"id{i}";
                     createdObjects[0] = (TId)itemParams[itemId];
                 }
-                await _edgeDbClient.ExecuteAsync(query, parameters);
-                // todo(UMV): get all by scope of identifiers
-                
+                await _edgeDbClient.ExecuteAsync(createQuery, parameters);
+                string getQuery = _resolver.GetQueryToGetManyItemsWithFilterById(_model);
+                if (getQuery == null)
+                {
+                    throw new Exception("Get query to get many items by id in list is not defined");
+                }
+                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
+                TRes[] dtoItems = items.Select(i => _factory(i)).ToArray();
+                return new OperationResultDto<TRes[]>(true, (int)HttpStatusCode.OK, String.Empty, dtoItems);
             }
             catch (Exception e)
             { 
                 return new OperationResultDto<TRes[]>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during new item creation, error: {e.Message}", null);
             }
-            
-            throw new NotImplementedException();
         }
 
         // todo(UMV): Create and Update looking similar: create internal function that will combine it work

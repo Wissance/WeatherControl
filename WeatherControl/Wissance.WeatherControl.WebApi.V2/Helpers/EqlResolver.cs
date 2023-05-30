@@ -66,6 +66,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             query.Append(" )");
             return query.ToString();
         }
+        
+        public string GetQueryToGetManyItemsWithFilterById(ModelType model)
+        {
+            if (!_selectManyWithFilterById.ContainsKey(model))
+                return null;
+            return String.Format(_selectManyWithFilterById[model]);
+        }
 
         public string GetQueryToUpdateItem(ModelType model)
         {
@@ -96,6 +103,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} OFFSET {1} LIMIT {2}"},
             {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} OFFSET {1} LIMIT {2}" }
         };
+
+        private readonly IDictionary<ModelType, string> _selectManyWithFilterById = new Dictionary<ModelType, string>()
+        {
+            {ModelType.Measurement, @"SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} FILTER .id IN array_unpack(<array<uuid>>$idList)"}
+        };
         
         private readonly IDictionary<ModelType, string> _selectOneByIdQuery = new Dictionary<ModelType, string>()
         {
@@ -114,14 +126,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Sensor, "INSERT Sensor {{id:=<uuid>$id, Name:=<str>$Name, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"},
             {ModelType.MeteoStation, "INSERT MeteoStation {{id:=<uuid>$id, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
         };
-
+        
+        // IMPORTANT !!!!!! here MUST be start and trailing SPACES
         private readonly IDictionary<ModelType, string> _bulkInsertQuery = new Dictionary<ModelType, string>()
         {
-            {
-                // here MUST be start and trailing SPACES
-                ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
-                                                "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "
-            }
+            {ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
+                                                "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "}
         };
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
