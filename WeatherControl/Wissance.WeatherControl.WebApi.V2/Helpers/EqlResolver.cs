@@ -52,7 +52,21 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 return null;
             return String.Format(_insertQuery[model]);
         }
-        
+
+        public string GetQueryToInsertMultipleItems(ModelType model, int number)
+        {
+            if (!_bulkInsertQuery.ContainsKey(model))
+                return null;
+            StringBuilder query = new StringBuilder("UNION ( ");
+            for (int i = 0; i < number; i++)
+            {
+                query.Append(String.Format(_bulkInsertQuery[model], i.ToString()));
+            }
+
+            query.Append(" )");
+            return query.ToString();
+        }
+
         public string GetQueryToUpdateItem(ModelType model)
         {
             if (!_updateQuery.ContainsKey(model))
@@ -101,6 +115,15 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.MeteoStation, "INSERT MeteoStation {{id:=<uuid>$id, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
         };
 
+        private readonly IDictionary<ModelType, string> _bulkInsertQuery = new Dictionary<ModelType, string>()
+        {
+            {
+                // here MUST be start and trailing SPACES
+                ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
+                                                "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "
+            }
+        };
+
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
         {
             {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"},
@@ -121,6 +144,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {MeasureFromParam, " .SampleDate>=to_datetime(\'{0}\') "},
             {MeasureToParam, " .SampleDate<=to_datetime(\'{0}\') "}
         };
+
+        //private const string BulkOperationWrapper = "UNION({0})";
 
         private const string StationParam = "station";
         private const string SensorParam = "sensor";
