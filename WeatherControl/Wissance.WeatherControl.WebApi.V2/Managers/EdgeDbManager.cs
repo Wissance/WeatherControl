@@ -10,6 +10,7 @@ using Wissance.WeatherControl.GraphData.Entity;
 using EdgeDB;
 using System.Threading.Tasks;
 using Wissance.WeatherControl.GraphData;
+using Wissance.WeatherControl.WebApi.V2.Extensions;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
 using Wissance.WebApiToolkit.Dto;
 
@@ -62,11 +63,27 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         {
             try
             {
-                IDictionary<string, object?> parameters = new Dictionary<string, object?>();
-                for (int i = 0; i < data.Length; i++) 
+                if (_createParamsExtract == null)
                 {
-                    
+                    return new OperationResultDto<TRes[]>(false, (int)HttpStatusCode.NotImplemented,
+                        "This controller is not support bulk create operation", null);
                 }
+                
+                string query = _resolver.GetQueryToInsertItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL query for create model {_model} item is not ready");
+                TId[] createdObjects = new TId[data.Length];
+                Dictionary<string, object?> parameters = new Dictionary<string, object?>();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true, i.ToString());
+                    parameters.AddRange(itemParams);
+                    string itemId = $"id{i}";
+                    createdObjects[0] = (TId)itemParams[itemId];
+                }
+                await _edgeDbClient.ExecuteAsync(query, parameters);
+                // todo(UMV): get all by scope of identifiers
+                
             }
             catch (Exception e)
             { 
