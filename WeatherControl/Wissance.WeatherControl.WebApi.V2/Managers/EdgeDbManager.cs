@@ -123,15 +123,22 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 if (createQuery == null)
                     throw new NotSupportedException($"EQL query for bulk create model {_model} item is not ready");
                 TId[] createdObjects = new TId[data.Length];
-                Dictionary<string, object?> parameters = new Dictionary<string, object?>();
+                IDictionary<string, object?>[] parameters = new IDictionary<string, object?>[data.Length];
+                //Dictionary<string, object?> parameters = new Dictionary<string, object?>();
                 for (int i = 0; i < data.Length; i++)
                 {
                     IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true, i.ToString());
-                    parameters.AddRange(itemParams);
+                    parameters[i]=itemParams;
                     string itemId = $"id{i}";
                     createdObjects[0] = (TId)itemParams[itemId];
                 }
-                await _edgeDbClient.ExecuteAsync(createQuery, parameters);
+                
+                IDictionary<string, object?> bulkParams = new Dictionary<string, object?>()
+                {
+                    {"data", parameters}
+                };
+                
+                await _edgeDbClient.ExecuteAsync(createQuery, bulkParams);
                 string getQuery = _resolver.GetQueryToGetManyItemsWithFilterById(_model);
                 if (getQuery == null)
                 {

@@ -57,14 +57,15 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             if (!_bulkInsertQuery.ContainsKey(model))
                 return null;
-            StringBuilder query = new StringBuilder("UNION ( ");
+            /*StringBuilder query = new StringBuilder("for x in {} union ( ");
             for (int i = 0; i < number; i++)
             {
                 query.Append(String.Format(_bulkInsertQuery[model], i.ToString()));
             }
 
-            query.Append(" )");
-            return query.ToString();
+            query.Append(" );");
+            return query.ToString();*/
+            return _bulkInsertQuery[model];
         }
         
         public string GetQueryToGetManyItemsWithFilterById(ModelType model)
@@ -151,8 +152,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         // IMPORTANT !!!!!! here MUST be start and trailing SPACES
         private readonly IDictionary<ModelType, string> _bulkInsertQuery = new Dictionary<ModelType, string>()
         {
-            {ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
-                                                "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "}
+            //{ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
+            //                                    "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "}
+            { ModelType.Measurement, @"FOR x IN {{array_unpack(<array<json>>$data) }} UNION (INSERT Measurement {{id:=<uuid>x['id'], SampleDate:=<datetime>x['SampleDate'], Value:=to_decimal(<str>x['Value']), Unit:=(SELECT MeasureUnit {{id}} FILTER .id = <uuid>x['MeasureUnitId']), Sensor:=(SELECT Sensor {{id}} FILTER .id = <uuid>x['SensorId']  LIMIT 1) }});"}
         };
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()

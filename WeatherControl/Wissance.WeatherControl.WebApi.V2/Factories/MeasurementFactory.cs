@@ -26,14 +26,14 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {ParamsSuffixAppender.Append("SampleDate", suffix), dto.SampleDate},
-                {ParamsSuffixAppender.Append("Value", suffix), dto.Value.ToString()},
-                {ParamsSuffixAppender.Append("MeasureUnitId", suffix), dto.MeasureUnitId},
-                {ParamsSuffixAppender.Append("SensorId", suffix), dto.SensorId}
+                {"SampleDate", dto.SampleDate},
+                {"Value", dto.Value.ToString()},
+                {"MeasureUnitId", dto.MeasureUnitId},
+                {"SensorId", dto.SensorId}
             };
             
             // TODO(this if for further getting created object)
-            dict[ParamsSuffixAppender.Append("id", suffix)] = generateId ? Guid.NewGuid() : dto.Id;
+            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
 
             return dict;
         }
