@@ -26,17 +26,17 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             return dto;
         }
 
-        public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId, string suffix = null)
+        public static IDictionary<string, object?> Create(MeteoStationDto dto, bool generateId)
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
-                {ParamsSuffixAppender.Append("Latitude", suffix), dto.Latitude},
-                {ParamsSuffixAppender.Append("Longitude", suffix), dto.Longitude},
-                {ParamsSuffixAppender.Append("Sensors", suffix), dto.Sensors.Select(s => s.Id).ToArray()}
+                {"Latitude", dto.Latitude},
+                {"Longitude", dto.Longitude},
+                {"Sensors", dto.Sensors.Select(s => s.Id).ToArray()}
             };
             
             // TODO(this if for further getting created object)
-            dict[ParamsSuffixAppender.Append("id", suffix)] = generateId ? Guid.NewGuid() : dto.Id;
+            dict["id"] = generateId ? Guid.NewGuid() : dto.Id;
 
             return dict;
         }

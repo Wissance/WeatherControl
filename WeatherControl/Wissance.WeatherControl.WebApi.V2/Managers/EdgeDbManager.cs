@@ -24,7 +24,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                                                 where TId : IComparable
     {
         public EdgeDbManager(ModelType model, EdgeDBClient edgeDbClient, Func<TObj, TRes> factory, 
-            Func<TRes, bool, string, IDictionary<string, object?>> createParamsExtract)
+            Func<TRes, bool, IDictionary<string, object?>> createParamsExtract)
         {
             _model = model;
             _resolver = new EqlResolver();
@@ -95,7 +95,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 string query = _resolver.GetQueryToInsertItem(_model);
                 if (query == null)
                     throw new NotSupportedException($"EQL query for create model {_model} item is not ready");
-                IDictionary<string, object?> parameters = _createParamsExtract(data, true, null);
+                IDictionary<string, object?> parameters = _createParamsExtract(data, true);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 // ??? how to get result ?
                 // https://www.edgedb.com/docs/stdlib/cfg
@@ -128,7 +128,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 IDictionary<string, object?>[] parameters = new IDictionary<string, object?>[data.Length];
                 for (int i = 0; i < data.Length; i++)
                 {
-                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true, i.ToString());
+                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true);
                     parameters[i]=itemParams;
                     string itemId = "id";
                     createdObjects[i] = (TId)itemParams[itemId];
@@ -176,7 +176,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 string query = _resolver.GetQueryToUpdateItem(_model);
                 if (query == null)
                     throw new NotSupportedException($"EQL query for update model {_model} item is not ready");
-                IDictionary<string, object?> parameters = _createParamsExtract(data, false, null);
+                IDictionary<string, object?> parameters = _createParamsExtract(data, false);
                 await _edgeDbClient.ExecuteAsync(query, parameters);
                 OperationResultDto<TRes> result = await GetByIdAsync(id);
                 return result;
@@ -204,7 +204,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 IDictionary<string, object?>[] parameters = new IDictionary<string, object?>[data.Length];
                 for (int i = 0; i < data.Length; i++)
                 {
-                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], false, i.ToString());
+                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], false);
                     parameters[i] = itemParams;
                     string itemId = "id";
                     createdObjects[i] = (TId)itemParams[itemId];
@@ -284,6 +284,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         private readonly EqlResolver _resolver;
         private readonly EdgeDBClient _edgeDbClient;
         private readonly Func<TObj, TRes> _factory;
-        private readonly Func<TRes, bool, string, IDictionary<string, object?>> _createParamsExtract;
+        private readonly Func<TRes, bool, IDictionary<string, object?>> _createParamsExtract;
     }
 }

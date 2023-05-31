@@ -22,7 +22,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
         }
         
         
-        public static IDictionary<string, object?> Create(MeasurementDto dto, bool generateId, string suffix = null)
+        public static IDictionary<string, object?> Create(MeasurementDto dto, bool generateId)
         {
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
