@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading;
 using Wissance.WebApiToolkit.Data.Entity;
 using Wissance.WebApiToolkit.Managers;
@@ -129,13 +131,15 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 {
                     IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true, i.ToString());
                     parameters[i]=itemParams;
-                    string itemId = $"id{i}";
+                    string itemId = "id";//$"id{i}";
                     createdObjects[0] = (TId)itemParams[itemId];
                 }
+
+                EdgeDB.DataTypes.Json jsonParams = JsonSerializer.Serialize(parameters);
                 
                 IDictionary<string, object?> bulkParams = new Dictionary<string, object?>()
                 {
-                    {"data", parameters}
+                    {"data", jsonParams}
                 };
                 
                 await _edgeDbClient.ExecuteAsync(createQuery, bulkParams);

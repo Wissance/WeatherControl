@@ -65,7 +65,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
 
             query.Append(" );");
             return query.ToString();*/
-            return _bulkInsertQuery[model];
+            return String.Format(_bulkInsertQuery[model]);
         }
         
         public string GetQueryToGetManyItemsWithFilterById(ModelType model)
@@ -154,7 +154,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             //{ModelType.Measurement, @" INSERT Measurement {{id:=<uuid>$id{0}, SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId{0} LIMIT 1), " +
             //                                    "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId{0}  LIMIT 1) }} "}
-            { ModelType.Measurement, @"FOR x IN {{array_unpack(<array<json>>$data) }} UNION (INSERT Measurement {{id:=<uuid>x['id'], SampleDate:=<datetime>x['SampleDate'], Value:=to_decimal(<str>x['Value']), Unit:=(SELECT MeasureUnit {{id}} FILTER .id = <uuid>x['MeasureUnitId']), Sensor:=(SELECT Sensor {{id}} FILTER .id = <uuid>x['SensorId']  LIMIT 1) }});"}
+            { ModelType.Measurement, @"FOR x IN {{json_array_unpack(<json>$data) }} UNION (INSERT Measurement {{id:=<uuid>x['id'], SampleDate:=<datetime>x['SampleDate'], Value:=<decimal>1, Unit:=(SELECT MeasureUnit {{id}} FILTER .id = <uuid>x['MeasureUnitId']), Sensor:=(SELECT Sensor {{id}} FILTER .id = <uuid>x['SensorId']  LIMIT 1) }});"}
         };
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()
