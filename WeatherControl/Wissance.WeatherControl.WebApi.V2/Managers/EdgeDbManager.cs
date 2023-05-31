@@ -30,6 +30,56 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             _factory = factory;
             _createParamsExtract = createParamsExtract;
         }
+        
+        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, IDictionary<string, string> parameters)
+        {
+            try
+            {
+                string countQuery = _resolver.GetQueryToCountItems(_model);
+                if (countQuery == null)
+                    throw new NotSupportedException($"EQL count query for model {_model} is not ready");
+                long totalItems = await _edgeDbClient.QuerySingleAsync<long>(countQuery);
+                // todo: move to dictionary ...
+                string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size, parameters);
+                if (getQuery == null)
+                    throw new NotSupportedException($"EQL get query for model {_model} is not ready");
+                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
+                IList<TRes> dtoItems = items.Select(i => _factory(i)).ToList();
+                return new OperationResultDto<Tuple<IList<TRes>, long>>(true, (int)HttpStatusCode.OK, String.Empty, 
+                    new Tuple<IList<TRes>, long>(dtoItems, totalItems));
+            }
+            catch (Exception e)
+            {
+                // todo(UMV): log here ..
+                return new OperationResultDto<Tuple<IList<TRes>, long>>(false, (int)HttpStatusCode.InternalServerError, 
+                    $"An error occurred during data fetch: {e.Message}", new Tuple<IList<TRes>, long>(null, 0));;
+            }
+        }
+        
+        public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
+        {
+            try
+            { 
+                string query = _resolver.GetQueryToGetOneItem(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
+                TObj item = await _edgeDbClient.QuerySingleAsync<TObj>(query, new Dictionary<string, object?>()
+                {
+                    {"id", id}
+                });
+                if (item != null)
+                {
+                    return new OperationResultDto<TRes>(true, (int)HttpStatusCode.OK, String.Empty, _factory(item));
+                }
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.NotFound, $"Object with id: {id} was not found", null);
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.InternalServerError, 
+                    $"An error occurred during getting object of model type {_model} by id: {id}, error: {e.Message}", null);
+            }
+            
+        }
 
         public async Task<OperationResultDto<TRes>> CreateAsync(TRes data)
         {
@@ -184,56 +234,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
         public Task<OperationResultDto<bool>> BulkDeleteAsync(TId[] objectsIds)
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, IDictionary<string, string> parameters)
-        {
-            try
-            {
-                string countQuery = _resolver.GetQueryToCountItems(_model);
-                if (countQuery == null)
-                    throw new NotSupportedException($"EQL count query for model {_model} is not ready");
-                long totalItems = await _edgeDbClient.QuerySingleAsync<long>(countQuery);
-                // todo: move to dictionary ...
-                string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size, parameters);
-                if (getQuery == null)
-                    throw new NotSupportedException($"EQL get query for model {_model} is not ready");
-                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
-                IList<TRes> dtoItems = items.Select(i => _factory(i)).ToList();
-                return new OperationResultDto<Tuple<IList<TRes>, long>>(true, (int)HttpStatusCode.OK, String.Empty, 
-                    new Tuple<IList<TRes>, long>(dtoItems, totalItems));
-            }
-            catch (Exception e)
-            {
-                // todo(UMV): log here ..
-                return new OperationResultDto<Tuple<IList<TRes>, long>>(false, (int)HttpStatusCode.InternalServerError, 
-                    $"An error occurred during data fetch: {e.Message}", new Tuple<IList<TRes>, long>(null, 0));;
-            }
-        }
-
-        public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
-        {
-            try
-            { 
-                string query = _resolver.GetQueryToGetOneItem(_model);
-                if (query == null)
-                    throw new NotSupportedException($"EQL queries for model {_model} are not ready");
-                TObj item = await _edgeDbClient.QuerySingleAsync<TObj>(query, new Dictionary<string, object?>()
-                {
-                    {"id", id}
-                });
-                if (item != null)
-                {
-                    return new OperationResultDto<TRes>(true, (int)HttpStatusCode.OK, String.Empty, _factory(item));
-                }
-                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.NotFound, $"Object with id: {id} was not found", null);
-            }
-            catch (Exception e)
-            {
-                return new OperationResultDto<TRes>(false, (int)HttpStatusCode.InternalServerError, 
-                    $"An error occurred during getting object of model type {_model} by id: {id}, error: {e.Message}", null);
-            }
-            
         }
 
         private readonly ModelType _model;
