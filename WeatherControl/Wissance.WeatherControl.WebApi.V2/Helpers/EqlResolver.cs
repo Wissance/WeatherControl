@@ -101,6 +101,13 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 return null;
             return String.Format(_deleteQuery[model]);
         }
+        
+        public string GetQueryToDeleteMultipleItems(ModelType model)
+        {
+            if (!_deleteQuery.ContainsKey(model))
+                return null;
+            return String.Format(_deleteQuery[model]);
+        }
 
         private readonly IDictionary<ModelType, string> _selectCountQueries = new Dictionary<ModelType, string>()
         {
@@ -166,6 +173,11 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Measurement, @"DELETE Measurement FILTER .id = <uuid>$id"},
             {ModelType.Sensor, @"DELETE Sensor FILTER .id = <uuid>$id"},
             {ModelType.MeteoStation, @"DELETE MeteoStation FILTER .id = <uuid>$id"}
+        };
+        
+        private readonly IDictionary<ModelType, string> _deleteManyWithFilterById = new Dictionary<ModelType, string>()
+        {
+            {ModelType.Measurement, @"DELETE Measurement FILTER .id IN array_unpack(<array<uuid>>$idList)"}
         };
 
         private IDictionary<string, string> _filterParamsTemplate = new Dictionary<string, string>()

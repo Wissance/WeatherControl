@@ -231,9 +231,24 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             }
         }
 
-        public Task<OperationResultDto<bool>> BulkDeleteAsync(TId[] objectsIds)
+        public async Task<OperationResultDto<bool>> BulkDeleteAsync(TId[] objectsIds)
         {
-            throw new NotImplementedException();
+            try
+            {
+                string query = _resolver.GetQueryToDeleteMultipleItems(_model);
+                if (query == null)
+                    throw new NotSupportedException($"EQL query for bulk delete model {_model} items is not ready");
+                await _edgeDbClient.ExecuteAsync(query, new Dictionary<string, object?>()
+                {
+                    {"idList", objectsIds}
+                });
+                return new OperationResultDto<bool>(true, (int)HttpStatusCode.NoContent, string.Empty, true);
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<bool>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during delete multiple items, error: {e.Message}", false);
+            }
         }
 
         private readonly ModelType _model;
