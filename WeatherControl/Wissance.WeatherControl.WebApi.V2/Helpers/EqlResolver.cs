@@ -81,6 +81,20 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             return String.Format(_updateQuery[model]);
         }
         
+        public string GetQueryToUpdateMultipleItems(ModelType model, int number)
+        {
+            if (!_bulkUpdateQuery.ContainsKey(model))
+                return null;
+            StringBuilder query = new StringBuilder("UNION ( ");
+            for (int i = 0; i < number; i++)
+            {
+                query.Append(String.Format(_bulkUpdateQuery[model], i.ToString()));
+            }
+
+            query.Append(" )");
+            return query.ToString();
+        }
+        
         public string GetQueryToDeleteItem(ModelType model)
         {
             if (!_deleteQuery.ContainsKey(model))
@@ -139,6 +153,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"},
             {ModelType.Sensor, "UPDATE Sensor FILTER .id = <uuid>$id SET {{ Name:=<str>$Name, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, Measurements:=(SELECT Measurement FILTER .id IN array_unpack(<array<uuid>>$Measurements) ) }}"},
             {ModelType.MeteoStation, "UPDATE MeteoStation FILTER .id = <uuid>$id SET {{ Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, Sensors:=(SELECT Sensor FILTER .id IN array_unpack(<array<uuid>>$Sensors) ) }}"},
+        };
+        
+        // IMPORTANT !!!!!! here MUST be start and trailing SPACES
+        private readonly IDictionary<ModelType, string> _bulkUpdateQuery = new Dictionary<ModelType, string>()
+        {
+            { ModelType.Measurement , @"UPDATE Measurement FILTER .id = <uuid>$id{0} SET {{ SampleDate:=<datetime>$SampleDate{0}, Value:=to_decimal(<str>$Value{0}) }}"}
         };
 
         private readonly IDictionary<ModelType, string> _deleteQuery = new Dictionary<ModelType, string>()

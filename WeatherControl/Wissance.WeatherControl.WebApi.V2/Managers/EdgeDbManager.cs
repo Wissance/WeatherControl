@@ -71,7 +71,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 
                 string createQuery = _resolver.GetQueryToInsertMultipleItems(_model, data.Length);
                 if (createQuery == null)
-                    throw new NotSupportedException($"EQL query for create model {_model} item is not ready");
+                    throw new NotSupportedException($"EQL query for bulk create model {_model} item is not ready");
                 TId[] createdObjects = new TId[data.Length];
                 Dictionary<string, object?> parameters = new Dictionary<string, object?>();
                 for (int i = 0; i < data.Length; i++)
@@ -89,7 +89,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 }
                 IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
                 TRes[] dtoItems = items.Select(i => _factory(i)).ToArray();
-                return new OperationResultDto<TRes[]>(true, (int)HttpStatusCode.OK, String.Empty, dtoItems);
+                return new OperationResultDto<TRes[]>(true, (int)HttpStatusCode.Created, String.Empty, dtoItems);
             }
             catch (Exception e)
             { 
@@ -123,9 +123,42 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             }
         }
 
-        public Task<OperationResultDto<TRes[]>> BulkUpdateAsync(TRes[] data)
+        public async Task<OperationResultDto<TRes[]>> BulkUpdateAsync(TRes[] data)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (_createParamsExtract == null)
+                {
+                    return new OperationResultDto<TRes[]>(false, (int)HttpStatusCode.NotImplemented,
+                        "This controller is not support bulk update operation", null);
+                }
+                string updateQuery = _resolver.GetQueryToUpdateMultipleItems(_model, data.Length);
+                if (updateQuery == null)
+                    throw new NotSupportedException($"EQL query for bulk update model {_model} item is not ready");
+                TId[] createdObjects = new TId[data.Length];
+                Dictionary<string, object?> parameters = new Dictionary<string, object?>();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    IDictionary<string, object?> itemParams = _createParamsExtract(data[i], false, i.ToString());
+                    parameters.AddRange(itemParams);
+                    string itemId = $"id{i}";
+                    createdObjects[0] = (TId)itemParams[itemId];
+                }
+                await _edgeDbClient.ExecuteAsync(updateQuery, parameters);
+                string getQuery = _resolver.GetQueryToGetManyItemsWithFilterById(_model);
+                if (getQuery == null)
+                {
+                    throw new Exception("Get query to get many items by id in list is not defined");
+                }
+                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
+                TRes[] dtoItems = items.Select(i => _factory(i)).ToArray();
+                return new OperationResultDto<TRes[]>(true, (int)HttpStatusCode.OK, String.Empty, dtoItems);
+            }
+            catch (Exception e)
+            {
+                return new OperationResultDto<TRes[]>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during update multiple items, error: {e.Message}", null);
+            }
         }
 
         public async Task<OperationResultDto<bool>> DeleteAsync(TId id)
