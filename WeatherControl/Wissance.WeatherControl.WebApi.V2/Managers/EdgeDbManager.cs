@@ -126,13 +126,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     throw new NotSupportedException($"EQL query for bulk create model {_model} item is not ready");
                 TId[] createdObjects = new TId[data.Length];
                 IDictionary<string, object?>[] parameters = new IDictionary<string, object?>[data.Length];
-                //Dictionary<string, object?> parameters = new Dictionary<string, object?>();
                 for (int i = 0; i < data.Length; i++)
                 {
                     IDictionary<string, object?> itemParams = _createParamsExtract(data[i], true, i.ToString());
                     parameters[i]=itemParams;
-                    string itemId = "id";//$"id{i}";
-                    createdObjects[0] = (TId)itemParams[itemId];
+                    string itemId = "id";
+                    createdObjects[i] = (TId)itemParams[itemId];
                 }
 
                 EdgeDB.DataTypes.Json jsonParams = JsonSerializer.Serialize(parameters);
@@ -148,7 +147,12 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                 {
                     throw new Exception("Get query to get many items by id in list is not defined");
                 }
-                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);
+                
+                IDictionary<string, object?> filterParams = new Dictionary<string, object?>()
+                {
+                    {"idList", createdObjects}
+                };
+                IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery, filterParams);
                 TRes[] dtoItems = items.Select(i => _factory(i)).ToArray();
                 return new OperationResultDto<TRes[]>(true, (int)HttpStatusCode.Created, String.Empty, dtoItems);
             }
