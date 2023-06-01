@@ -5,6 +5,7 @@ import random
 import requests
 import datetime
 import time
+import timeit
 
 
 async def main():
@@ -36,16 +37,17 @@ async def run_non_bulk_api_with_ef(num_of_objs: int):
         'Accept': 'application/json'
     }
 
-    start = time.time()
+    start = timeit.default_timer()
     async with aiohttp.ClientSession() as session:
         for i in range(0, num_of_objs):
             body = measurements[i]
             async with session.post(measurements_res, json=body, headers=headers, ssl=False) as resp:
                 if resp.status == 201:
                     created_mes = await resp.json()
-    end = time.time()
-    dt = end - start
-    print(f"Elapsed time in Non-Bulk REST API with EF on creation of {num_of_objs} items is {dt} secs.")
+    end = timeit.default_timer()
+    dt = round((end - start) * 10 ** 6, 3)
+        # end - start
+    print(f"Elapsed time in Non-Bulk REST API with EF on creation of {num_of_objs} items is {dt} us.")
 
 
 async def run_bulk_api_with_ef(num_of_objs: int):
@@ -66,15 +68,15 @@ async def run_bulk_api_with_ef(num_of_objs: int):
         'Accept': 'application/json'
     }
 
-    start = time.time()
+    start = timeit.default_timer()
     async with aiohttp.ClientSession() as session:
         body = measurements
         async with session.post(measurements_res, json=body, headers=headers, ssl=False) as resp:
             if resp.status == 201:
                 created_mes = await resp.json()
-    end = time.time()
-    dt = end - start
-    print(f"Elapsed time in Bulk API with EF on creation of {num_of_objs} items is {dt} secs.")
+    end = timeit.default_timer()
+    dt = round((end-start) * 10 ** 6, 3)# end - start
+    print(f"Elapsed time in Bulk API with EF on creation of {num_of_objs} items is {dt} us.")
 
 
 async def run_non_bulk_api_with_edgedb(num_of_objs: int):
@@ -93,16 +95,16 @@ async def run_non_bulk_api_with_edgedb(num_of_objs: int):
         'Accept': 'application/json'
     }
 
-    start = time.time()
+    start = timeit.default_timer()
     async with aiohttp.ClientSession() as session:
         for i in range(0, num_of_objs):
             body = measurements[i]
             async with session.post(measurements_res, json=body, headers=headers, ssl=False) as resp:
                 if resp.status == 201:
                     created_mes = await resp.json()
-    end = time.time()
-    dt = end - start
-    print(f"Elapsed time in Non-Bulk REST API with EdgeDB on creation of {num_of_objs} items is {dt} secs.")
+    end = timeit.default_timer()
+    dt = round((end - start) * 10 ** 6, 3)  # end - start
+    print(f"Elapsed time in Non-Bulk REST API with EdgeDB on creation of {num_of_objs} items is {dt} us.")
 
 
 async def run_bulk_api_with_edgedb(num_of_objs: int):
@@ -121,15 +123,15 @@ async def run_bulk_api_with_edgedb(num_of_objs: int):
         'Accept': 'application/json'
     }
 
-    start = time.time()
+    start = timeit.default_timer()
     async with aiohttp.ClientSession() as session:
         body = measurements
         async with session.post(measurements_res, json=body, headers=headers, ssl=False) as resp:
             if resp.status == 201:
                 created_mes = await resp.json()
-    end = time.time()
-    dt = end - start
-    print(f"Elapsed time in Bulk REST API with EdgeDB on creation of {num_of_objs} items is {dt} secs.")
+    end = timeit.default_timer()
+    dt = round((end - start) * 10 ** 6, 3)  # end - start
+    print(f"Elapsed time in Bulk REST API with EdgeDB on creation of {num_of_objs} items is {dt} us.")
 
 
 if __name__ == "__main__":
