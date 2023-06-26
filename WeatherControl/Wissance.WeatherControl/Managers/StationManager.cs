@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
+using Wissance.WebApiToolkit.Data;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Managers;
 
@@ -20,6 +22,11 @@ namespace Wissance.WeatherControl.WebApi.Managers
         {
             _modelContext = modelContext;
         }
+
+        /*public override Task<OperationResultDto<Tuple<IList<StationDto>, long>>> GetAsync(int page, int size, SortOption sorting = null, IDictionary<string, string> parameters = null)
+        {
+            return base.GetAsync(page, size, sorting, parameters);
+        }*/
 
         public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
         {

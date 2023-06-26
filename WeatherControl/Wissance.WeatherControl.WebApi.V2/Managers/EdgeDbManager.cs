@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Wissance.WeatherControl.GraphData;
 using Wissance.WeatherControl.WebApi.V2.Extensions;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
+using Wissance.WebApiToolkit.Data;
 using Wissance.WebApiToolkit.Dto;
 
 namespace Wissance.WeatherControl.WebApi.V2.Managers
@@ -33,7 +34,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             _createParamsExtract = createParamsExtract;
         }
         
-        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, IDictionary<string, string> parameters)
+        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, SortOption sorting = null, IDictionary<string, string> parameters = null)
         {
             try
             {
@@ -57,7 +58,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     $"An error occurred during data fetch: {e.Message}", new Tuple<IList<TRes>, long>(null, 0));;
             }
         }
-        
+
         public async Task<OperationResultDto<TRes>> GetByIdAsync(TId id)
         {
             try
