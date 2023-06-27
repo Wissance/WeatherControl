@@ -34,7 +34,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
             _createParamsExtract = createParamsExtract;
         }
         
-        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, SortOption sorting = null, IDictionary<string, string> parameters = null)
+        public async Task<OperationResultDto<Tuple<IList<TRes>,long>>> GetAsync(int page, int size, SortOption sorting = null, 
+            IDictionary<string, string> parameters = null)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Managers
                     throw new NotSupportedException($"EQL count query for model {_model} is not ready");
                 long totalItems = await _edgeDbClient.QuerySingleAsync<long>(countQuery);
                 // todo: move to dictionary ...
-                string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size, parameters);
+                string getQuery = _resolver.GetQueryToFetchManyItems(_model, (page - 1) * size, size, parameters, sorting);
                 if (getQuery == null)
                     throw new NotSupportedException($"EQL get query for model {_model} is not ready");
                 IReadOnlyCollection<TObj> items = await _edgeDbClient.QueryAsync<TObj>(getQuery);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Wissance.WeatherControl.GraphData;
+using Wissance.WebApiToolkit.Data;
 
 
 namespace Wissance.WeatherControl.WebApi.V2.Helpers
@@ -13,7 +14,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             return String.Format(_selectCountQueries[model]);
         }
-        public string GetQueryToFetchManyItems(ModelType model, int offset, int limit, IDictionary<string, string> parameters)
+        public string GetQueryToFetchManyItems(ModelType model, int offset, int limit, IDictionary<string, string> parameters, SortOption sorting = null)
         {
             if (!_selectManyWithLimitsQueries.ContainsKey(model))
                 return null;
@@ -34,7 +35,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
                 }
             }
 
-            string query = String.Format(_selectManyWithLimitsQueries[model], filterStr, offset, limit);
+            string sortingOption = GetSortOption(sorting);
+            string query = String.Format(_selectManyWithLimitsQueries[model], filterStr, sortingOption, offset, limit);
 
             return query;
         }
@@ -95,20 +97,31 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             return String.Format(_deleteQuery[model]);
         }
 
+        private string GetSortOption(SortOption sorting = null)
+        {
+            StringBuilder sortingOptionStrBuilder = new StringBuilder(); 
+            if (sorting == null)
+                return "";
+            string sortingDirection = sorting.Order == SortOrder.Descending ? " DESC " : "";
+            sortingOptionStrBuilder.Append($" ORDER BY .{sorting.Sort} {sortingDirection} ");
+            
+            return sortingOptionStrBuilder.ToString();
+        }
+
         private readonly IDictionary<ModelType, string> _selectCountQueries = new Dictionary<ModelType, string>()
         {
-            {ModelType.MeasureUnit, "SELECT count ((SELECT MeasureUnit {{id}}))"},
-            {ModelType.Measurement, "SELECT count ((SELECT Measurement {{id}}))"},
-            {ModelType.Sensor , "SELECT count ((SELECT Sensor {{id}}))"},
+            {ModelType.MeasureUnit,  "SELECT count ((SELECT MeasureUnit {{id}}))"},
+            {ModelType.Measurement,  "SELECT count ((SELECT Measurement {{id}}))"},
+            {ModelType.Sensor ,      "SELECT count ((SELECT Sensor {{id}}))"},
             {ModelType.MeteoStation, "SELECT count ((SELECT MeteoStation {{id}}))" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {
-            {ModelType.MeasureUnit, "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} OFFSET {1} LIMIT {2}"},
-            {ModelType.Measurement, "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} {0} OFFSET {1} LIMIT {2}"},
-            {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} OFFSET {1} LIMIT {2}"},
-            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} OFFSET {1} LIMIT {2}" }
+            {ModelType.MeasureUnit,  "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithFilterById = new Dictionary<ModelType, string>()
