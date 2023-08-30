@@ -14,6 +14,7 @@ using Serilog;
 using EdgeDB;
 using Microsoft.AspNetCore.Routing.Internal;
 using Newtonsoft.Json;
+using Wissance.EdgeDb.Configurator;
 using Wissance.WeatherControl.WebApi.V2.Config;
 using Wissance.WeatherControl.WebApi.V2.Data;
 
@@ -72,82 +73,20 @@ namespace Wissance.WeatherControl.WebApi.V2
 
         private void ConfigureDatabase(IServiceCollection services)
         {
-            ILoggerFactory loggerFactory = services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
-            // todo(UMV): Resolve security settings using Project Name: that is why important to have same project name for all Backend developers
-            // use ~AppData\Local\EdgeDB\config\credentials
-            string connStr = GetEdgeDbConnStrByProjectName(Settings.Database.ProjectName, loggerFactory);
-            EdgeDBConnection conn = EdgeDBConnection.FromDSN(connStr);
-            conn.TLSSecurity = TLSSecurityMode.Insecure;
-
-            services.AddEdgeDB(conn, cfg =>
+            EdgeDBClientPoolConfig poolCfg = new EdgeDBClientPoolConfig()
             {
-                cfg.ClientType = EdgeDBClientType.Tcp;
-                cfg.SchemaNamingStrategy = INamingStrategy.CamelCaseNamingStrategy;
-                cfg.DefaultPoolSize = 256;
-                cfg.ConnectionTimeout = 5000;
-                cfg.MessageTimeout = 10000;
-            });
+                ClientType = EdgeDBClientType.Tcp,
+                SchemaNamingStrategy = INamingStrategy.CamelCaseNamingStrategy,
+                DefaultPoolSize = 256,
+                ConnectionTimeout = 5000,
+                MessageTimeout = 10000
+            };
+            services.ConfigureEdgeDbDatabase(Settings.Database.ProjectName, poolCfg);
         }
 
         private void ConfigureWebApi(IServiceCollection services)
         {
             services.AddControllers();
-        }
-
-        /*private void ConfigureManagers(IServiceCollection services)
-        {
-            // services.AddScoped<StationManager>();
-            // services.AddScoped<MeasurementsManager>();
-        }*/
-        
-        private string GetEdgeDbConnStrByProjectName(string projectName, ILoggerFactory loggerFactory)
-        {
-            ILogger<Startup> logger = loggerFactory.CreateLogger<Startup>();
-            try
-            {
-                string projectCredentialsFile = GetEdgeDbProjectCredentialFile(projectName);
-                string content = File.ReadAllText(projectCredentialsFile);
-                EdgeDbProjectCredentials credentials = JsonConvert.DeserializeObject<EdgeDbProjectCredentials>(content);
-                //JsonSerializer.Deserialize<EdgeDbProjectCredentials>(content);
-                return string.Format(EdgeDbConnStrTemplate, credentials.User, credentials.Password, "localhost",
-                    credentials.Port,
-                    credentials.Database);
-            }
-            catch (Exception e)
-            {
-                logger.LogError($"An error occurred during attempt to build edgedb connection str: {e.Message}");
-                return string.Empty;
-            }
-        }
-
-        private string GetEdgeDbProjectCredentialFile(string projectName)
-        {
-            string projectCredentialsFile = string.Empty;
-            if (OperatingSystem.IsWindows())
-            {
-                // should be using ~AppData\Local\EdgeDB\config\credentials\{projectName}.json as a path
-                string appData = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
-                projectCredentialsFile = Path.Combine(new string[]
-                {
-                    appData, 
-                    "EdgeDB", "config", "credentials", 
-                    projectName + ".json"
-                });
-            }
-
-            if (OperatingSystem.IsLinux())
-            {
-                // linux - /.config/edgedb/credentials/{projectName}.json relative to home dir
-                string home = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-                projectCredentialsFile = Path.Combine(new string[]
-                {
-                    home, 
-                    ".config", "edgedb", "credentials", 
-                    projectName + ".json"
-                });
-            }
-
-            return projectCredentialsFile;
         }
 
         public ApplicationSettings Settings { get; set; }
