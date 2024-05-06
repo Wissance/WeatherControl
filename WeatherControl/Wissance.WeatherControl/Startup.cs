@@ -43,6 +43,12 @@ namespace Wissance.WeatherControl.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", AppName);
+            });
 
             app.UseRouting();
 
@@ -67,6 +73,8 @@ namespace Wissance.WeatherControl.WebApi
 
         private void ConfigureWebApi(IServiceCollection services)
         {
+            services.AddSwaggerGen();
+            
             services.AddControllers();
 
             ConfigureManagers(services);
@@ -81,5 +89,7 @@ namespace Wissance.WeatherControl.WebApi
         public ApplicationSettings Settings { get; set; }
         private IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
+
+        private const string AppName = "Wissance.WeatherControl";
     }
 }
