@@ -6,10 +6,11 @@ using Wissance.WeatherControl.GraphData.Entity;
 using Wissance.WeatherControl.WebApi.V2.Factories;
 using Wissance.WeatherControl.WebApi.V2.Managers;
 using Wissance.WebApiToolkit.Controllers;
+using Wissance.WebApiToolkit.Data;
 
 namespace Wissance.WeatherControl.WebApi.V2.Controllers
 {
-    public class MeasurementSeriesController : BasicBulkCrudController<MeasurementDto, MeasurementEntity, Guid>
+    public class MeasurementSeriesController : BasicBulkCrudController<MeasurementDto, MeasurementEntity, Guid, EmptyAdditionalFilters>
     {
         public MeasurementSeriesController(EdgeDBClient edgeDbClient)
         {
