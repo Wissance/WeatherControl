@@ -13,25 +13,28 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
-    <PackageReference Include="Wissance.WebApiToolkit" Version="1.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="Wissance.WebApiToolkit" Version="1.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Wissance.WeatherControl.Ef.Data\Wissance.WeatherControl.Ef.Data.csproj" />
     <ProjectReference Include="..\Wissance.WeatherControl.Dto\Wissance.WeatherControl.Dto.csproj" />
   </ItemGroup>
+
   <!--
   <ItemGroup>
     <Reference Include="Wissance.WebApiToolkit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Release\netcoreapp3.1\Wissance.WebApiToolkit.dll</HintPath>
+      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Debug\netcoreapp3.1\Wissance.WebApiToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Wissance.WebApiToolkit.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Release\netcoreapp3.1\Wissance.WebApiToolkit.Data.dll</HintPath>
+      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Debug\netcoreapp3.1\Wissance.WebApiToolkit.Data.dll</HintPath>
     </Reference>
     <Reference Include="Wissance.WebApiToolkit.Dto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Release\netcoreapp3.1\Wissance.WebApiToolkit.Dto.dll</HintPath>
+      <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit\bin\Debug\netcoreapp3.1\Wissance.WebApiToolkit.Dto.dll</HintPath>
     </Reference>
   </ItemGroup>
-  -->
-
+-->
 </Project>
