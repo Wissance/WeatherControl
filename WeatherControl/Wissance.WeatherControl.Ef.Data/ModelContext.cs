@@ -42,10 +42,14 @@ namespace Wissance.WeatherControl.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<StationEntity>().Map();
-            modelBuilder.Entity<MeasurementsEntity>().Map();
+            modelBuilder.Entity<MeasureUnitEntity>().Map();
+            modelBuilder.Entity<SensorEntity>().Map();
+            modelBuilder.Entity<MeasurementEntity>().Map();
         }
 
-        public DbSet<MeasurementsEntity> Measurements { get; set; }
         public DbSet<StationEntity> Stations { get; set; }
+        public DbSet<MeasureUnitEntity> MeasureUnits { get; set; }
+        public DbSet<SensorEntity> Sensors { get; set; }
+        public DbSet<MeasurementEntity> Measurements { get; set; }
     }
 }

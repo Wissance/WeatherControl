@@ -9,10 +9,13 @@ namespace Wissance.WeatherControl.Data.Mapping
 {
     internal static class MeasurementsMapper
     {
-        public static void Map(this EntityTypeBuilder<MeasurementsEntity> builder)
+        public static void Map(this EntityTypeBuilder<MeasurementEntity> builder)
         {
             builder.ToTable("Measurement", "dbo");
             builder.HasKey(p => p.Id);
+
+            builder.Property(p => p.Value).IsRequired();
+            builder.Property(p => p.SampleDate).IsRequired();
         }
     }
 }

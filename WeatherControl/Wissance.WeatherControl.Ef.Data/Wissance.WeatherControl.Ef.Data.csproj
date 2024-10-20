@@ -13,6 +13,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2" />
     <PackageReference Include="Wissance.WebApiToolkit" Version="1.6.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj" />
+  </ItemGroup>
 <!--
   <ItemGroup>
     <Reference Include="Wissance.WebApiToolkit.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

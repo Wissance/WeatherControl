@@ -1,19 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Wissance.WeatherControl.Data.Entity;
 
 namespace Wissance.WeatherControl.Data.Mapping
 {
-    internal static class StationMapper
+    internal static class SensorMapper
     {
-        public static void Map(this EntityTypeBuilder<StationEntity> builder)
+        public static void Map(this EntityTypeBuilder<SensorEntity> builder)
         {
-            builder.ToTable("Station", "dbo");
+            builder.ToTable("Sensor", "dbo");
             builder.HasKey(p => p.Id);
-
+            
             builder.Property(p => p.Name).IsRequired();
             builder.HasIndex(p => p.Name);
             
@@ -21,7 +18,10 @@ namespace Wissance.WeatherControl.Data.Mapping
             builder.Property(p => p.Latitude).IsRequired(false);
             builder.Property(p => p.Longitude).IsRequired(false);
 
-            builder.HasMany(p => p.Sensors).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne<MeasureUnitEntity>(p => p.MeasureUnit)
+                .WithMany().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany<MeasurementEntity>(p => p.Measurements)
+                .WithOne().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

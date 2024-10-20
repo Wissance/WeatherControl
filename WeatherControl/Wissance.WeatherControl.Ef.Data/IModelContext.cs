@@ -11,9 +11,9 @@ namespace Wissance.WeatherControl.Data
     {
         int SaveChanges();
         Task<int> SaveChangesAsync();
-
-        DbSet<MeasurementsEntity> Measurements { get; set; }
         DbSet<StationEntity> Stations { get; set; }
-
+        DbSet<MeasureUnitEntity> MeasureUnits { get; set; }
+        DbSet<SensorEntity> Sensors { get; set; }
+        DbSet<MeasurementEntity> Measurements { get; set; }
     }
 }
