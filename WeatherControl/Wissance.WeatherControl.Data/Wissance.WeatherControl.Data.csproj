@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>disable</Nullable>
+        <TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Wissance.WebApiToolkit" Version="1.6.0" />
+    </ItemGroup>
+
+</Project>

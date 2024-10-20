@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wissance.WeatherControl.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.WeatherControl.Dto.V2", "Wissance.WeatherControl.Dto.V2\Wissance.WeatherControl.Dto.V2.csproj", "{E744F09F-BB66-49FE-9948-73654B6A1A9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wissance.WeatherControl.Data", "Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj", "{9C2BC019-7037-41AA-B4AE-E32EC42D8805}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,22 @@ Global
 		{E744F09F-BB66-49FE-9948-73654B6A1A9D}.Release|x64.Build.0 = Release|Any CPU
 		{E744F09F-BB66-49FE-9948-73654B6A1A9D}.Release|x86.ActiveCfg = Release|Any CPU
 		{E744F09F-BB66-49FE-9948-73654B6A1A9D}.Release|x86.Build.0 = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|arm64.Build.0 = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|x64.Build.0 = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Debug|x86.Build.0 = Debug|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|arm64.ActiveCfg = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|arm64.Build.0 = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|x64.ActiveCfg = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|x64.Build.0 = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C2BC019-7037-41AA-B4AE-E32EC42D8805}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
