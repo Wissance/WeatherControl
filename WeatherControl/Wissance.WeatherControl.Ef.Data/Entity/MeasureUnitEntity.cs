@@ -1,9 +1,9 @@
 using System;
-using Wissance.WebApiToolkit.Data.Entity;
+using Wissance.WeatherControl.Data.Model;
 
 namespace Wissance.WeatherControl.Data.Entity
 {
-    public class MeasureUnitEntity : IModelIdentifiable<Guid>
+    public class MeasureUnitEntity : IMeasureUnit
     {
         public Guid Id { get; }
         public string Name { get; set; }

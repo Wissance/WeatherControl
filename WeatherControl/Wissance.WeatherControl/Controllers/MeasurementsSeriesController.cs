@@ -1,4 +1,3 @@
-using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Filters;
 using Wissance.WeatherControl.WebApi.Managers;

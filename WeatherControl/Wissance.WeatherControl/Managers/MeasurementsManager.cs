@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Wissance.WeatherControl.Data;
-using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
@@ -15,7 +14,7 @@ using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class MeasurementsManager : EfModelManager<MeasurementsEntity, MeasurementsDto, int>
+    public class MeasurementsManager : EfModelManager<MeasurementEntity, MeasurementDto, Guid>
     {
         public MeasurementsManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, MeasurementsFilter.Filter, MeasurementsFactory.Create, loggerFactory)
@@ -23,56 +22,56 @@ namespace Wissance.WeatherControl.WebApi.Managers
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<MeasurementsDto>> CreateAsync(MeasurementsDto data)
+        public override async Task<OperationResultDto<MeasurementDto>> CreateAsync(MeasurementDto data)
         {
             try
             {
-                MeasurementsEntity entity = MeasurementsFactory.Create(data);
+                MeasurementEntity entity = MeasurementsFactory.Create(data);
                 await _modelContext.Measurements.AddAsync(entity);
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
                 {
-                    return new OperationResultDto<MeasurementsDto>(true, (int)HttpStatusCode.Created, null, MeasurementsFactory.Create(entity));
+                    return new OperationResultDto<MeasurementDto>(true, (int)HttpStatusCode.Created, null, MeasurementsFactory.Create(entity));
                 }
-                return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements creation", null);
+                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements creation", null);
             }
             catch (Exception e)
             {
-                return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during measurements creation: {e.Message}", null);
+                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during measurements creation: {e.Message}", null);
             }
             
         }
 
-        public override async Task<OperationResultDto<MeasurementsDto[]>> BulkCreateAsync(MeasurementsDto[] data)
+        public override async Task<OperationResultDto<MeasurementDto[]>> BulkCreateAsync(MeasurementDto[] data)
         {
             try
             {
-                IList<MeasurementsEntity> measurements = data.Select(d => MeasurementsFactory.Create(d)).ToList();
+                IList<MeasurementEntity> measurements = data.Select(d => MeasurementsFactory.Create(d)).ToList();
                 await _modelContext.Measurements.AddRangeAsync(measurements);
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
                 {
-                    return new OperationResultDto<MeasurementsDto[]>(true, (int)HttpStatusCode.Created, null,
+                    return new OperationResultDto<MeasurementDto[]>(true, (int)HttpStatusCode.Created, null,
                         measurements.Select(m => MeasurementsFactory.Create(m)).ToArray());
                 }
-                return new OperationResultDto<MeasurementsDto[]>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements creation", null);
+                return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements creation", null);
             }
             catch (Exception e)
             {
-                return new OperationResultDto<MeasurementsDto[]>(false, (int)HttpStatusCode.InternalServerError,
+                return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during measurements update: {e.Message}", null);
             }
         }
 
-        public override async Task<OperationResultDto<MeasurementsDto>> UpdateAsync(int id, MeasurementsDto data)
+        public override async Task<OperationResultDto<MeasurementDto>> UpdateAsync(int id, MeasurementDto data)
         {
             try
             {
-                MeasurementsEntity entity = MeasurementsFactory.Create(data);
-                MeasurementsEntity existingEntity = await _modelContext.Measurements.FirstOrDefaultAsync(m => m.Id == id);
+                MeasurementEntity entity = MeasurementsFactory.Create(data);
+                MeasurementEntity existingEntity = await _modelContext.Measurements.FirstOrDefaultAsync(m => m.Id == id);
                 if (existingEntity == null)
                 {
-                    return new OperationResultDto<MeasurementsDto>(false, (int)HttpStatusCode.NotFound, $"Measurements with id: {id} does not exists", null);
+                    return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.NotFound, $"Measurements with id: {id} does not exists", null);
                 }
 
                 existingEntity.Temperature = entity.Temperature;

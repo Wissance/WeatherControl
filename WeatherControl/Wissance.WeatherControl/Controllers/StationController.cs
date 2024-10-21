@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Managers;
 using Wissance.WebApiToolkit.Controllers;

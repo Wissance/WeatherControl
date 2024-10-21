@@ -17,11 +17,10 @@ namespace Wissance.WeatherControl.Data.Mapping
             builder.Property(p => p.Description).IsRequired(false);
             builder.Property(p => p.Latitude).IsRequired(false);
             builder.Property(p => p.Longitude).IsRequired(false);
+            builder.Property(p => p.StationId).IsRequired();
 
-            builder.HasOne<MeasureUnitEntity>(p => p.MeasureUnit)
-                .WithMany().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany<MeasurementEntity>(p => p.Measurements)
-                .WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.MeasureUnit).WithMany().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(p => p.Measurements).WithOne().OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

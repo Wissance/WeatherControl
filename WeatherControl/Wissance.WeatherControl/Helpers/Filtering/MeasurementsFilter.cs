@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.WebApi.Filters;
 using Wissance.WebApiToolkit.Utils.Extractors;
 

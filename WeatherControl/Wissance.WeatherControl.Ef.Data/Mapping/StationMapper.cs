@@ -21,7 +21,8 @@ namespace Wissance.WeatherControl.Data.Mapping
             builder.Property(p => p.Latitude).IsRequired(false);
             builder.Property(p => p.Longitude).IsRequired(false);
 
-            builder.HasMany(p => p.Sensors).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(p => p.Sensors).WithOne(p => p.Station)
+                .HasForeignKey(p => p.StationId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Wissance.WeatherControl.Data.Entity;
 
 namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
 {

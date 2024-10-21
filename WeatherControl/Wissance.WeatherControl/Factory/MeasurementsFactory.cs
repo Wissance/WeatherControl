@@ -2,22 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
 namespace Wissance.WeatherControl.WebApi.Factory
 {
     internal static class MeasurementsFactory
     {
-        public static MeasurementsDto Create(MeasurementsEntity entity)
+        public static MeasurementDto Create(MeasurementEntity entity)
         {
-            return new MeasurementsDto(entity.Id, entity.Timestamp, entity.Temperature, entity.Pressure, entity.Humidity,
-                                       entity.WindSpeed, entity.StationId);
+            return new MeasurementDto(entity.Id, entity.SampleDate, entity.Value, null);
         }
 
-        public static MeasurementsEntity Create(MeasurementsDto dto)
+        public static MeasurementEntity Create(MeasurementDto dto)
         {
-            return new MeasurementsEntity(dto.Timestamp, dto.Temperature, dto.Pressure, dto.Humidity, dto.WindSpeed, dto.StationId);
+            return new MeasurementEntity()
+            {
+                Value = dto.Value,
+                SampleDate = dto.SampleDate
+            };
         }
     }
 }

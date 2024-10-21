@@ -1,9 +1,9 @@
 using System;
 using Wissance.WebApiToolkit.Data.Entity;
 
-namespace Wissance.WeatherControl.Data.Entity
+namespace Wissance.WeatherControl.Data.Model
 {
-    public class MeasurementEntity : IModelIdentifiable<Guid>
+    public interface IMeasurement : IModelIdentifiable<Guid>
     {
         public Guid Id { get; }
         public DateTimeOffset SampleDate { get; set; }
