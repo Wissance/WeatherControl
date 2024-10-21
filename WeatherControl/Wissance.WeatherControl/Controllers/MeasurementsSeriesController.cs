@@ -7,12 +7,12 @@ namespace Wissance.WeatherControl.WebApi.Controllers
 {
     public class MeasurementsSeriesController: BasicBulkCrudController<MeasurementsDto, MeasurementsEntity, int, MeasurementsFilterable>
     {
-        public MeasurementsSeriesController(MeasurementsManager manager)
+        public MeasurementsSeriesController(MeasurementManager manager)
         {
             Manager = manager;  // this is for basic operations
             _manager = manager; // this for extended operations
         }
 
-        private MeasurementsManager _manager;
+        private MeasurementManager _manager;
     }
 }

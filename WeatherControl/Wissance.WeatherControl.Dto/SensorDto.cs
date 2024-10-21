@@ -11,8 +11,8 @@ namespace Wissance.WeatherControl.Dto
         }
 
         public SensorDto(Guid id, string name, string description, string latitude, string longitude,
-            MeasureUnitDto measureUnit, IList<MeasurementDto> measurements)
-           :base(id, name, description, latitude, longitude)
+            MeasureUnitDto measureUnit, IList<MeasurementDto> measurements, Guid stationId, Guid measureUnitId)
+           :base(id, name, description, latitude, longitude, stationId, measureUnitId)
         {
             MeasureUnit = measureUnit;
             Measurements = measurements;

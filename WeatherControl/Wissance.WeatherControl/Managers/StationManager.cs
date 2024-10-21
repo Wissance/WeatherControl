@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Wissance.WeatherControl.Data;
+using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
