@@ -9,5 +9,7 @@ namespace Wissance.WeatherControl.Data.Entity
         public DateTimeOffset SampleDate { get; set; }
         public decimal Value { get; set; }
         public Guid SensorId { get; set; }
+        
+        public SensorEntity Sensor { get; set; }
     }
 }

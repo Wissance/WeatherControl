@@ -20,7 +20,8 @@ namespace Wissance.WeatherControl.Data.Mapping
             builder.Property(p => p.StationId).IsRequired();
 
             builder.HasOne(p => p.MeasureUnit).WithMany().OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(p => p.Measurements).WithOne().OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(p => p.Measurements).WithOne(p => p.Sensor)
+                .HasForeignKey(p => p.SensorId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
