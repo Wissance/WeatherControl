@@ -83,6 +83,8 @@ namespace Wissance.WeatherControl.WebApi
         private void ConfigureManagers(IServiceCollection services)
         {
             services.AddScoped<StationManager>();
+            services.AddScoped<SensorManager>();
+            services.AddScoped<MeasureUnitManager>();
             services.AddScoped<MeasurementManager>();
         }
 
