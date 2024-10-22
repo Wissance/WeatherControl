@@ -12,6 +12,7 @@ namespace Wissance.WeatherControl.Data.Entity
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public Guid StationId { get; set; }
+        public Guid MeasureUnitId { get; set; }
         
         public virtual StationEntity Station { get; set; }
         public virtual MeasureUnitEntity MeasureUnit { get; set; }

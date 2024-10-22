@@ -13,8 +13,8 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 Description = dto.Description,
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
-                // StationId = dto.
-                // MeasureUnitId = dto.
+                StationId = dto.StationId,
+                MeasureUnitId = dto.MeasureUnitId
             };
             return entity;
         }
@@ -23,10 +23,29 @@ namespace Wissance.WeatherControl.WebApi.Factory
         {
             SensorEntity entity = new SensorEntity()
             {
-                
+                Name = dto.Name,
+                Description = dto.Description,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                StationId = dto.StationId,
+                MeasureUnitId = dto.MeasureUnitId
             };
             
             return entity;
+        }
+
+        public static SensorDto Create(SensorEntity entity)
+        {
+            return new SensorDto()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                Latitude = entity.Latitude,
+                Longitude = entity.Longitude,
+                StationId = entity.StationId,
+                MeasureUnitId = entity.MeasureUnitId
+            };
         }
     }
 }

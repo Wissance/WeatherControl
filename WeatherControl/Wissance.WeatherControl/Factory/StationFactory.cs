@@ -15,7 +15,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 entity.Latitude, null);
             if (entity.Sensors != null)
             {
-                // TODO(UMV) : construct sensors
+                entity.Sensors.Select(s => SensorFactory.Create(s)).ToList();
             }
 
             return dto;
@@ -30,8 +30,11 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
             };
-            
-            // TODO(UMV) : construct sensors, for further assign at Create or Update Method
+
+            if (dto.Sensors != null)
+            {
+                entity.Sensors = dto.Sensors.Select(s => SensorFactory.Create(s)).ToList();
+            }
 
             return entity;
         }

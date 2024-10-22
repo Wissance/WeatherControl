@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Wissance.WeatherControl.Data.Entity;
 
 namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
 {
@@ -6,7 +7,6 @@ namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
     {
         public static bool Filter(StationEntity entity, IDictionary<string, string> parameters)
         {
-            
             return true;
         }
     }
