@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Filters;
 using Wissance.WeatherControl.WebApi.Managers;
@@ -9,7 +10,7 @@ using Wissance.WebApiToolkit.Controllers;
 
 namespace Wissance.WeatherControl.WebApi.Controllers
 {
-    public class MeasurementsController : BasicCrudController<MeasurementDto, MeasurementEntity, int, 
+    public class MeasurementsController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid, 
         MeasurementsFilterable>
     {
         public MeasurementsController(MeasurementManager manager)

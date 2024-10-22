@@ -64,7 +64,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             }
         }
 
-        public override async Task<OperationResultDto<MeasurementDto>> UpdateAsync(int id, MeasurementDto data)
+        public override async Task<OperationResultDto<MeasurementDto>> UpdateAsync(Guid id, MeasurementDto data)
         {
             try
             {

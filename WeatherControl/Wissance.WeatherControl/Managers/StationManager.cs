@@ -15,7 +15,7 @@ using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class StationManager : EfModelManager<StationEntity, StationDto, int>
+    public class StationManager : EfModelManager<StationEntity, StationDto, Guid>
     {
         public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, StationFilter.Filter, StationFactory.Create, loggerFactory)
@@ -48,7 +48,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             }
         }
 
-        public override async Task<OperationResultDto<StationDto>> UpdateAsync(int id, StationDto data)
+        public override async Task<OperationResultDto<StationDto>> UpdateAsync(Guid id, StationDto data)
         {
             try
             {
