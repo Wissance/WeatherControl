@@ -74,12 +74,13 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 {
                     return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.NotFound, $"Measurements with id: {id} does not exists", null);
                 }
+                existingEntity.Value = entity.Value;
+                existingEntity.SampleDate = entity.SampleDate;
+                if (existingEntity.SensorId != entity.SensorId)
+                {
+                    existingEntity.SensorId = entity.SensorId;
+                }
 
-                existingEntity.Temperature = entity.Temperature;
-                existingEntity.Pressure = entity.Pressure;
-                existingEntity.Humidity = entity.Humidity;
-                existingEntity.WindSpeed = entity.WindSpeed;
-                existingEntity.Timestamp = entity.Timestamp;
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
                 {
@@ -100,14 +101,15 @@ namespace Wissance.WeatherControl.WebApi.Managers
             {
                 IList<MeasurementEntity> measurementsToUpdate = await _modelContext.Measurements.Where(m => data.Any(di => di.Id == m.Id))
                                                                                           .ToListAsync();
-                foreach (MeasurementEntity measurements in measurementsToUpdate)
+                foreach (MeasurementEntity measurement in measurementsToUpdate)
                 {
-                    MeasurementsDto measurementsDto = data.First(m => m.Id == measurements.Id);
-                    measurements.Temperature = measurementsDto.Temperature;
-                    measurements.Pressure = measurementsDto.Pressure;
-                    measurements.Humidity = measurementsDto.Humidity;
-                    measurements.WindSpeed = measurementsDto.WindSpeed;
-                    measurements.Timestamp = measurementsDto.Timestamp;
+                    MeasurementDto dto = data.First(m => m.Id == measurement.Id);
+                    measurement.Value = dto.Value;
+                    measurement.SampleDate = dto.SampleDate;
+                    if (dto.SensorId.HasValue && measurement.SensorId != dto.SensorId)
+                    {
+                        measurement.SensorId = dto.SensorId.Value;
+                    }
                 }
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
