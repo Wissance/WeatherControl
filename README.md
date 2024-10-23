@@ -28,20 +28,23 @@ These projects targets multiple platforms - `netcore 3.1`, `net6` and `net8`.
 
 #### 3.1 Application Overview
 
-Web API REST service (.Net Core) that could store weather data from multiple weather station. We 
-assume that we are going to store/manage following physical value measurements getting from
+
+
+Web API REST service (.Net Core) that could store weather data from multiple weather station with multiple sensors, assume that typical meteostation store/manage following physical value measurements getting from
 appropriate sensors:
 * `temperature`;
 * `atmosphere pressure`;
 * `humidity`;
 * `wind speed`;
 
-Application has 2 `resources` = Domain objects
+Application has 4 `resources` = Domain objects
 
-Application uses MsSql as Database Server (this could be easily changed, but this required to re-generate migration).
+Application uses `MsSql` (`Sql Server`) as Database Server (this could be easily changed, but this required to re-generate migration).
 
 1. `Station`
-2. `Measurement`
+2. `Sensor`
+3. `MeasureUnit`
+4. `Measurement`
 
 #### 3.2 Overall usage scenario
 
@@ -54,8 +57,57 @@ This is a **very simple application (demo)**, if any feature is needed open new 
 ##### 3.2.1 Example of usage
 
 It should be noted that Postman Requests stored in docs folder
+You could also use `Swagger` - `~/swagger/index.html`, i.e. `http://127.0.0.1:8058/swagger/index.html` to see contracts, parameters, responses an so on.
 
-##### 3.2.2 Operations with Station resource
+##### 3.2.2 Operation with measure unit
+
+First we should configure what we would like to measure, we could do it via `POST` `~/api/MeasureUnit` with body i.e.:
+
+```json
+{
+  "name": "Wind speed",
+  "description": "",
+  "abbreviation": "V, mm/s"
+}
+```
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8058/api/MeasureUnit' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Wind speed",
+  "description": "",
+  "abbreviation": "V, mm/s"
+}'
+```
+
+We could edit created MeasureUnit via `PUT` `~/api/MeasureUnit/{id}`, with new body, i.e.:
+```json
+{
+  "name": "Wind speed",
+  "description": "Wind speed in mm/s",
+  "abbreviation": "V, mm/s"
+}
+```
+
+```bash
+curl -X 'PUT' \
+  'http://127.0.0.1:8058/api/MeasureUnit/b23b25dc-49df-42e3-8374-08dcf37af278' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Wind speed",
+  "description": "Wind speed in mm/s",
+  "abbreviation": "V, mm/s"
+}'
+```
+
+Or get multiple objects - `GET` `~/api/MeasureUnit`
+
+
+##### 3.2.3 Operations with Station resource
 
 1. Create Station:
 
