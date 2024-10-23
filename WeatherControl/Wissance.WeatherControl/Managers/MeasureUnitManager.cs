@@ -47,7 +47,25 @@ namespace Wissance.WeatherControl.WebApi.Managers
         {
             try
             {
-                return null;
+                MeasureUnitEntity existingMeasureUnit = await _modelContext.MeasureUnits.FirstOrDefaultAsync(m => m.Id == id);
+                if (existingMeasureUnit == null)
+                {
+                    return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.NotFound,
+                        $"An error occurred during \"MeasureUnit\" update, an object with id:\":{id}\" does n't exist", null);
+                }
+
+                existingMeasureUnit.Name = data.Name;
+                existingMeasureUnit.Description = data.Description;
+                existingMeasureUnit.Abbreviation = data.Abbreviation;
+
+                int result = await _modelContext.SaveChangesAsync();
+                if (result >= 0)
+                {
+                    return new OperationResultDto<MeasureUnitDto>(true, (int) HttpStatusCode.OK, string.Empty,
+                        MeasureUnitFactory.Create(existingMeasureUnit));
+                }
+                return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.InternalServerError,
+                    "An unknown error occurred during \"MeasureUnit\" update", null);
             }
             catch (Exception e)
             {
