@@ -6,24 +6,27 @@ This project uses [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiT
 
 ### 1. General description
 
-This project is a tutorial about how to design `REST API`, we are have here 2 simultaneously existing Web projects:
+This project is a **tutorial** about how to design `REST API` using `C#`, but it is also fully functional `Web API` (`REST`) for working with meteorological stations or with indoor conditions with sensors of any type.
 
 1. `REST API` with `EntityFramework` `ORM` - `Wissance.WeatherControl.WebApi` project
 2. `REST API` with `EdgeDb` `Graph DB` - `Wissance.WeatherControl.WebApi.V2` project
 
-These 2 Project Have different data Model
+These 2 Project Had different data Model until version `2.0` (`1.x`, last - `1.6`), starting from `2.0` they have the same data model.
 
-### 2. REST API With Net Framework
+These projects targets multiple platforms - `netcore 3.1`, `net6` and `net8`.
 
-This project target platform is a `netcore 3.1`
+### 2. Data Model
 
 #### 2.1 Glossary / Domain object
 
-* `Station` - weather station that has name, description, coordinates and it **can measure one or 
-  multiple weather parameters**;
-* `Measurement` - one weather sample measured by station itself.
+* `Station` - weather station that has name, description, coordinates and it **can collect and store any number of parameters**, 1 measuring parameter - 1 `Sensor`;
+* `Sensor` - sensor that measures physical values like `Temparature`, `Pressure`, `Humidity` and so on, 1 sensor measures only one 1 physical value;
+* `MeasureUnit` - physical value itself that is measuring by `Sensor`.
+* `Measurement` - Sensor values = timestamp + numeric (decimal) value.
 
-#### 2.2 Application Overview
+### 3. REST API With Entity Framework
+
+#### 3.1 Application Overview
 
 Web API REST service (.Net Core) that could store weather data from multiple weather station. We 
 assume that we are going to store/manage following physical value measurements getting from
@@ -40,7 +43,7 @@ Application uses MsSql as Database Server (this could be easily changed, but thi
 1. `Station`
 2. `Measurement`
 
-#### 2.3 Overall usage scenario
+#### 3.2 Overall usage scenario
 
 This is a **very simple application (demo)**, if any feature is needed open new issue.
 
@@ -48,11 +51,11 @@ This is a **very simple application (demo)**, if any feature is needed open new 
 2. Client interacts with station, gets it measured data and store it using Measurements (`/api/measurements`) 
    resource (CRUD)
 
-##### 2.3.1 Example of usage
+##### 3.2.1 Example of usage
 
 It should be noted that Postman Requests stored in docs folder
 
-##### 2.3.2 Operations with Station resource
+##### 3.2.2 Operations with Station resource
 
 1. Create Station:
 
@@ -110,7 +113,7 @@ Body and response are the same as at Create operation:
 
 4. To delete station with id 1 use endpoint `DELETE http://localhost:8058/api/station/1`
 
-##### 2.3.3 Operations with measurements resource
+##### 3.2.3 Operations with measurements resource
 
 1. Create measurements
 
@@ -159,7 +162,7 @@ We got following result in the output:
 
 4. To delete measurements with id 1 use endpoint `DELETE http://localhost:8058/api/measurements/1`
 
-### 3. REST API With EdgeDB
+### 4. REST API With EdgeDB
 
 Here we've got a `net6.0` `REST` Service that have a slightly different data model:
 
@@ -173,7 +176,7 @@ Data project is `Wissance.WeatherControl.GraphData`
 ![Relation between Models]()
 
 
-#### 3.1 Configure Edge DB (Prerequisites)
+#### 4.1 Configure Edge DB (Prerequisites)
 
 1. Start `Edgedb` instance from `Wissance.WeatherControl.GraphData` directory
 
@@ -214,7 +217,7 @@ configuration string must have the following scheme: `edgedb://user:password@hos
 you could see your project credential on `Windows` machine in a directory:
 `%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
 
-#### 3.2 REST API With Edge DB
+#### 4.2 REST API With Edge DB
 
 We are having following Key Items:
 
@@ -228,7 +231,7 @@ We are having following Key Items:
    `create` and `update` perform) from `DTO`.
    
    
-##### 3.2.1 REST API Controllers
+##### 4.2.1 REST API Controllers
 
 All controllers are located in a folder `Controllers`, just look how simply look full `CRUD` Controller:
 
@@ -247,7 +250,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Controllers
 ```
 
 
-###### 3.2.2 Manager
+###### 4.2.2 Manager
 
 We have only one manager for all controllers due to the power of C# generics we just have to pass
 to `EdgeDbManager`:
@@ -256,7 +259,7 @@ to `EdgeDbManager`:
 * and 2 delegates that describes how to create representation (`DTO`) from model and how to convert
   `DTO` to parameters list for `insert` and `update` operations
   
-##### 3.2.3 EqlResolver
+##### 4.2.3 EqlResolver
 
 Just a set of dictionaries every dictionary for one operation:
 * get collection
@@ -265,7 +268,7 @@ Just a set of dictionaries every dictionary for one operation:
 * update
 * delete
 
-##### 3.2.4 Factories for objects convertion
+##### 4.2.4 Factories for objects convertion
 
 They are static classes in a `Factories` dicrectory, the looking quite simple:
 
@@ -312,4 +315,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
 }
 ```
 
+### 5. Contributors
 
+<a href="https://github.com/Wissance/WeatherControl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Wissance/WeatherControl" />
+</a>
