@@ -10,6 +10,6 @@ namespace Wissance.WeatherControl.Data.Entity
         public decimal Value { get; set; }
         public Guid SensorId { get; set; }
         
-        public SensorEntity Sensor { get; set; }
+        public virtual SensorEntity Sensor { get; set; }
     }
 }

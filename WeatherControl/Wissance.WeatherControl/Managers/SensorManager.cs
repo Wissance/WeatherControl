@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
+using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Managers;
 
@@ -13,9 +14,8 @@ namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class SensorManager: EfModelManager<SensorEntity, SensorDto, Guid>
     {
-        public SensorManager(ModelContext modelContext, Func<SensorEntity, IDictionary<string, string>, bool> filterFunc, 
-            Func<SensorEntity, SensorDto> createFunc, ILoggerFactory loggerFactory) 
-            : base(modelContext, filterFunc, createFunc, loggerFactory)
+        public SensorManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
+            : base(modelContext, null, SensorFactory.Create, loggerFactory)
         {
         }
 
