@@ -34,11 +34,13 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 {
                     return new OperationResultDto<MeasurementDto>(true, (int)HttpStatusCode.Created, null, MeasurementFactory.Create(entity));
                 }
-                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements creation", null);
+                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, 
+                    "An unknown error occurred during \"Measurement\" creation", null);
             }
             catch (Exception e)
             {
-                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during measurements creation: {e.Message}", null);
+                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError,
+                    $"An error occurred during \"Measurement\" create: {e.Message}", null);
             }
             
         }
@@ -60,7 +62,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             catch (Exception e)
             {
                 return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError,
-                    $"An error occurred during measurements update: {e.Message}", null);
+                    $"An error occurred during \"Measurement\" bulk create: {e.Message}", null);
             }
         }
 
@@ -91,7 +93,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             catch (Exception e)
             {
                 return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError,
-                    $"An error occurred during measurements update: {e.Message}", null);
+                    $"An error occurred during \"Measurement\" update: {e.Message}", null);
             }
         }
         
@@ -122,7 +124,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             catch (Exception e)
             {
                 return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError,
-                    $"An error occurred during measurements bulk update: {e.Message}", null);
+                    $"An error occurred during \"Measurement\" bulk update: {e.Message}", null);
             }
         }
 
