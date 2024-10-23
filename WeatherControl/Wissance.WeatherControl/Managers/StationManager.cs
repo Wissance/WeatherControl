@@ -69,12 +69,12 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 {
                     return new OperationResultDto<StationDto>(true, (int)HttpStatusCode.OK, null, StationFactory.Create(entity));
                 }
-                return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during station update", null);
+                return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during \"Station\" update", null);
 
             }
             catch (Exception e)
             {
-                return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during station update: {e.Message}", null);
+                return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during \"Station\" update: {e.Message}", null);
             }
             
         }
