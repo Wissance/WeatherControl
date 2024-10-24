@@ -194,6 +194,40 @@ Example of running different station update in Postman:
 
 ##### 3.2.4 Operations with Sensor resource
 
+Operation with Sensors are the same as for Sensor.
+
+1. Create Sensor - `POST ~/api/Sensor`, i.e.
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8058/api/Sensor' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Temperature sensor ЕТ1",
+  "description": "",
+  "latitude": "",
+  "longitude": "",
+  "stationId": "7004ccf8-8c6a-47dd-dd18-08dcf42ec6b0",
+  "measureUnitId": "7f319181-31d3-44ce-8371-08dcf37af278"
+}'
+```
+
+2. Update Sensor is similar to Create:
+```bash
+curl -X 'PUT' \
+  'http://127.0.0.1:8058/api/Sensor/cb018a8a-cb03-4dbd-2b3c-08dcf466fe52' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Temperature sensor ЕТ1",
+  "description": "Temperature sensor",
+  "latitude": "",
+  "longitude": "",
+  "stationId": "7004ccf8-8c6a-47dd-dd18-08dcf42ec6b0",
+  "measureUnitId": "7f319181-31d3-44ce-8371-08dcf37af278"
+}'
+```
+
 ##### 3.2.5 Operations with Measurement resource
 
 1. Create measurements

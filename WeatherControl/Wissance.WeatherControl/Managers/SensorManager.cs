@@ -63,7 +63,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
                 {
-                    return new OperationResultDto<SensorDto>(true, (int)HttpStatusCode.Created, null, SensorFactory.Create(existingSensor));
+                    return new OperationResultDto<SensorDto>(true, (int)HttpStatusCode.OK, null, SensorFactory.Create(existingSensor));
                 }
                 return new OperationResultDto<SensorDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during \"Sensor\" update", null);
             }

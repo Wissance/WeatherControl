@@ -24,11 +24,6 @@ namespace Wissance.WeatherControl.WebApi.Managers
             _modelContext = modelContext;
         }
 
-        /*public override Task<OperationResultDto<Tuple<IList<StationDto>, long>>> GetAsync(int page, int size, SortOption sorting = null, IDictionary<string, string> parameters = null)
-        {
-            return base.GetAsync(page, size, sorting, parameters);
-        }*/
-
         public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
         {
             try
