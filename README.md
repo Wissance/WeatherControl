@@ -243,17 +243,14 @@ Examples of usage:
 
 1. Create measurements
 
-`POST http://localhost:8058/api/measurements`
+`POST http://localhost:8058/api/measurement`
+One measurement is one sample of measuring some MeasureUnit, Measurement directly relates to Sensor, not MeasureUnit (this could be discussed)
 
 ```json
 {
 	"id": 0,
 	"timestamp": "2022-05-24T10:13:43",
-	"temperature": 16.1,
-	"pressure": 742.3,
-	"humidity": 60.5,
-	"windSpeed": 0.5,
-	"stationId": 1
+	"value": 16.1
 }
 ```
 
