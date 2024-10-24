@@ -17,7 +17,7 @@ namespace Wissance.WeatherControl.WebApi.Filters
             
             if (MeasureUnit.HasValue)
             {
-                filterParams.Add(new KeyValuePair<string, string>(FilterParamsNames.MeasureUnitParam, MeasureUnit.Value.ToString()));
+                filterParams.Add(new KeyValuePair<string, string>(FilterParamsNames.MeasureUnitParameter, MeasureUnit.Value.ToString()));
             }
 
             return filterParams;
@@ -26,7 +26,7 @@ namespace Wissance.WeatherControl.WebApi.Filters
         [FromQuery(Name = FilterParamsNames.StationParameter)]
         public Guid? Station { get; set; }
         
-        [FromQuery(Name = FilterParamsNames.MeasureUnitParam)]
+        [FromQuery(Name = FilterParamsNames.MeasureUnitParameter)]
         public Guid? MeasureUnit { get; set; }
     }
 }

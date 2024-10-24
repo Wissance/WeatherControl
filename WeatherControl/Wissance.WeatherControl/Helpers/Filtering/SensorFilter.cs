@@ -8,9 +8,9 @@ namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
     {
         public static bool Filter(SensorEntity entity, IDictionary<string, string> parameters)
         {
-            if (parameters.ContainsKey(FilterParamsNames.MeasureUnitParam))
+            if (parameters.ContainsKey(FilterParamsNames.MeasureUnitParameter))
             {
-                if (entity.MeasureUnitId.ToString() != parameters[FilterParamsNames.MeasureUnitParam])
+                if (entity.MeasureUnitId.ToString() != parameters[FilterParamsNames.MeasureUnitParameter])
                     return false;
             }
             

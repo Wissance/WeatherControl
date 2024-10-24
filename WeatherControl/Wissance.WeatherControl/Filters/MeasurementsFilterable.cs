@@ -27,8 +27,13 @@ namespace Wissance.WeatherControl.WebApi.Filters
             return additionalFilters;
         }
         
-        [FromQuery(Name = "from")] public DateTime? From { get; set; }
-        [FromQuery(Name = "to")] public DateTime? To { get; set; }
-        [FromQuery(Name = "station")] public int[] Station { get; set; }
+        [FromQuery(Name = "from")] 
+        public DateTimeOffset? From { get; set; }
+        
+        [FromQuery(Name = "to")] 
+        public DateTimeOffset? To { get; set; }
+        
+        [FromQuery(Name = "station")] 
+        public Guid[] Station { get; set; }
     }
 }

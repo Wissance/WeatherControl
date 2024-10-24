@@ -5,6 +5,7 @@ namespace Wissance.WeatherControl.WebApi.Filters
         public const string FromParameter = "from";
         public const string ToParameter = "to";
         public const string StationParameter = "station";
-        public const string MeasureUnitParam = "mu";
+        public const string MeasureUnitParameter = "mu";
+        public const string NameParameter = "name";
     }
 }
