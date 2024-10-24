@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -61,9 +62,11 @@ namespace Wissance.WeatherControl.WebApi.Managers
 
                 // Copy only name, description and positions, create measurements if necessary from MeasurementsManager
                 existingEntity.Name = entity.Name;
-                existingEntity.Description = existingEntity.Description;
-                existingEntity.Latitude = existingEntity.Latitude;
-                existingEntity.Longitude = existingEntity.Longitude;
+                existingEntity.Description = entity.Description;
+                existingEntity.Latitude = entity.Latitude;
+                existingEntity.Longitude = entity.Longitude;
+                // todo(UMV): add Sensors Update here after https://github.com/Wissance/WebApiToolkit/issues/31
+
                 int result = await _modelContext.SaveChangesAsync();
                 if (result >= 0)
                 {

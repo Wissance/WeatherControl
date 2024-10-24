@@ -136,8 +136,8 @@ We got a Operation result response:
     "message": null,
     "data": {
         "id": "7b5dab63-b9d9-4aac-dd19-08dcf42ec6b0",
-        "name": "Уфимская метеостанция",
-        "description": "Метеостанция в городе Уфа",
+        "name": "Ufa meteo station",
+	    "description": "Meteo station in Ufa city",
         "longitude": "55°96'0\"E",
         "latitude": "54°7'0\"N",
         "sensors": null
@@ -153,32 +153,48 @@ Example of station **with sensors** creation in postman (different from upper re
 
 2. Station data update (could be updated name, description and coordinates):
 
-`PUT http://localhost:8058/api/station/1`
+`PUT http://localhost:8058/api/station/9bea7375-b27a-4c48-ee97-08dcf4490c3f`
 
-Body and response are the same as at Create operation:
+Body and response are the same as at Create operation, unlike Sensors are not editable through `PUT`:
 ```json
 {
-	"id": 0,
-	"name": "Yekaterinburg main station",
-	"description": "Yekaterinburg meteo station (meteo mountain)",
-	"longitude": "60°37'55\"E",
-	"latitude": "56°49'36\"N"
+    "name": "Nizniy Tagil meteostation",
+    "description": "Nizniy Tagil meteostation (Sverdlovskaya region)",
+    "longitude": "60°07'0\"E",
+    "latitude": "57°88'0\"N",
+    "sensors": []
 }
 ```
-![Result of running update station](https://github.com/Wissance/WeatherControl/blob/master/docs/update_station_example.png)
+
+```bash
+curl -X 'PUT' \
+  'http://127.0.0.1:8058/api/Station/9bea7375-b27a-4c48-ee97-08dcf4490c3f' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "Nizniy Tagil meteostation",
+  "description": "Nizniy Tagil meteostation (Sverdlovskaya region)",
+  "longitude": "60°07'0\"E",
+  "latitude": "57°88'0\"N",
+  "sensors": []
+}'
+```
+
+Example of running different station update in Postman:
+![Result of running update station](docs/update_station_v1_example.png)
 
 3. There are two get endpoints:
 
-* 3.1 to get `one by id` - `GET http://localhost:8058/api/station/1`
+* 3.1 to get `one by id` - `GET http://localhost:8058/api/station/{id}`
 * 3.2 to get `collection with paging` - `GET http://localhost:8058/api/station/?page=1&size=10`
 
-  ![Result of running get stations](https://github.com/Wissance/WeatherControl/blob/master/docs/get_stations_with_paging.png)
+  ![Result of running get stations](docs/get_station_v1_example.png)
 
-4. To delete station with id 1 use endpoint `DELETE http://localhost:8058/api/station/1`
+4. To delete station with id `9bea7375-b27a-4c48-ee97-08dcf4490c3f` use endpoint `DELETE http://localhost:8058/api/station/9bea7375-b27a-4c48-ee97-08dcf4490c3f`
 
 ##### 3.2.4 Operations with Sensor resource
 
-##### 3.2.4 Operations with Measurement resource
+##### 3.2.5 Operations with Measurement resource
 
 1. Create measurements
 
