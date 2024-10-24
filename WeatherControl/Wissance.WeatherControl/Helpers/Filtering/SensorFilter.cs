@@ -10,12 +10,14 @@ namespace Wissance.WeatherControl.WebApi.Helpers.Filtering
         {
             if (parameters.ContainsKey(FilterParamsNames.MeasureUnitParam))
             {
-                return entity.MeasureUnitId.ToString() == parameters[FilterParamsNames.MeasureUnitParam];
+                if (entity.MeasureUnitId.ToString() != parameters[FilterParamsNames.MeasureUnitParam])
+                    return false;
             }
             
             if (parameters.ContainsKey(FilterParamsNames.StationParameter))
             {
-                return entity.StationId.ToString() == parameters[FilterParamsNames.StationParameter];
+                if (entity.StationId.ToString() != parameters[FilterParamsNames.StationParameter])
+                    return false;
             }
 
             return true;

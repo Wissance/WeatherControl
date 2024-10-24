@@ -228,6 +228,17 @@ curl -X 'PUT' \
 }'
 ```
 
+3. There are two get endpoints:
+
+* 3.1 to get `one by id` - `GET http://localhost:8058/api/sensor/{id}`
+* 3.2 to get `collection with paging` - `GET http://localhost:8058/api/station/?page=1&size=10` with 2 additional params:
+  - station (Guid) for filterong Sensors by relation to station
+  - mu (Guid) for filterong Sensors by MeasureUnit
+  
+Examples of usage:
+* Get multiple for MeasureUnit with id `7f319181-31d3-44ce-8371-08dcf37af278` - `http://127.0.0.1:8058/api/Sensor?mu=7f319181-31d3-44ce-8371-08dcf37af278`
+* Get multiple for MeasureUnit and Station `http://127.0.0.1:8058/api/Sensor?station=9694eacb-6470-46c2-dd1a-08dcf42ec6b0&mu=7f319181-31d3-44ce-8371-08dcf37af278`
+
 ##### 3.2.5 Operations with Measurement resource
 
 1. Create measurements
