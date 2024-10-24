@@ -8,7 +8,6 @@ using Wissance.WebApiToolkit.Data;
 
 namespace Wissance.WeatherControl.WebApi.Controllers
 {
-    [ApiController]
     public class StationController : BasicCrudController<StationDto, StationEntity, Guid, EmptyAdditionalFilters>
     {
         public StationController(StationManager manager)

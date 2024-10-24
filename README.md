@@ -29,9 +29,7 @@ These projects targets multiple platforms - `netcore 3.1`, `net6` and `net8`.
 #### 3.1 Application Overview
 
 
-
-Web API REST service (.Net Core) that could store weather data from multiple weather station with multiple sensors, assume that typical meteostation store/manage following physical value measurements getting from
-appropriate sensors:
+Web API (REST) service (.Net Core) that could store weather data from multiple weather station with multiple sensors, assume that typical meteo stations store/manage following physical value measurements getting from appropriate sensors:
 * `temperature`;
 * `atmosphere pressure`;
 * `humidity`;
@@ -45,21 +43,15 @@ Application uses `MsSql` (`Sql Server`) as Database Server (this could be easily
 2. `Sensor`
 3. `MeasureUnit`
 4. `Measurement`
+ 
+Here is relations between objects in SQL database:
+![Relation between objects in SQL DB](docs/sql_db_model.png)
 
 #### 3.2 Overall usage scenario
 
-This is a **very simple application (demo)**, if any feature is needed open new issue.
+This is a **very simple application (demo)**, if any feature is needed open new issue/request. Every `REST` resource described in a separate sub chapter.
 
-1. Application client create one or multiple station using Station (`/api/station`) resource (CRUD)
-2. Client interacts with station, gets it measured data and store it using Measurements (`/api/measurements`) 
-   resource (CRUD)
-
-##### 3.2.1 Example of usage
-
-It should be noted that Postman Requests stored in docs folder
-You could also use `Swagger` - `~/swagger/index.html`, i.e. `http://127.0.0.1:8058/swagger/index.html` to see contracts, parameters, responses an so on.
-
-##### 3.2.2 Operation with measure unit
+##### 3.2.1 Operation with measure unit
 
 First we should configure what we would like to measure, we could do it via `POST` `~/api/MeasureUnit` with body i.e.:
 
@@ -107,7 +99,7 @@ curl -X 'PUT' \
 Or get multiple objects - `GET` `~/api/MeasureUnit`
 
 
-##### 3.2.3 Operations with Station resource
+##### 3.2.2 Operations with Station resource
 
 1. Create Station:
 
@@ -115,15 +107,27 @@ Or get multiple objects - `GET` `~/api/MeasureUnit`
 
 ```json
 {
-	"id": 0,
-	"name": "Yekaterinburg main station",
-	"description": "Yekaterinburg meteo station (meteo mountain)",
-	"longitude": "60°37'55\"E",
-	"latitude": "56°49'36\"N"
+	"name": "Ufa meteo station",
+	"description": "Meteo station in Ufa city",
+	"longitude": "55°96'0\"E",
+	"latitude": "54°7'0\"N",
+	"sensors": []
 }
 ```
 
-![Result of running create station](https://github.com/Wissance/WeatherControl/blob/master/docs/create_station_example.png)
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8058/api/Station' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+	"name": "Ufa meteo station",
+	"description": "Meteo station in Ufa city",
+	"longitude": "55°96'\''0\"E",
+    "latitude": "54°7'\''0\"N",
+	"sensors": []
+}'
+```
 
 We got a Operation result response:
 ```json
@@ -131,14 +135,18 @@ We got a Operation result response:
     "success": true,
     "message": null,
     "data": {
-        "id": 1,
-        "name": "Yekaterinburg main station",
-        "description": "Yekaterinburg meteo station (meteo mountain)",
-        "longitude": "60°37'55\"E",
-        "latitude": null
+        "id": "7b5dab63-b9d9-4aac-dd19-08dcf42ec6b0",
+        "name": "Уфимская метеостанция",
+        "description": "Метеостанция в городе Уфа",
+        "longitude": "55°96'0\"E",
+        "latitude": "54°7'0\"N",
+        "sensors": null
     }
 }
 ```
+
+Example in postman (different from upper requests)
+![Result of running create station](docs/create_station_v1_example.png)
 
 2. Station data update (could be updated name, description and coordinates):
 

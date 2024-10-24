@@ -8,11 +8,11 @@ namespace Wissance.WeatherControl.Dto
     {
         public StationDto()
         {
-            Sensors = new List<SensorMinData>();
+            Sensors = new SensorMinData[]{};
         }
 
         public StationDto(Guid id, string name, string description, string longitude, string latitude,
-            IList<SensorMinData> sensors)
+            SensorMinData[] sensors)
         {
             Id = id;
             Name = name;
@@ -27,6 +27,6 @@ namespace Wissance.WeatherControl.Dto
         public string Description { get; set; }
         public string Longitude { get; set; }
         public string Latitude { get; set; }
-        public IList<SensorMinData> Sensors { get; set; }
+        public SensorMinData[] Sensors { get; set; }
     }
 }
