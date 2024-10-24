@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Wissance.WeatherControl.Dto
 {
-    public class SensorDto : SensorMinData
+    public class SensorDto : SensorMinDataDto
     {
         public SensorDto()
         {

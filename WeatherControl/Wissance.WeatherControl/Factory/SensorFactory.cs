@@ -19,7 +19,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return entity;
         }
 
-        public static SensorEntity Create(SensorMinData dto)
+        public static SensorEntity Create(SensorMinDataDto dto)
         {
             SensorEntity entity = new SensorEntity()
             {
@@ -37,6 +37,20 @@ namespace Wissance.WeatherControl.WebApi.Factory
         public static SensorDto Create(SensorEntity entity)
         {
             return new SensorDto()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                Description = entity.Description,
+                Latitude = entity.Latitude,
+                Longitude = entity.Longitude,
+                StationId = entity.StationId,
+                MeasureUnitId = entity.MeasureUnitId
+            };
+        }
+        
+        public static SensorMinDataDto CreateMin(SensorEntity entity)
+        {
+            return new SensorMinDataDto()
             {
                 Id = entity.Id,
                 Name = entity.Name,

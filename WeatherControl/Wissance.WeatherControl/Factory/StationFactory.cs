@@ -15,7 +15,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 entity.Latitude, null);
             if (entity.Sensors != null)
             {
-                entity.Sensors.Select(s => SensorFactory.Create(s)).ToList();
+                dto.Sensors = entity.Sensors.Select(s => SensorFactory.CreateMin(s)).ToArray();
             }
 
             return dto;

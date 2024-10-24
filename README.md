@@ -51,7 +51,7 @@ Here is relations between objects in SQL database:
 
 This is a **very simple application (demo)**, if any feature is needed open new issue/request. Every `REST` resource described in a separate sub chapter.
 
-##### 3.2.1 Operation with measure unit
+##### 3.2.1 Operation with MeasureUnit resource
 
 First we should configure what we would like to measure, we could do it via `POST` `~/api/MeasureUnit` with body i.e.:
 
@@ -145,8 +145,11 @@ We got a Operation result response:
 }
 ```
 
-Example in postman (different from upper requests)
+Example of station creation postman (different from upper requests)
 ![Result of running create station](docs/create_station_v1_example.png)
+
+Example of station **with sensors** creation in postman (different from upper requests)
+![Result of running create station](docs/create_station_v1_with_sensors_example.png)
 
 2. Station data update (could be updated name, description and coordinates):
 
@@ -173,7 +176,9 @@ Body and response are the same as at Create operation:
 
 4. To delete station with id 1 use endpoint `DELETE http://localhost:8058/api/station/1`
 
-##### 3.2.3 Operations with measurements resource
+##### 3.2.4 Operations with Sensor resource
+
+##### 3.2.4 Operations with Measurement resource
 
 1. Create measurements
 

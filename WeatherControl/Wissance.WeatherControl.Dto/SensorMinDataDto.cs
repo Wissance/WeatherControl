@@ -2,13 +2,13 @@ using System;
 
 namespace Wissance.WeatherControl.Dto
 {
-    public class SensorMinData
+    public class SensorMinDataDto
     {
-        public SensorMinData()
+        public SensorMinDataDto()
         {
         }
         
-        public SensorMinData(Guid id, string name, string description, string latitude, string longitude, 
+        public SensorMinDataDto(Guid id, string name, string description, string latitude, string longitude, 
             Guid stationId, Guid measureUnitId)
         {
             Id = id;
