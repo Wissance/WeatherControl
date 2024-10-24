@@ -229,7 +229,7 @@ We got following result in the output:
 
 ### 4. REST API With EdgeDB
 
-Here we've got a `net6.0` `REST` Service that have a slightly different data model:
+Here we've got a `net6.0` `REST` Service that have the same model as previous service but persistent storage is EdgeDB not an SQL Server.
 
 * `MeasureUnit`
 * `Measurement`
@@ -287,7 +287,7 @@ you could see your project credential on `Windows` machine in a directory:
 We are having following Key Items:
 
 1. `Controllers` - we are using base classes from a `Wissance.WebApiToollit`, in this lib we have
-   eithther controllers for read-only and for full `CRUD` resources.
+   either controllers for read-only and for full `CRUD` resources.
 2. `Managers` - classes that are responsible for manage all business logic, in this project we have
    only one manager class - `EdgeDbManager` that is common for `CRUD` operation over all resources 
 3. `EqlResolver` - class that is responsible for association `model` (`resource`) with operation
@@ -333,9 +333,9 @@ Just a set of dictionaries every dictionary for one operation:
 * update
 * delete
 
-##### 4.2.4 Factories for objects convertion
+##### 4.2.4 Factories for objects transformation
 
-They are static classes in a `Factories` dicrectory, the looking quite simple:
+They are static classes in a `Factories` directory, the looking quite simple:
 
 ```csharp
 namespace Wissance.WeatherControl.WebApi.V2.Factories
