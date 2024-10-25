@@ -1,8 +1,8 @@
 using System;
 using EdgeDB;
 using Wissance.WeatherControl.Dto.V2;
-using Wissance.WeatherControl.GraphData;
-using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.EdgeDb.Data;
+using Wissance.WeatherControl.EdgeDb.Data.Entity;
 using Wissance.WeatherControl.WebApi.V2.Factories;
 using Wissance.WeatherControl.WebApi.V2.Managers;
 using Wissance.WebApiToolkit.Controllers;

@@ -2,12 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Wissance.WeatherControl.GraphData</RootNamespace>
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="EdgeDB.Net.Driver" Version="1.2.3" />
 		<PackageReference Include="Wissance.WebApiToolkit" Version="1.6.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj" />
 	</ItemGroup>
     
 	<!--

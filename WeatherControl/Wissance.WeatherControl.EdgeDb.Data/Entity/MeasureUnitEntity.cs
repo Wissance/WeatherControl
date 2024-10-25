@@ -1,14 +1,10 @@
 ﻿using System;
 using EdgeDB;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wissance.WebApiToolkit.Data.Entity;
+using Wissance.WeatherControl.Data.Model;
 
-namespace Wissance.WeatherControl.GraphData.Entity
+namespace Wissance.WeatherControl.EdgeDb.Data.Entity
 {
-    public class MeasureUnitEntity : IModelIdentifiable<Guid>
+    public class MeasureUnitEntity : IMeasureUnit
     {
         //todo(UMV): add constructor with parameters
         public MeasureUnitEntity()

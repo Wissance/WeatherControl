@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Wissance.WeatherControl.Dto.V2;
-using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.EdgeDb.Data.Entity;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {
     public static class MeteoStationFactory
     {
-        public static MeteoStationDto Create(MeteoStationEntity entity)
+        public static MeteoStationDto Create(StationEntity entity)
         {
             MeteoStationDto dto = new MeteoStationDto()
             {

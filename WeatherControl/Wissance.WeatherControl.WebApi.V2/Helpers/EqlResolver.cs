@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Wissance.WeatherControl.GraphData;
+using Wissance.WeatherControl.EdgeDb.Data;
 using Wissance.WebApiToolkit.Data;
 
 
@@ -113,7 +113,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.MeasureUnit,  "SELECT count ((SELECT MeasureUnit {{id}}))"},
             {ModelType.Measurement,  "SELECT count ((SELECT Measurement {{id}}))"},
             {ModelType.Sensor ,      "SELECT count ((SELECT Sensor {{id}}))"},
-            {ModelType.MeteoStation, "SELECT count ((SELECT MeteoStation {{id}}))" }
+            {ModelType.Station, "SELECT count ((SELECT MeteoStation {{id}}))" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
@@ -121,7 +121,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.MeasureUnit,  "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
+            {ModelType.Station, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithFilterById = new Dictionary<ModelType, string>()
@@ -135,7 +135,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.MeasureUnit, @"SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$id"},
             {ModelType.Measurement, @"SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} FILTER .id = <uuid>$id"},
             {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} FILTER .id = <uuid>$id"},
-            {ModelType.MeteoStation, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} FILTER .id = <uuid>$id" }
+            {ModelType.Station, "SELECT MeteoStation {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} FILTER .id = <uuid>$id" }
         };
 
         private readonly IDictionary<ModelType, string> _insertQuery = new Dictionary<ModelType, string>()
@@ -144,7 +144,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.Measurement, @"INSERT Measurement {{id:=<uuid>$id, SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
                                      "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"},
             {ModelType.Sensor, "INSERT Sensor {{id:=<uuid>$id, Name:=<str>$Name, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"},
-            {ModelType.MeteoStation, "INSERT MeteoStation {{id:=<uuid>$id, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
+            {ModelType.Station, "INSERT MeteoStation {{id:=<uuid>$id, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
         };
         
         private readonly IDictionary<ModelType, string> _bulkInsertQuery = new Dictionary<ModelType, string>()
@@ -156,7 +156,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             {ModelType.Measurement, @"UPDATE Measurement FILTER .id = <uuid>$id SET {{ SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value) }}"},
             {ModelType.Sensor, "UPDATE Sensor FILTER .id = <uuid>$id SET {{ Name:=<str>$Name, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, Measurements:=(SELECT Measurement FILTER .id IN array_unpack(<array<uuid>>$Measurements) ) }}"},
-            {ModelType.MeteoStation, "UPDATE MeteoStation FILTER .id = <uuid>$id SET {{ Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, Sensors:=(SELECT Sensor FILTER .id IN array_unpack(<array<uuid>>$Sensors) ) }}"},
+            {ModelType.Station, "UPDATE MeteoStation FILTER .id = <uuid>$id SET {{ Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, Sensors:=(SELECT Sensor FILTER .id IN array_unpack(<array<uuid>>$Sensors) ) }}"},
         };
         
         private readonly IDictionary<ModelType, string> _bulkUpdateQuery = new Dictionary<ModelType, string>()
@@ -169,7 +169,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             {ModelType.Measurement, @"DELETE Measurement FILTER .id = <uuid>$id"},
             {ModelType.Sensor, @"DELETE Sensor FILTER .id = <uuid>$id"},
-            {ModelType.MeteoStation, @"DELETE MeteoStation FILTER .id = <uuid>$id"}
+            {ModelType.Station, @"DELETE MeteoStation FILTER .id = <uuid>$id"}
         };
         
         private readonly IDictionary<ModelType, string> _deleteManyWithFilterById = new Dictionary<ModelType, string>()

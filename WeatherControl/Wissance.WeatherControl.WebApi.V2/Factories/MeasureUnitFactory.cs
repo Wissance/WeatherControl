@@ -1,5 +1,5 @@
 ﻿using Wissance.WeatherControl.Dto.V2;
-using Wissance.WeatherControl.GraphData.Entity;
+using Wissance.WeatherControl.EdgeDb.Data.Entity;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {

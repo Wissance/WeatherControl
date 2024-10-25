@@ -1,10 +1,10 @@
-namespace Wissance.WeatherControl.GraphData
+namespace Wissance.WeatherControl.EdgeDb.Data
 {
     public enum ModelType
     {
         MeasureUnit,
         Measurement,
         Sensor,
-        MeteoStation
+        Station
     }
 }
