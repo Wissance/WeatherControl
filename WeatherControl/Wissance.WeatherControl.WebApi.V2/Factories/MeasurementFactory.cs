@@ -15,7 +15,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             {
                 Id = entity.Id,
                 SampleDate = entity.SampleDate,
-                MeasureUnitId = entity.Unit.Id,
+                // MeasureUnitId = entity.Unit.Id,
                 SensorId = entity.Sensor.Id,
                 Value = entity.Value
             };

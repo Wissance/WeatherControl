@@ -16,8 +16,8 @@ namespace Wissance.WeatherControl.EdgeDb.Data.Entity
         public Guid Id { get; set; }
         [EdgeDBProperty("SampleDate")]
         public DateTimeOffset SampleDate { get; set; }
-        [EdgeDBProperty("Unit")]
-        public MeasureUnitEntity Unit { get; set; }
+        //[EdgeDBProperty("Unit")]
+        //public MeasureUnitEntity Unit { get; set; }
         [EdgeDBProperty("Value")]
         public decimal Value { get; set; }
         [EdgeDBProperty("Sensor")]
