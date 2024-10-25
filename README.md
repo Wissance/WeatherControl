@@ -248,9 +248,9 @@ One measurement is one sample of measuring some MeasureUnit, Measurement directl
 
 ```json
 {
-	"id": 0,
-	"timestamp": "2022-05-24T10:13:43",
-	"value": 16.1
+    "SampleDate": "2024-10-25T12:10:00",
+    "Value": 7.45,
+    "SensorId": "cb018a8a-cb03-4dbd-2b3c-08dcf466fe52"
 }
 ```
 
@@ -260,30 +260,27 @@ We got following result in the output:
     "success": true,
     "message": null,
     "data": {
-        "id": 1,
-        "timestamp": "2022-05-24T10:13:43",
-        "temperature": 16.1,
-        "pressure": 742.3,
-        "humidity": 60.5,
-        "windSpeed": 0.5,
-        "stationId": 1
+        "id": "af27b058-4f6b-46f3-ff6b-08dcf4c8e236",
+        "sampleDate": "2024-10-25T12:10:00+05:00",
+        "value": 7.45,
+        "sensorId": "cb018a8a-cb03-4dbd-2b3c-08dcf466fe52"
     }
 }
 ```
 
-![Result of running create measurements](https://github.com/Wissance/WeatherControl/blob/master/docs/create_measurements.png)
+![Result of running create measurements](docs/create_measurement_v1_example.png)
 
 2. Update measurements: one or any number of weather parameters could be changed using 
-   `PUT http://localhost:8058/api/measurements/1` with same body and result as at create measurements operation.
+   `PUT http://localhost:8058/api/measurements/af27b058-4f6b-46f3-ff6b-08dcf4c8e236` with same body and result as at create measurements operation.
    
-![Result of running update measurements](https://github.com/Wissance/WeatherControl/blob/master/docs/update_measurements.png)
+![Result of running update measurements](docs/update_measurement_v1_example.png)
    
 3. There are two get operations:
 
-* 3.1 to get one by id `GET http://localhost:8058/api/measurements/1`
+* 3.1 to get one by id `GET http://localhost:8058/api/measurements/af27b058-4f6b-46f3-ff6b-08dcf4c8e236`
 * 3.2 to get collection with paging `GET http://localhost:8058/api/measurements/?page=1&size=10`
 
-4. To delete measurements with id 1 use endpoint `DELETE http://localhost:8058/api/measurements/1`
+4. To delete measurements with id 1 use endpoint `DELETE http://localhost:8058/api/measurements/af27b058-4f6b-46f3-ff6b-08dcf4c8e236`
 
 ### 4. REST API With EdgeDB
 

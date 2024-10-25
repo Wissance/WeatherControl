@@ -11,7 +11,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
     {
         public static MeasurementDto Create(MeasurementEntity entity)
         {
-            return new MeasurementDto(entity.Id, entity.SampleDate, entity.Value, null);
+            return new MeasurementDto(entity.Id, entity.SampleDate, entity.Value, entity.SensorId);
         }
 
         public static MeasurementEntity Create(MeasurementDto dto)
@@ -19,7 +19,8 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return new MeasurementEntity()
             {
                 Value = dto.Value,
-                SampleDate = dto.SampleDate
+                SampleDate = dto.SampleDate,
+                SensorId = dto.SensorId.HasValue ? dto.SensorId.Value : Guid.Empty
             };
         }
     }

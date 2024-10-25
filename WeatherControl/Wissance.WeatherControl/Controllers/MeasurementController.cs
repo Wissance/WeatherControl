@@ -10,10 +10,10 @@ using Wissance.WebApiToolkit.Controllers;
 
 namespace Wissance.WeatherControl.WebApi.Controllers
 {
-    public class MeasurementsController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid, 
+    public class MeasurementController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid, 
         MeasurementsFilterable>
     {
-        public MeasurementsController(MeasurementManager manager)
+        public MeasurementController(MeasurementManager manager)
         {
             Manager = manager;  // this is for basic operations
             _manager = manager; // this for extended operations

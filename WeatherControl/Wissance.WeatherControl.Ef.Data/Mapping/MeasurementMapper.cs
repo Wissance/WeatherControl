@@ -7,7 +7,7 @@ using Wissance.WeatherControl.Data.Entity;
 
 namespace Wissance.WeatherControl.Data.Mapping
 {
-    internal static class MeasurementsMapper
+    internal static class MeasurementMapper
     {
         public static void Map(this EntityTypeBuilder<MeasurementEntity> builder)
         {
