@@ -20,7 +20,7 @@ module default {
         required property Latitude -> str;
     }
 
-    type MeteoStation {
+    type Station {
         required property Longitude -> str;
         required property Latitude -> str;
         multi link Sensors -> Sensor;
