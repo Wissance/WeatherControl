@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Wissance.WeatherControl.Dto.V2;
+using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.EdgeDb.Data.Entity;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
 
@@ -28,7 +28,6 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             {
                 {"SampleDate", dto.SampleDate},
                 {"Value", dto.Value.ToString()},
-                {"MeasureUnitId", dto.MeasureUnitId},
                 {"SensorId", dto.SensorId}
             };
             

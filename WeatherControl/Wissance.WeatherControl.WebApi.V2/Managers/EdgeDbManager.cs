@@ -7,7 +7,6 @@ using System.Text.Json;
 using System.Threading;
 using Wissance.WebApiToolkit.Data.Entity;
 using Wissance.WebApiToolkit.Managers;
-using Wissance.WeatherControl.Dto.V2;
 using EdgeDB;
 using System.Threading.Tasks;
 using Wissance.WeatherControl.EdgeDb.Data;

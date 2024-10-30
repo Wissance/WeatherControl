@@ -1,3 +1,4 @@
+
 using System;
 using EdgeDB;
 using Wissance.WeatherControl.Dto;
@@ -10,13 +11,12 @@ using Wissance.WebApiToolkit.Controllers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Controllers
 {
-    public class MeasurementSeriesController : BasicBulkCrudController<MeasurementDto, MeasurementEntity, Guid, 
-        MeasurementsFilterable>
+    public class StationController : BasicCrudController<StationDto, StationEntity, Guid, StationFilterable>
     {
-        public MeasurementSeriesController(EdgeDBClient edgeDbClient)
+        public StationController(EdgeDBClient edgeDbClient)
         {
-            Manager = new EdgeDbManager<MeasurementDto, MeasurementEntity, Guid>(ModelType.Measurement, edgeDbClient,
-                MeasurementFactory.Create, MeasurementFactory.Create);
+            Manager = new EdgeDbManager<StationDto, StationEntity, Guid>(ModelType.Station, edgeDbClient,
+                StationFactory.Create, StationFactory.Create);
         }
     }
 }

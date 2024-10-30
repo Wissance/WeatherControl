@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Wissance.WeatherControl.Dto.V2;
+using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.EdgeDb.Data.Entity;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
 
 namespace Wissance.WeatherControl.WebApi.V2.Factories
 {
-    public static class SensorFactory
+    internal static class SensorFactory
     {
         public static SensorDto Create(SensorEntity entity)
         {
@@ -32,10 +32,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             IDictionary<string, object?> dict = new Dictionary<string, object?>()
             {
                 {"Name", dto.Name},
+                {"Description", dto.Description},
                 {"Latitude", dto.Latitude},
-                {"Longitude", dto.Longitude},
-                {"Measurements", dto.Measurements.Where(m => m.Id.HasValue)
-                    .Select(m => m.Id.Value).ToArray()}
+                {"Longitude", dto.Longitude}
             };
             
             // TODO(this if for further getting created object)

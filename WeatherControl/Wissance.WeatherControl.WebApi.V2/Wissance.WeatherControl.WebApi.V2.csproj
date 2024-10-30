@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wissance.WeatherControl.Dto.V2\Wissance.WeatherControl.Dto.V2.csproj" />
+    <ProjectReference Include="..\Wissance.WeatherControl.Dto\Wissance.WeatherControl.Dto.csproj" />
     <ProjectReference Include="..\Wissance.WeatherControl.EdgeDb.Data\Wissance.WeatherControl.EdgeDb.Data.csproj" />
   </ItemGroup>
   <!--
