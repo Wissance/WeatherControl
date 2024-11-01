@@ -81,7 +81,7 @@ namespace Wissance.WeatherControl.WebApi.V2
                 ConnectionTimeout = 5000,
                 MessageTimeout = 10000
             };
-            services.ConfigureEdgeDbDatabase("192.168.119,128", Settings.Database.ProjectName, poolCfg,
+            services.ConfigureEdgeDbDatabase("192.168.119.128", Settings.Database.ProjectName, poolCfg,
                 new []{"."}, true);
             // services.ConfigureEdgeDbDatabase();
         }
