@@ -48,6 +48,12 @@ namespace Wissance.WeatherControl.WebApi.V2
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", AppName);
+            });
 
             app.UseRouting();
 
@@ -83,11 +89,11 @@ namespace Wissance.WeatherControl.WebApi.V2
             };
             services.ConfigureEdgeDbDatabase("192.168.119.128", Settings.Database.ProjectName, poolCfg,
                 new []{"."}, true);
-            // services.ConfigureEdgeDbDatabase();
         }
 
         private void ConfigureWebApi(IServiceCollection services)
         {
+            services.AddSwaggerGen();
             services.AddControllers();
         }
 
@@ -95,6 +101,6 @@ namespace Wissance.WeatherControl.WebApi.V2
         private IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
         
-        private const string EdgeDbConnStrTemplate = "edgedb://{0}:{1}@{2}:{3}/{4}";
+        private const string AppName = "Wissance.WeatherControl";
     }
 }
