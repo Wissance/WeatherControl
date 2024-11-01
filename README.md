@@ -6,12 +6,12 @@ This project uses [`Wissance.WebApiToolkit`](https://github.com/Wissance/WebApiT
 
 ### 1. General description
 
-This project is a **tutorial** about how to design `REST API` using `C#`, but it is also fully functional `Web API` (`REST`) for working with meteorological stations or with indoor conditions with sensors of any type.
+This project from the one side is a **tutorial** about how to design `REST API` using `C#`, but from the other side it is also fully functional `Web API` (`REST`) for working with meteorological stations or with indoor conditions sensors.
 
 1. `REST API` with `EntityFramework` `ORM` - `Wissance.WeatherControl.WebApi` project
 2. `REST API` with `EdgeDb` `Graph DB` - `Wissance.WeatherControl.WebApi.V2` project
 
-These 2 Project Had different data Model until version `2.0` (`1.x`, last - `1.6`), starting from `2.0` they have the same data model.
+These 2 Project previously having had (< `2.0`) different data Model, but starting from `2.0` they have the same data model.
 
 These projects targets multiple platforms - `netcore 3.1`, `net6` and `net8`.
 
@@ -28,8 +28,7 @@ These projects targets multiple platforms - `netcore 3.1`, `net6` and `net8`.
 
 #### 3.1 Application Overview
 
-
-Web API (REST) service (.Net Core) that could store weather data from multiple weather station with multiple sensors, assume that typical meteo stations store/manage following physical value measurements getting from appropriate sensors:
+Web API (REST) service (.Net Core) could store weather data from multiple weather station with multiple (any number) sensors, typically meteo stations store/manage following physical value measurements getting from appropriate sensors:
 * `temperature`;
 * `atmosphere pressure`;
 * `humidity`;
@@ -298,6 +297,8 @@ Data project is `Wissance.WeatherControl.GraphData`
 
 #### 4.1 Configure Edge DB (Prerequisites)
 
+0. Configure EdgeDB to set Id explicitly
+
 1. Start `Edgedb` instance from `Wissance.WeatherControl.GraphData` directory
 
 ```ps1
@@ -374,8 +375,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Controllers
 
 We have only one manager for all controllers due to the power of C# generics we just have to pass
 to `EdgeDbManager`:
-* `modelType` that is using to find approptiate eql statements from `EqlResolver`
-* `EdgeDbClient` client to edgedb database
+* `modelType` that is using to find appropriate eql statements from `EqlResolver`
+* `EdgeDbClient` client to `edgedb` database
 * and 2 delegates that describes how to create representation (`DTO`) from model and how to convert
   `DTO` to parameters list for `insert` and `update` operations
   
