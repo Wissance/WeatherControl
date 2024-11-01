@@ -15,6 +15,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                Description = entity.Description,
                 Latitude = entity.Latitude,
                 Longitude = entity.Longitude
             };
