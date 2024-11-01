@@ -7,7 +7,6 @@ module default {
     }
 
     type Measurement {
-        required link Unit -> MeasureUnit;
         required property SampleDate -> datetime;
         required property Value -> decimal;
         link Sensor -> Sensor;
@@ -15,6 +14,7 @@ module default {
 
     type Sensor {
         required property Name -> str;
+        required link Unit -> MeasureUnit;
         multi link Measurements -> Measurement;
         required property Longitude -> str;
         required property Latitude -> str;
