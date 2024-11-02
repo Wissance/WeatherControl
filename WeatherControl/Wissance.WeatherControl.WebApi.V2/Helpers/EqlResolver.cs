@@ -120,7 +120,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             {ModelType.MeasureUnit,  "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Station:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}}, Unit:{{id, Name, Abbreviation}}, Station:{{id}} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Description, Latitude, Longitude, Measurements:{{id, SampleDate, Value}}, Unit:{{id, Name, Abbreviation}}, Station:{{id}} }} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Station, "SELECT Station {{id, Name, Description, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
         };
 

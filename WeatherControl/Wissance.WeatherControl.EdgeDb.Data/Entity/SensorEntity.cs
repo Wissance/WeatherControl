@@ -28,8 +28,11 @@ namespace Wissance.WeatherControl.EdgeDb.Data.Entity
         
         [EdgeDBProperty("Longitude")]
         public string Longitude { get; set; }
+        
+        [EdgeDBProperty("Station")]
+        public StationEntity Station { get; set; }
 
-        [EdgeDBProperty("MeasureUnit")]
+        [EdgeDBProperty("Unit")]
         public MeasureUnitEntity MeasureUnit { get; set; }
 
         [EdgeDBProperty("Measurements")]

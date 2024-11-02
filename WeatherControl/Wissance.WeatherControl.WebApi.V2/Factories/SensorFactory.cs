@@ -17,7 +17,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
                 Name = entity.Name,
                 Description = entity.Description,
                 Latitude = entity.Latitude,
-                Longitude = entity.Longitude
+                Longitude = entity.Longitude,
+                MeasureUnitId = entity.MeasureUnit.Id,
+                StationId = entity.Station.Id
             };
 
             if (entity.Measurements.Any())
