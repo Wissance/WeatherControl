@@ -151,7 +151,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         
         private readonly IDictionary<ModelType, string> _bulkInsertQuery = new Dictionary<ModelType, string>()
         {
-            { ModelType.Measurement, @"FOR x IN {{json_array_unpack(<json>$data) }} UNION (INSERT Measurement {{id:=<uuid>x['id'], SampleDate:=<datetime>x['SampleDate'], Value:=to_decimal(<str>x['Value']), Unit:=(SELECT MeasureUnit {{id}} FILTER .id = <uuid>x['MeasureUnitId']), Sensor:=(SELECT Sensor {{id}} FILTER .id = <uuid>x['SensorId']  LIMIT 1) }});"}
+            { ModelType.Measurement, @"FOR x IN {{json_array_unpack(<json>$data) }} UNION (INSERT Measurement {{id:=<uuid>x['id'], SampleDate:=<datetime>x['SampleDate'], Value:=to_decimal(<str>x['Value']), Sensor:=(SELECT Sensor {{id}} FILTER .id = <uuid>x['SensorId']  LIMIT 1) }});"}
         };
 
         private readonly IDictionary<ModelType, string> _updateQuery = new Dictionary<ModelType, string>()

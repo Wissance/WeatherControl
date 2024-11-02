@@ -326,18 +326,21 @@ edgedb ui
 
 Once you loaded project you could use it in current application:
 
-1. Add proper connection string in the database section in `appsettings.Development.json`config file:
+1. Add proper Project Name in `appsettings.Development.json`config file:
 ```json
 "Application": {
     "Database": {
-      "ConnStr": "edgedb://edgedb:VcJjK6blkKAV2MUTdJXzLPvS@localhost:10702/edgedb"
-    }
+      "ProjectName": "Wissance_WeatherControl"
   }
+}
 ```
 
-configuration string must have the following scheme: `edgedb://user:password@host:port/database`
-you could see your project credential on `Windows` machine in a directory:
-`%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
+See how configuration works via project Name [here](https://github.com/Wissance/EdgeDb.Net.Configurator)
+
+This package build connnection string using following scheme: `edgedb://user:password@host:port/database`
+you could see your project credential on:
+* `Windows` machine in a directory: `%USER_PROFILE%\AppData\Local\EdgeDB\config\credentials`
+* `Linux` machine in a directory `$HOME/.config/edgedb/credential`
 
 #### 4.2 REST API With Edge DB
 
@@ -360,7 +363,7 @@ All controllers are located in a folder `Controllers`, just look how simply look
 ```csharp
 namespace Wissance.WeatherControl.WebApi.V2.Controllers
 {
-    public class MeasurementController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid>
+    public class MeasurementController : BasicCrudController<MeasurementDto, MeasurementEntity, Guid, , MeasureUnitFilterable>
     {
         public MeasurementController(EdgeDBClient edgeDbClient)
         {
