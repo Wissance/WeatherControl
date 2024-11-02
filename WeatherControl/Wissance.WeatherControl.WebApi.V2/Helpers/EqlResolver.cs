@@ -119,9 +119,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         private readonly IDictionary<ModelType, string> _selectManyWithLimitsQueries = new Dictionary<ModelType, string>()
         {
             {ModelType.MeasureUnit,  "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.Station, "SELECT Station {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
+            {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Station:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}, Station:{{id}} }} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Station, "SELECT Station {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
         };
 
         private readonly IDictionary<ModelType, string> _selectManyWithFilterById = new Dictionary<ModelType, string>()
@@ -135,7 +135,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             {ModelType.MeasureUnit, @"SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$id"},
             {ModelType.Measurement, @"SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Longitude, Latitude}} }} FILTER .id = <uuid>$id"},
             {ModelType.Sensor , "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} FILTER .id = <uuid>$id"},
-            {ModelType.Station, "SELECT Station {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Sensor:{{id}} }} }} }} FILTER .id = <uuid>$id" }
+            {ModelType.Station, "SELECT Station {{id, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}, Sensor:{{id}} }} }} }} FILTER .id = <uuid>$id" }
         };
 
         private readonly IDictionary<ModelType, string> _insertQuery = new Dictionary<ModelType, string>()
