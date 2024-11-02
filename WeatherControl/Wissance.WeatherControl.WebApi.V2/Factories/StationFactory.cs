@@ -34,6 +34,8 @@ namespace Wissance.WeatherControl.WebApi.V2.Factories
             {
                 {"Latitude", dto.Latitude},
                 {"Longitude", dto.Longitude},
+                {"Name", dto.Name},
+                {"Description", dto.Description},
                 {"Sensors", dto.Sensors.Select(s => s.Id).ToArray()}
             };
             

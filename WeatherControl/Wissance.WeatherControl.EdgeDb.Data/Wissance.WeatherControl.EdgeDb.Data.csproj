@@ -12,10 +12,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Wissance.WeatherControl.Data\Wissance.WeatherControl.Data.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="dbschema\migrations" />
-	</ItemGroup>
     
 	<!--
 	<ItemGroup>

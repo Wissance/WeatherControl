@@ -231,8 +231,8 @@ curl -X 'PUT' \
 
 * 3.1 to get `one by id` - `GET http://localhost:8058/api/sensor/{id}`
 * 3.2 to get `collection with paging` - `GET http://localhost:8058/api/station/?page=1&size=10` with 2 additional params:
-  - station (Guid) for filterong Sensors by relation to station
-  - mu (Guid) for filterong Sensors by MeasureUnit
+  - station (`Guid`) for filtering Sensors by relation to station
+  - mu (`Guid`) for filtering Sensors by MeasureUnit
   
 Examples of usage:
 * Get multiple for MeasureUnit with id `7f319181-31d3-44ce-8371-08dcf37af278` - `http://127.0.0.1:8058/api/Sensor?mu=7f319181-31d3-44ce-8371-08dcf37af278`
@@ -290,6 +290,9 @@ Here we've got a `net6.0` `REST` Service that have the same model as previous se
 * `Sensor`
 * `Station`
 
+Model schema is here:
+![Relation between objects in SQL DB](docs/edge_db_model.png)
+
 Data project is `Wissance.WeatherControl.GraphData`
 
 ![Relation between Models]()
@@ -297,24 +300,22 @@ Data project is `Wissance.WeatherControl.GraphData`
 
 #### 4.1 Configure Edge DB (Prerequisites)
 
-0. Configure EdgeDB to set Id explicitly
-
 1. Start `Edgedb` instance from `Wissance.WeatherControl.GraphData` directory
 
 ```ps1
-edgedb instance start -I Wissance_WeatherControl_Data --foreground
+edgedb instance start -I Wissance_WeatherControl --foreground
 ```
 
 apply migration via
 
 ```ps1
-edgedb migrate
+edgedb -I Wissance_WeatherControl migrate
 ```
 
 2. Configure Edgedb to allow pass own identifiers (necessary for object return after create)
 
 ```ps1
-edgedb configure set allow_user_specified_id true
+edgedb -I Wissance_WeatherControl configure set allow_user_specified_id true
 ```
 
 2. Start edgedb ui:
