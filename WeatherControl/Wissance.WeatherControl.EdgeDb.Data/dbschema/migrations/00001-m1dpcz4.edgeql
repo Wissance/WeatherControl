@@ -1,4 +1,4 @@
-CREATE MIGRATION m1op3ssy35zlkduiygumaza2ogauyu4koj374awzmhhrpae2zxiyea
+CREATE MIGRATION m1dpcz442zoyt25ttqkcmbd5s3zg3btgd2nbmj6bg73cc4fuw67lpq
     ONTO initial
 {
   CREATE TYPE default::MeasureUnit {
@@ -27,5 +27,8 @@ CREATE MIGRATION m1op3ssy35zlkduiygumaza2ogauyu4koj374awzmhhrpae2zxiyea
       CREATE REQUIRED PROPERTY Latitude: std::str;
       CREATE REQUIRED PROPERTY Longitude: std::str;
       CREATE REQUIRED PROPERTY Name: std::str;
+  };
+  ALTER TYPE default::Sensor {
+      CREATE REQUIRED LINK Station: default::Station;
   };
 };

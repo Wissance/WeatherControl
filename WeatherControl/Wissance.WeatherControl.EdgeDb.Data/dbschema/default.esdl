@@ -18,6 +18,7 @@ module default {
         required property Longitude -> str;
         required property Latitude -> str;
         required link Unit -> MeasureUnit;
+        required link Station -> Station;
         multi link Measurements -> Measurement;
     }
 

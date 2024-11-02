@@ -120,7 +120,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
         {
             {ModelType.MeasureUnit,  "SELECT MeasureUnit {{id, Name, Abbreviation, Description}} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Measurement,  "SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Station:{{id, Name, Longitude, Latitude}} }} {0} {1} OFFSET {2} LIMIT {3}"},
-            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}, Station:{{id}} }} }} {0} {1} OFFSET {2} LIMIT {3}"},
+            {ModelType.Sensor ,      "SELECT Sensor {{id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}}, Unit:{{id, Name, Abbreviation}}, Station:{{id}} }} {0} {1} OFFSET {2} LIMIT {3}"},
             {ModelType.Station, "SELECT Station {{id, Name, Description, Latitude, Longitude, Sensors:{{ id, Name, Latitude, Longitude, Measurements:{{id, SampleDate, Value}} }} }} {0} {1} OFFSET {2} LIMIT {3}" }
         };
 
@@ -134,7 +134,7 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             // example: select MeasureUnit filter .id = <uuid>"91bedeac-9405-11ed-b635-2f706f53263b"
             {ModelType.MeasureUnit, @"SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$id"},
             {ModelType.Measurement, @"SELECT Measurement {{id, SampleDate, Value, Unit:{{id, Name, Abbreviation, Description}}, Sensor:{{id, Name, Description, Longitude, Latitude}} }} FILTER .id = <uuid>$id"},
-            {ModelType.Sensor , "SELECT Sensor {{id, Name, Description, Latitude, Longitude, Measurements:{{id, SampleDate, Value, Unit:{{id, Name, Abbreviation}}, Station:{{id}} }} }} FILTER .id = <uuid>$id"},
+            {ModelType.Sensor , "SELECT Sensor {{id, Name, Description, Latitude, Longitude, Measurements:{{id, SampleDate, Value}}, Unit:{{id, Name, Abbreviation}}, Station:{{id}} }} FILTER .id = <uuid>$id"},
             {ModelType.Station, "SELECT Station {{id, Name, Description, Latitude, Longitude, Sensors:{{ id, Name, Description, Latitude, Longitude, Measurements:{{id, SampleDate, Value}} }} }}  FILTER .id = <uuid>$id" }
         };
 
@@ -143,7 +143,9 @@ namespace Wissance.WeatherControl.WebApi.V2.Helpers
             //TODO(UMV): convert to decimal implemented with a HACK!!!
             {ModelType.Measurement, @"INSERT Measurement {{id:=<uuid>$id, SampleDate:=<datetime>$SampleDate, Value:=to_decimal(<str>$Value), Unit:=(SELECT MeasureUnit {{id, Name, Abbreviation, Description}} FILTER .id = <uuid>$MeasureUnitId LIMIT 1), "+ 
                                      "Sensor:=(SELECT Sensor {{id, Name, Latitude, Longitude }} FILTER .id = <uuid>$SensorId  LIMIT 1) }}"},
-            {ModelType.Sensor, "INSERT Sensor {{id:=<uuid>$id, Name:=<str>$Name, Description:=<str>$Description, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"},
+            {ModelType.Sensor, @"INSERT Sensor {{id:=<uuid>$id, Name:=<str>$Name, Description:=<str>$Description, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude, 
+                                                 Unit:=(SELECT MeasureUnit {{id}} FILTER .id = <uuid>$MeasureUnitId), 
+                                                 Station:=(SELECT Station {{id}} FILTER .id = <uuid>$StationId) }}"},
             {ModelType.Station, "INSERT Station {{id:=<uuid>$id, Name:=<str>$Name, Description:=<str>$Description, Latitude:=<str>$Latitude, Longitude:=<str>$Longitude}}"}
         };
         
