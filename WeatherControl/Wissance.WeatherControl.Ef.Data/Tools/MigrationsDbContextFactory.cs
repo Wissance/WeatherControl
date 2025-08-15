@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Options;
-using Wissance.WebApiToolkit.Data.Tools;
+using Wissance.WebApiToolkit.Data.Ef.Tools;
 
 namespace Wissance.WeatherControl.Data.Tools
 {

@@ -6,7 +6,7 @@ namespace Wissance.WeatherControl.Data.Entity
 {
     public class SensorEntity : ISensor<MeasureUnitEntity, MeasurementEntity>
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Latitude { get; set; }
