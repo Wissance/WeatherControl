@@ -23,27 +23,6 @@ namespace Wissance.WeatherControl.WebApi.Managers
             _modelContext = modelContext;
         }
 
-        /*public override async Task<OperationResultDto<SensorDto>> CreateAsync(SensorDto data)
-        {
-            try
-            {
-                SensorEntity entity = SensorFactory.Create(data);
-                await _modelContext.Sensors.AddAsync(entity);
-                
-                int result = await _modelContext.SaveChangesAsync();
-                if (result >= 0)
-                {
-                    return new OperationResultDto<SensorDto>(true, (int)HttpStatusCode.Created, null, SensorFactory.Create(entity));
-                }
-                return new OperationResultDto<SensorDto>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during \"Sensor\" creation", null);
-            }
-            catch (Exception e)
-            {
-                return new OperationResultDto<SensorDto>(false, (int) HttpStatusCode.InternalServerError,
-                    $"An error occurred during \"Sensor\" create: {e.Message}", null);
-            }
-        }*/
-
         public override async Task<OperationResultDto<SensorDto>> UpdateAsync(Guid id, SensorDto data)
         {
             try
