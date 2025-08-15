@@ -18,6 +18,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
         {
             return new MeasurementEntity()
             {
+                Id = dto.Id,
                 Value = dto.Value,
                 SampleDate = dto.SampleDate,
                 SensorId = dto.SensorId.HasValue ? dto.SensorId.Value : Guid.Empty
