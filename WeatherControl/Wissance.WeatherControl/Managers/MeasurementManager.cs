@@ -15,77 +15,12 @@ using Wissance.WebApiToolkit.Ef.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class MeasurementManager : EfModelManager<MeasurementDto, MeasurementEntity,  Guid>
+    public class MeasurementManager : EfModelManager<MeasurementDto, MeasurementEntity, Guid>
     {
         public MeasurementManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, MeasurementsFilter.Filter, MeasurementFactory.Create, 
-                MeasurementFactory.Create, null, loggerFactory)
+                MeasurementFactory.Create, MeasurementFactory.Update, loggerFactory)
         {
-            _modelContext = modelContext;
         }
-        
-        public override async Task<OperationResultDto<MeasurementDto>> UpdateAsync(Guid id, MeasurementDto data)
-        {
-            try
-            {
-                MeasurementEntity entity = MeasurementFactory.Create(data);
-                MeasurementEntity existingEntity = await _modelContext.Measurements.FirstOrDefaultAsync(m => m.Id == id);
-                if (existingEntity == null)
-                {
-                    return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.NotFound, $"Measurements with id: {id} does not exists", null);
-                }
-                existingEntity.Value = entity.Value;
-                existingEntity.SampleDate = entity.SampleDate;
-                if (existingEntity.SensorId != entity.SensorId)
-                {
-                    existingEntity.SensorId = entity.SensorId;
-                }
-
-                int result = await _modelContext.SaveChangesAsync();
-                if (result >= 0)
-                {
-                    return new OperationResultDto<MeasurementDto>(true, (int)HttpStatusCode.OK, null, MeasurementFactory.Create(existingEntity));
-                }
-                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError, $"An unknown error occurred during measurements update", null);
-            }
-            catch (Exception e)
-            {
-                return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError,
-                    $"An error occurred during \"Measurement\" update: {e.Message}", null);
-            }
-        }
-        
-        public override async Task<OperationResultDto<MeasurementDto[]>> BulkUpdateAsync(MeasurementDto[] data)
-        {
-            try
-            {
-                IList<MeasurementEntity> measurementsToUpdate = await _modelContext.Measurements.Where(m => data.Any(di => di.Id == m.Id))
-                                                                                          .ToListAsync();
-                foreach (MeasurementEntity measurement in measurementsToUpdate)
-                {
-                    MeasurementDto dto = data.First(m => m.Id == measurement.Id);
-                    measurement.Value = dto.Value;
-                    measurement.SampleDate = dto.SampleDate;
-                    if (dto.SensorId.HasValue && measurement.SensorId != dto.SensorId)
-                    {
-                        measurement.SensorId = dto.SensorId.Value;
-                    }
-                }
-                int result = await _modelContext.SaveChangesAsync();
-                if (result >= 0)
-                {
-                    return new OperationResultDto<MeasurementDto[]>(true, (int)HttpStatusCode.OK, null,
-                        measurementsToUpdate.Select(m => MeasurementFactory.Create(m)).ToArray());
-                }
-                return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError, "An unknown error occurred during measurements update", null);
-            }
-            catch (Exception e)
-            {
-                return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError,
-                    $"An error occurred during \"Measurement\" bulk update: {e.Message}", null);
-            }
-        }
-
-        private readonly ModelContext _modelContext;
     }
 }

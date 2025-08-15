@@ -17,42 +17,8 @@ namespace Wissance.WeatherControl.WebApi.Managers
     {
         public MeasureUnitManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, null, MeasureUnitFactory.Create, MeasureUnitFactory.Create, 
-                null, loggerFactory)
+                MeasureUnitFactory.Update, loggerFactory)
         {
-            _modelContext = modelContext;
         }
-
-        public override async Task<OperationResultDto<MeasureUnitDto>> UpdateAsync(Guid id, MeasureUnitDto data)
-        {
-            try
-            {
-                MeasureUnitEntity existingMeasureUnit = await _modelContext.MeasureUnits.FirstOrDefaultAsync(m => m.Id == id);
-                if (existingMeasureUnit == null)
-                {
-                    return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.NotFound,
-                        $"An error occurred during \"MeasureUnit\" update, an object with id:\":{id}\" does n't exist", null);
-                }
-
-                existingMeasureUnit.Name = data.Name;
-                existingMeasureUnit.Description = data.Description;
-                existingMeasureUnit.Abbreviation = data.Abbreviation;
-
-                int result = await _modelContext.SaveChangesAsync();
-                if (result >= 0)
-                {
-                    return new OperationResultDto<MeasureUnitDto>(true, (int) HttpStatusCode.OK, string.Empty,
-                        MeasureUnitFactory.Create(existingMeasureUnit));
-                }
-                return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.InternalServerError,
-                    "An unknown error occurred during \"MeasureUnit\" update", null);
-            }
-            catch (Exception e)
-            {
-                return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.InternalServerError,
-                    $"An error occurred during \"MeasureUnit\" update: {e.Message}", null);
-            }
-        }
-
-        private readonly ModelContext _modelContext;
     }
 }
