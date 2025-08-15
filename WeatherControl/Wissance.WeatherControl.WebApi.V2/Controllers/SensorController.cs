@@ -6,7 +6,7 @@ using Wissance.WeatherControl.EdgeDb.Data.Entity;
 using Wissance.WeatherControl.WebApi.V2.Factories;
 using Wissance.WeatherControl.WebApi.V2.Filters;
 using Wissance.WeatherControl.WebApi.V2.Managers;
-using Wissance.WebApiToolkit.Controllers;
+using Wissance.WebApiToolkit.Core.Controllers;
 using Wissance.WebApiToolkit.Data;
 
 namespace Wissance.WeatherControl.WebApi.V2.Controllers
