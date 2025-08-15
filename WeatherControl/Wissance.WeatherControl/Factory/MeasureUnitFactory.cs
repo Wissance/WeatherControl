@@ -1,3 +1,4 @@
+using System;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -25,6 +26,13 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 Description = entity.Description,
                 Abbreviation = entity.Abbreviation
             };
+        }
+
+        public static void Update(MeasureUnitDto data, Guid id, MeasureUnitEntity entity)
+        {
+            entity.Name = data.Name;
+            entity.Description = data.Description;
+            entity.Abbreviation = data.Abbreviation;
         }
     }
 }

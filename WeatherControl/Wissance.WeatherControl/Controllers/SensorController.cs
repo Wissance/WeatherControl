@@ -3,8 +3,7 @@ using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Filters;
 using Wissance.WeatherControl.WebApi.Managers;
-using Wissance.WebApiToolkit.Controllers;
-using Wissance.WebApiToolkit.Data;
+using Wissance.WebApiToolkit.Core.Controllers;
 
 namespace Wissance.WeatherControl.WebApi.Controllers
 {

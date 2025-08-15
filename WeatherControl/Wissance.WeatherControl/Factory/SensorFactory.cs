@@ -1,3 +1,4 @@
+using System;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -60,6 +61,16 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 StationId = entity.StationId,
                 MeasureUnitId = entity.MeasureUnitId
             };
+        }
+
+        public static void Update(SensorDto data, Guid id, SensorEntity entity)
+        {
+            entity.Name = data.Name;
+            entity.Description = data.Description;
+            entity.Latitude = data.Latitude;
+            entity.Longitude = data.Longitude;
+            entity.StationId = data.StationId;
+            entity.MeasureUnitId = data.MeasureUnitId;
         }
     }
 }

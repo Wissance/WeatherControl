@@ -6,12 +6,13 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using Wissance.WebApiToolkit.Data.Entity;
-using Wissance.WebApiToolkit.Managers;
 using EdgeDB;
 using System.Threading.Tasks;
 using Wissance.WeatherControl.EdgeDb.Data;
 using Wissance.WeatherControl.WebApi.V2.Extensions;
 using Wissance.WeatherControl.WebApi.V2.Helpers;
+using Wissance.WebApiToolkit.Core.Data;
+using Wissance.WebApiToolkit.Core.Managers;
 using Wissance.WebApiToolkit.Data;
 using Wissance.WebApiToolkit.Dto;
 
