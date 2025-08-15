@@ -12,19 +12,19 @@ using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Ef.Managers;
-using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class MeasurementManager : EfModelManager<MeasurementDto, MeasurementEntity,  Guid>
     {
         public MeasurementManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
-            : base(modelContext, MeasurementsFilter.Filter, MeasurementFactory.Create, loggerFactory)
+            : base(modelContext, MeasurementsFilter.Filter, MeasurementFactory.Create, 
+                MeasurementFactory.Create, null, loggerFactory)
         {
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<MeasurementDto>> CreateAsync(MeasurementDto data)
+        /*public override async Task<OperationResultDto<MeasurementDto>> CreateAsync(MeasurementDto data)
         {
             try
             {
@@ -43,10 +43,9 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 return new OperationResultDto<MeasurementDto>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during \"Measurement\" create: {e.Message}", null);
             }
-            
-        }
+        }*/
 
-        public override async Task<OperationResultDto<MeasurementDto[]>> BulkCreateAsync(MeasurementDto[] data)
+        /*public override async Task<OperationResultDto<MeasurementDto[]>> BulkCreateAsync(MeasurementDto[] data)
         {
             try
             {
@@ -65,7 +64,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 return new OperationResultDto<MeasurementDto[]>(false, (int)HttpStatusCode.InternalServerError,
                     $"An error occurred during \"Measurement\" bulk create: {e.Message}", null);
             }
-        }
+        }*/
 
         public override async Task<OperationResultDto<MeasurementDto>> UpdateAsync(Guid id, MeasurementDto data)
         {

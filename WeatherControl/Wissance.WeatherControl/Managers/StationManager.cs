@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -10,22 +8,21 @@ using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
-using Wissance.WebApiToolkit.Data;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Ef.Managers;
-using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class StationManager : EfModelManager<StationDto, StationEntity, Guid>
     {
         public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
-            : base(modelContext, StationFilter.Filter, StationFactory.Create, loggerFactory)
+            : base(modelContext, StationFilter.Filter, StationFactory.Create, StationFactory.Create,
+                null, loggerFactory)
         {
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
+        /*public override async Task<OperationResultDto<StationDto>> CreateAsync(StationDto data)
         {
             try
             {
@@ -43,7 +40,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
             {
                 return new OperationResultDto<StationDto>(false, (int)HttpStatusCode.InternalServerError, $"An error occurred during station creation: {e.Message}", null);
             }
-        }
+        }*/
 
         public override async Task<OperationResultDto<StationDto>> UpdateAsync(Guid id, StationDto data)
         {

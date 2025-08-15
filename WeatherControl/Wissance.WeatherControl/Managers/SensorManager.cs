@@ -11,19 +11,19 @@ using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Ef.Managers;
-using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class SensorManager: EfModelManager<SensorDto, SensorEntity,  Guid>
     {
         public SensorManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
-            : base(modelContext, SensorFilter.Filter, SensorFactory.Create, loggerFactory)
+            : base(modelContext, SensorFilter.Filter, SensorFactory.Create, SensorFactory.Create, 
+                null, loggerFactory)
         {
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<SensorDto>> CreateAsync(SensorDto data)
+        /*public override async Task<OperationResultDto<SensorDto>> CreateAsync(SensorDto data)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 return new OperationResultDto<SensorDto>(false, (int) HttpStatusCode.InternalServerError,
                     $"An error occurred during \"Sensor\" create: {e.Message}", null);
             }
-        }
+        }*/
 
         public override async Task<OperationResultDto<SensorDto>> UpdateAsync(Guid id, SensorDto data)
         {

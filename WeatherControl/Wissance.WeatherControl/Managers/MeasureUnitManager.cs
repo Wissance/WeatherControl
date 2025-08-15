@@ -10,19 +10,19 @@ using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WebApiToolkit.Dto;
 using Wissance.WebApiToolkit.Ef.Managers;
-using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
     public class MeasureUnitManager : EfModelManager<MeasureUnitDto, MeasureUnitEntity, Guid>
     {
         public MeasureUnitManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
-            : base(modelContext, null, MeasureUnitFactory.Create, loggerFactory)
+            : base(modelContext, null, MeasureUnitFactory.Create, MeasureUnitFactory.Create, 
+                null, loggerFactory)
         {
             _modelContext = modelContext;
         }
 
-        public override async Task<OperationResultDto<MeasureUnitDto>> CreateAsync(MeasureUnitDto data)
+        /*public override async Task<OperationResultDto<MeasureUnitDto>> CreateAsync(MeasureUnitDto data)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Wissance.WeatherControl.WebApi.Managers
                 return new OperationResultDto<MeasureUnitDto>(false, (int) HttpStatusCode.InternalServerError,
                     $"An error occurred during \"MeasureUnit\" create: {e.Message}", null);
             }
-        }
+        }*/
 
         public override async Task<OperationResultDto<MeasureUnitDto>> UpdateAsync(Guid id, MeasureUnitDto data)
         {
