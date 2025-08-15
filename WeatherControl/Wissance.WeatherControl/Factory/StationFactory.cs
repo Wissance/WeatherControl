@@ -38,5 +38,13 @@ namespace Wissance.WeatherControl.WebApi.Factory
 
             return entity;
         }
+
+        public static void Update(StationDto data, Guid id, StationEntity entity)
+        {
+            entity.Name = data.Name;
+            entity.Description = data.Description;
+            entity.Latitude = data.Latitude;
+            entity.Longitude = data.Longitude;
+        }
     }
 }
