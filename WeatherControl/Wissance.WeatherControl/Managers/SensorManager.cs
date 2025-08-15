@@ -10,11 +10,12 @@ using Wissance.WeatherControl.Dto;
 using Wissance.WeatherControl.WebApi.Factory;
 using Wissance.WeatherControl.WebApi.Helpers.Filtering;
 using Wissance.WebApiToolkit.Dto;
+using Wissance.WebApiToolkit.Ef.Managers;
 using Wissance.WebApiToolkit.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class SensorManager: EfModelManager<SensorEntity, SensorDto, Guid>
+    public class SensorManager: EfModelManager<SensorDto, SensorEntity,  Guid>
     {
         public SensorManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, SensorFilter.Filter, SensorFactory.Create, loggerFactory)
