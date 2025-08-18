@@ -14,9 +14,8 @@ using Serilog;
 using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Extensions;
 using Wissance.WeatherControl.Common.Config;
-using Wissance.WeatherControl.WebApi.Managers;
 
-namespace Wissance.WeatherControl.WebApi
+namespace Wissance.WeatherControl.SemiAuto.WebApi
 {
     public class Startup
     {
@@ -82,10 +81,10 @@ namespace Wissance.WeatherControl.WebApi
 
         private void ConfigureManagers(IServiceCollection services)
         {
-            services.AddScoped<StationManager>();
-            services.AddScoped<SensorManager>();
-            services.AddScoped<MeasureUnitManager>();
-            services.AddScoped<MeasurementManager>();
+            //services.AddScoped<StationManager>();
+            //services.AddScoped<SensorManager>();
+            //services.AddScoped<MeasureUnitManager>();
+            //services.AddScoped<MeasurementManager>();
         }
 
         public ApplicationSettings Settings { get; set; }
