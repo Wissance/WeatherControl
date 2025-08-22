@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Wissance.WebApiToolkit.Core" Version="5.0.0" />
+    </ItemGroup>
+
 </Project>
