@@ -20,18 +20,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Wissance.WeatherControl.Common.Automation;
 using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Extensions;
 using Wissance.WeatherControl.Common.Config;
 using Wissance.WeatherControl.Data.Entity;
-using Wissance.WeatherControl.SemiAuto.WebApi.Services;
 using Wissance.WebApiToolkit.Core.Data;
 using Wissance.WebApiToolkit.Core.Managers;
 using Wissance.WebApiToolkit.Ef.Factories;
 using Wissance.WebApiToolkit.Ef.Managers;
-
-using StationController = Wissance.WeatherControl.Common.Automation.GenericController<Wissance.WeatherControl.Data.Entity.StationEntity, Wissance.WeatherControl.Data.Entity.StationEntity, System.Guid, Wissance.WebApiToolkit.Core.Data.EmptyAdditionalFilters>  ;
+using Wissance.WebApiToolkit.Ef.Extensions;
+using Wissance.WebApiToolkit.Ef.Generators;
 
 namespace Wissance.WeatherControl.SemiAuto.WebApi
 {
@@ -94,10 +92,24 @@ namespace Wissance.WeatherControl.SemiAuto.WebApi
         private void ConfigureWebApi(IServiceCollection services)
         {
             services.AddSwaggerGen();
+            ServiceProvider provider = services.BuildServiceProvider();
+            Assembly stationControllerAssembly = services.AddSimplifiedAutoController<StationEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Station",
+                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly measureUnitControllerAssembly = services.AddSimplifiedAutoController<MeasureUnitEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "MeasureUnit",
+                ControllerType.ReadOnly, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly sensorControllerAssembly = services.AddSimplifiedAutoController<SensorEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Sensor",
+                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly measurementControllerAssembly = services.AddSimplifiedAutoController<MeasurementEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Measurement",
+                ControllerType.Bulk, null, provider.GetRequiredService<ILoggerFactory>());
             
-            ConfigureManagers(services);
-            Assembly autoGenControllersAssembly = services.ConfigureAutoControllersV2();
-            services.AddControllers().AddApplicationPart(autoGenControllersAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(sensorControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(stationControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(measureUnitControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(measurementControllerAssembly).AddControllersAsServices();
         }
 
         private void ConfigureManagers(IServiceCollection services)

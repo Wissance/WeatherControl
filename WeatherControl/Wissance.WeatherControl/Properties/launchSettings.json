@@ -1,20 +1,5 @@
 {
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:54936",
-      "sslPort": 44312
-    }
-  },
   "profiles": {
-    "IIS Express": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "WeatherControl": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -27,6 +12,14 @@
       "commandName": "Executable",
       "executablePath": "WeatherControl.WebApi.exe",
       "commandLineArgs": "--environment=Development"
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:54936",
+      "sslPort": 44312
     }
   }
 }
