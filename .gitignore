@@ -38,3 +38,11 @@ WeatherControl/.idea/
 *.user
 
 perfTests/bulk_api_tests/tools/venv/
+
+WeatherControl/Wissance.WeatherControl.SemiAuto.WebApi/bin/
+
+WeatherControl/Wissance.WeatherControl.SemiAuto.WebApi/obj/
+
+WeatherControl/Wissance.WeatherControl.Common/bin/
+
+WeatherControl/Wissance.WeatherControl.Common/obj/

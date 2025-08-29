@@ -1,11 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,9 +23,15 @@ using Serilog;
 using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Extensions;
 using Wissance.WeatherControl.Common.Config;
-using Wissance.WeatherControl.WebApi.Managers;
+using Wissance.WeatherControl.Data.Entity;
+using Wissance.WebApiToolkit.Core.Data;
+using Wissance.WebApiToolkit.Core.Managers;
+using Wissance.WebApiToolkit.Ef.Factories;
+using Wissance.WebApiToolkit.Ef.Managers;
+using Wissance.WebApiToolkit.Ef.Extensions;
+using Wissance.WebApiToolkit.Ef.Generators;
 
-namespace Wissance.WeatherControl.WebApi
+namespace Wissance.WeatherControl.SemiAuto.WebApi
 {
     public class Startup
     {
@@ -52,7 +67,10 @@ namespace Wissance.WeatherControl.WebApi
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         private void ConfigureLogging(IServiceCollection services)
@@ -74,20 +92,26 @@ namespace Wissance.WeatherControl.WebApi
         private void ConfigureWebApi(IServiceCollection services)
         {
             services.AddSwaggerGen();
+            ServiceProvider provider = services.BuildServiceProvider();
+            Assembly stationControllerAssembly = services.AddSimplifiedAutoController<StationEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Station",
+                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly measureUnitControllerAssembly = services.AddSimplifiedAutoController<MeasureUnitEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "MeasureUnit",
+                ControllerType.ReadOnly, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly sensorControllerAssembly = services.AddSimplifiedAutoController<SensorEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Sensor",
+                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
+            Assembly measurementControllerAssembly = services.AddSimplifiedAutoController<MeasurementEntity, Guid, EmptyAdditionalFilters>(
+                provider.GetRequiredService<ModelContext>(), "Measurement",
+                ControllerType.Bulk, null, provider.GetRequiredService<ILoggerFactory>());
             
-            services.AddControllers();
-
-            ConfigureManagers(services);
+            services.AddControllers().AddApplicationPart(sensorControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(stationControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(measureUnitControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(measurementControllerAssembly).AddControllersAsServices();
         }
-
-        private void ConfigureManagers(IServiceCollection services)
-        {
-            services.AddScoped<StationManager>();
-            services.AddScoped<SensorManager>();
-            services.AddScoped<MeasureUnitManager>();
-            services.AddScoped<MeasurementManager>();
-        }
-
+        
         public ApplicationSettings Settings { get; set; }
         private IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }

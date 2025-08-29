@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Nullable>disable</Nullable>
-        <TargetFrameworks>net6.0</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <ItemGroup>
       <PackageReference Include="Wissance.WebApiToolkit.Core" Version="5.1.0" />
     </ItemGroup>
 
