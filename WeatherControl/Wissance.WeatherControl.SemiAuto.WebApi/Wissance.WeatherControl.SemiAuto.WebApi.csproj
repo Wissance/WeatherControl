@@ -17,21 +17,13 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="Wissance.WebApiToolkit.Ef" Version="5.1.0" />
         <!--<PackageReference Include="Wissance.WebApiToolkit.Ef" Version="5.0.0" />-->
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Wissance.WeatherControl.Common\Wissance.WeatherControl.Common.csproj" />
         <ProjectReference Include="..\Wissance.WeatherControl.Ef.Data\Wissance.WeatherControl.Ef.Data.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Wissance.WebApiToolkit.Core">
-        <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit.Core\bin\Release\net8.0\Wissance.WebApiToolkit.Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Wissance.WebApiToolkit.Ef">
-        <HintPath>..\..\..\WebApiToolkit\Wissance.WebApiToolkit\Wissance.WebApiToolkit.Ef\bin\Release\net8.0\Wissance.WebApiToolkit.Ef.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>

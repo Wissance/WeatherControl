@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-      <PackageReference Include="Wissance.WebApiToolkit.Core" Version="5.0.0" />
+      <PackageReference Include="Wissance.WebApiToolkit.Core" Version="5.1.0" />
     </ItemGroup>
 
 </Project>
