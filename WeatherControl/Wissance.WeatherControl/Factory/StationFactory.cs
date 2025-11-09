@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -21,7 +22,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return dto;
         }
 
-        public static StationEntity Create(StationDto dto)
+        public static StationEntity Create(StationDto dto, ModelContext context)
         {
             StationEntity entity = new StationEntity()
             {
@@ -33,13 +34,13 @@ namespace Wissance.WeatherControl.WebApi.Factory
 
             if (dto.Sensors != null)
             {
-                entity.Sensors = dto.Sensors.Select(s => SensorFactory.Create(s)).ToList();
+                entity.Sensors = dto.Sensors.Select(s => SensorFactory.Create(s, context)).ToList();
             }
 
             return entity;
         }
 
-        public static void Update(StationDto data, Guid id, StationEntity entity)
+        public static void Update(StationDto data, Guid id, ModelContext context, StationEntity entity)
         {
             entity.Name = data.Name;
             entity.Description = data.Description;

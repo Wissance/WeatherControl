@@ -14,7 +14,7 @@ using Wissance.WebApiToolkit.Ef.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class SensorManager: EfModelManager<SensorDto, SensorEntity,  Guid>
+    public class SensorManager: EfModelManager<ModelContext, SensorDto, SensorEntity,  Guid>
     {
         public SensorManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, SensorFilter.Filter, SensorFactory.Create, SensorFactory.Create, 

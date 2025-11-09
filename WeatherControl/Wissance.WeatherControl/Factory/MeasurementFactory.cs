@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -14,7 +15,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return new MeasurementDto(entity.Id, entity.SampleDate, entity.Value, entity.SensorId);
         }
 
-        public static MeasurementEntity Create(MeasurementDto dto)
+        public static MeasurementEntity Create(MeasurementDto dto, ModelContext context)
         {
             return new MeasurementEntity()
             {
@@ -25,7 +26,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             };
         }
 
-        public static void Update(MeasurementDto data, Guid id, MeasurementEntity entity)
+        public static void Update(MeasurementDto data, Guid id, ModelContext context, MeasurementEntity entity)
         {
             entity.Value = data.Value;
             entity.SampleDate = data.SampleDate;

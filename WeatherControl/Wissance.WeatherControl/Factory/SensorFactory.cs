@@ -1,4 +1,5 @@
 using System;
+using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -20,7 +21,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             return entity;
         }
 
-        public static SensorEntity Create(SensorMinDataDto dto)
+        public static SensorEntity Create(SensorMinDataDto dto, ModelContext context)
         {
             SensorEntity entity = new SensorEntity()
             {
@@ -63,7 +64,7 @@ namespace Wissance.WeatherControl.WebApi.Factory
             };
         }
 
-        public static void Update(SensorDto data, Guid id, SensorEntity entity)
+        public static void Update(SensorDto data, Guid id, ModelContext context, SensorEntity entity)
         {
             entity.Name = data.Name;
             entity.Description = data.Description;

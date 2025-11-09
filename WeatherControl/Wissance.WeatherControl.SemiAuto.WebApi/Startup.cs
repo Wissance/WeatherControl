@@ -93,23 +93,28 @@ namespace Wissance.WeatherControl.SemiAuto.WebApi
         {
             services.AddSwaggerGen();
             ServiceProvider provider = services.BuildServiceProvider();
-            Assembly stationControllerAssembly = services.AddSimplifiedAutoController<StationEntity, Guid, EmptyAdditionalFilters>(
-                provider.GetRequiredService<ModelContext>(), "Station",
-                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
-            Assembly measureUnitControllerAssembly = services.AddSimplifiedAutoController<MeasureUnitEntity, Guid, EmptyAdditionalFilters>(
-                provider.GetRequiredService<ModelContext>(), "MeasureUnit",
-                ControllerType.ReadOnly, null, provider.GetRequiredService<ILoggerFactory>());
-            Assembly sensorControllerAssembly = services.AddSimplifiedAutoController<SensorEntity, Guid, EmptyAdditionalFilters>(
-                provider.GetRequiredService<ModelContext>(), "Sensor",
-                ControllerType.FullCrud, null, provider.GetRequiredService<ILoggerFactory>());
-            Assembly measurementControllerAssembly = services.AddSimplifiedAutoController<MeasurementEntity, Guid, EmptyAdditionalFilters>(
-                provider.GetRequiredService<ModelContext>(), "Measurement",
-                ControllerType.Bulk, null, provider.GetRequiredService<ILoggerFactory>());
-            
-            services.AddControllers().AddApplicationPart(sensorControllerAssembly).AddControllersAsServices();
-            services.AddControllers().AddApplicationPart(stationControllerAssembly).AddControllersAsServices();
+            ModelContext dbContext = provider.GetRequiredService<ModelContext>();
+            ILoggerFactory loggerFactory = provider.GetRequiredService<ILoggerFactory>();
+
+            Assembly measureUnitControllerAssembly =
+                services.AddSimplifiedAutoController<ModelContext, MeasureUnitEntity, Guid, EmptyAdditionalFilters>(dbContext,
+                    "MeasureUnit", ControllerType.ReadOnly, null, loggerFactory);
+            Assembly stationControllerAssembly =
+                services.AddSimplifiedAutoController<ModelContext, StationEntity, Guid, EmptyAdditionalFilters>(dbContext,
+                    "Station", ControllerType.FullCrud, null, loggerFactory);
+            Assembly sensorControllerAssembly =
+                services.AddSimplifiedAutoController<ModelContext, SensorEntity, Guid, EmptyAdditionalFilters>(dbContext,
+                    "Sensor", ControllerType.FullCrud, null, loggerFactory);
+            Assembly measurementControllerAssembly =
+                services.AddSimplifiedAutoController<ModelContext, MeasurementEntity, Guid, EmptyAdditionalFilters>(dbContext,
+                    "Measurement", ControllerType.Bulk, null, loggerFactory);
+
             services.AddControllers().AddApplicationPart(measureUnitControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(stationControllerAssembly).AddControllersAsServices();
+            services.AddControllers().AddApplicationPart(sensorControllerAssembly).AddControllersAsServices();
             services.AddControllers().AddApplicationPart(measurementControllerAssembly).AddControllersAsServices();
+
+            services.AddControllers();
         }
         
         public ApplicationSettings Settings { get; set; }

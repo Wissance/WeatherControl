@@ -13,7 +13,7 @@ using Wissance.WebApiToolkit.Ef.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class StationManager : EfModelManager<StationDto, StationEntity, Guid>
+    public class StationManager : EfModelManager<ModelContext, StationDto, StationEntity, Guid>
     {
         public StationManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, StationFilter.Filter, StationFactory.Create, StationFactory.Create,

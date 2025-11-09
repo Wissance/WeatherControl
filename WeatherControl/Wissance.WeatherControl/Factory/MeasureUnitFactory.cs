@@ -1,4 +1,5 @@
 using System;
+using Wissance.WeatherControl.Data;
 using Wissance.WeatherControl.Data.Entity;
 using Wissance.WeatherControl.Dto;
 
@@ -6,17 +7,6 @@ namespace Wissance.WeatherControl.WebApi.Factory
 {
     internal static class MeasureUnitFactory
     {
-        public static MeasureUnitEntity Create(MeasureUnitDto dto)
-        {
-            MeasureUnitEntity entity = new MeasureUnitEntity()
-            {
-                Name = dto.Name,
-                Description = dto.Description,
-                Abbreviation = dto.Abbreviation
-            };
-            return entity;
-        }
-
         public static MeasureUnitDto Create(MeasureUnitEntity entity)
         {
             return new MeasureUnitDto()
@@ -27,8 +17,19 @@ namespace Wissance.WeatherControl.WebApi.Factory
                 Abbreviation = entity.Abbreviation
             };
         }
+        
+        public static MeasureUnitEntity Create(MeasureUnitDto dto, ModelContext context)
+        {
+            MeasureUnitEntity entity = new MeasureUnitEntity()
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                Abbreviation = dto.Abbreviation
+            };
+            return entity;
+        }
 
-        public static void Update(MeasureUnitDto data, Guid id, MeasureUnitEntity entity)
+        public static void Update(MeasureUnitDto data, Guid id, ModelContext context, MeasureUnitEntity entity)
         {
             entity.Name = data.Name;
             entity.Description = data.Description;

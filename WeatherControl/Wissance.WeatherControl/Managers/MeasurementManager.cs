@@ -15,7 +15,7 @@ using Wissance.WebApiToolkit.Ef.Managers;
 
 namespace Wissance.WeatherControl.WebApi.Managers
 {
-    public class MeasurementManager : EfModelManager<MeasurementDto, MeasurementEntity, Guid>
+    public class MeasurementManager : EfModelManager<ModelContext, MeasurementDto, MeasurementEntity, Guid>
     {
         public MeasurementManager(ModelContext modelContext, ILoggerFactory loggerFactory) 
             : base(modelContext, MeasurementsFilter.Filter, MeasurementFactory.Create, 
